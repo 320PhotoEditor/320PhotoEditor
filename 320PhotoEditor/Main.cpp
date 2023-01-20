@@ -1,21 +1,15 @@
-#include <SFML/Graphics.hpp>
+#include "Application.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Test");
+    Application application;
 
-    while (window.isOpen())
+    if (!application.init("Test"))
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-        window.clear();
-
-        window.display();
+        return EXIT_FAILURE;
     }
+
+    application.run();
 
     return EXIT_SUCCESS;
 }
