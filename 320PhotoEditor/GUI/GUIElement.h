@@ -5,14 +5,19 @@
 
 class GUIContainer;
 
+//base class for any gui element
 class GUIElement
 {
 public:
 
 	GUIElement() {};
-	GUIElement(GUIContainer* parent, sf::Sprite* sprite);
+	GUIElement(GUIContainer* container, sf::Sprite* sprite);
 
+	//add any additional things here that you want to render
+	//runs directly after the base sprite is rendered
 	virtual void render() {};
+	
+	//internal render function, do not use
 	void _render();
 
 	virtual void mousePressed(sf::Mouse::Button button) {};
@@ -27,12 +32,14 @@ public:
 	//set position relative to parent gui
 	void setPosition(sf::Vector2f pos);
 
-	void setParent(GUIContainer* parent);
+	void setParent(GUIContainer* container);
 
 	sf::Sprite* getSprite();
+	void setSprite(sf::Sprite* sprite);
+
+	bool isCursorOver(sf::Vector2i cursorPos);
 
 private:
-	bool isCursorOver(sf::Vector2i cursorPos);
 
 	sf::Sprite* sprite;
 
@@ -41,5 +48,5 @@ private:
 
 	bool visible;
 
-	GUIContainer* parent;
+	GUIContainer* container;
 };

@@ -13,9 +13,9 @@ sf::Vector2f GUIContainer::pixelToScreen(sf::Vector2i pixel)
 {
     sf::Vector2u windowSize = renderWindow->getSize();
 
-    float aspect = windowSize.x / windowSize.y;
+    float aspect = (float)windowSize.x / (float)windowSize.y;
 
-    return sf::Vector2f(pixel.x / windowSize.x * aspect, pixel.y / windowSize.y);
+    return sf::Vector2f((float)pixel.x / (float)windowSize.x * aspect, (float)pixel.y / (float)windowSize.y);
 }
 
 sf::Vector2f GUIContainer::getPosition()
@@ -75,11 +75,6 @@ sf::RenderWindow* GUIContainer::getRenderWindow()
 void GUIContainer::setRenderWindow(sf::RenderWindow* renderWindow)
 {
     this->renderWindow = renderWindow;
-}
-
-ButtonElement* GUIContainer::createButton(sf::Texture down, sf::Texture up, sf::Texture over)
-{
-    return nullptr;
 }
 
 void GUIContainer::mousePressed(sf::Mouse::Button button)

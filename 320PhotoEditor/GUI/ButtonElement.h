@@ -7,7 +7,7 @@ class ButtonElement : public GUIElement
 
 public:
 
-	ButtonElement(sf::Texture down, sf::Texture up, sf::Texture over);
+	ButtonElement(GUIContainer* container, const sf::Texture& up, const sf::Texture& down, const sf::Texture& over);
 
 	void mousePressed(sf::Mouse::Button button);
 	void mouseReleased(sf::Mouse::Button button);
@@ -15,5 +15,12 @@ public:
 
 private:
 
+	sf::Vector2i cursorPos;
+
+	bool isDown = false;
+
+	const sf::Texture& up;
+	const sf::Texture& down;
+	const sf::Texture& over;
 };
 

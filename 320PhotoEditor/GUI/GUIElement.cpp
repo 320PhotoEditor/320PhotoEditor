@@ -1,8 +1,8 @@
 #include "GUIElement.h"
 
-GUIElement::GUIElement(GUIContainer* parent, sf::Sprite* sprite)
+GUIElement::GUIElement(GUIContainer* container, sf::Sprite* sprite)
 {
-	this->parent = parent;
+	this->container = container;
 	visible = true;
 	
 }
@@ -11,7 +11,7 @@ void GUIElement::_render()
 {
 	if (visible)
 	{
-		parent->getRenderWindow()->draw(*sprite);
+		container->getRenderWindow()->draw(*sprite);
 		render();
 	}
 }
@@ -29,13 +29,13 @@ void GUIElement::setSize(sf::Vector2f size)
 
 void GUIElement::setPosition(sf::Vector2f pos)
 {
-	sprite->setPosition(parent->getPosition() + pos);
+	sprite->setPosition(container->getPosition() + pos);
 	this->pos = pos;
 }
 
-void GUIElement::setParent(GUIContainer* parent)
+void GUIElement::setParent(GUIContainer* container)
 {
-	this->parent = parent;
+	this->container = container;
 }
 
 sf::Sprite* GUIElement::getSprite()
@@ -43,9 +43,14 @@ sf::Sprite* GUIElement::getSprite()
 	return sprite;
 }
 
+void GUIElement::setSprite(sf::Sprite* sprite)
+{
+	this->sprite = sprite;
+}
+
 bool GUIElement::isCursorOver(sf::Vector2i cursorPos)
 {
-	sf::Vector2f cPos = parent->pixelToScreen(cursorPos);
+	sf::Vector2f cPos = container->pixelToScreen(cursorPos);
 
 	float left = pos.x;
 	float right = pos.x + size.x;
