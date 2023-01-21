@@ -51,4 +51,3 @@ private:
 	std::set<GUIElement*> elements;
 
 };
-

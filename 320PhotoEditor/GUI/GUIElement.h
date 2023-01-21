@@ -9,7 +9,7 @@ class GUIElement
 {
 public:
 
-	GUIElement(GUIContainer* parent);
+	GUIElement(GUIContainer* parent, sf::Sprite* sprite);
 
 	virtual void render() {};
 	void _render();
@@ -31,7 +31,7 @@ public:
 private:
 	bool isCursorOver(sf::Vector2i cursorPos);
 
-	sf::Sprite sprite;
+	sf::Sprite* sprite;
 
 	sf::Vector2f pos;
 	sf::Vector2f size;
@@ -40,4 +40,3 @@ private:
 
 	GUIContainer* parent;
 };
-

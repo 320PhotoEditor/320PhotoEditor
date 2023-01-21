@@ -80,4 +80,3 @@ void Application::updateInputListeners(sf::Event event)
         }
     }
 }
-

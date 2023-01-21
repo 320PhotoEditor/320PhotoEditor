@@ -17,4 +17,3 @@ public:
 private:
 	sf::Window* window;
 };
-

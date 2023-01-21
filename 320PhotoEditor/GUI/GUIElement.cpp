@@ -1,6 +1,6 @@
 #include "GUIElement.h"
 
-GUIElement::GUIElement(GUIContainer* parent)
+GUIElement::GUIElement(GUIContainer* parent, sf::Sprite* sprite)
 {
 	this->parent = parent;
 	visible = true;
@@ -10,7 +10,7 @@ void GUIElement::_render()
 {
 	if (visible)
 	{
-		parent->getRenderWindow()->draw(sprite);
+		parent->getRenderWindow()->draw(*sprite);
 		render();
 	}
 }
@@ -22,13 +22,13 @@ void GUIElement::setVisible(bool visible)
 
 void GUIElement::setSize(sf::Vector2f size)
 {
-	sprite.setScale(size);
+	sprite->setScale(size);
 	this->size = size;
 }
 
 void GUIElement::setPosition(sf::Vector2f pos)
 {
-	sprite.setPosition(parent->getPosition() + pos);
+	sprite->setPosition(parent->getPosition() + pos);
 	this->pos = pos;
 }
 

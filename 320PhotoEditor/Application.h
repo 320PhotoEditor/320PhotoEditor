@@ -26,4 +26,3 @@ private:
 
 	std::set<InputListener*> inputListeners;
 };
-
