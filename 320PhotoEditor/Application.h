@@ -2,6 +2,8 @@
 
 #include "Common.h"
 #include "InputListener.h"
+#include "GUI/GUIContainer.h"
+#include "GUI/ButtonElement.h"
 
 class Application
 {
@@ -17,6 +19,8 @@ public:
 
 	void addInputListener(InputListener* listener);
 	void removeInputListener(InputListener* listener);
+
+	GUIContainer* guiContainer;
 
 private:
 

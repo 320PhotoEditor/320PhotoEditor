@@ -1,6 +1,6 @@
 #include "Application.h"
 
-
+#include <iostream>
 Application::Application()
 {
 }
@@ -13,7 +13,19 @@ Application::~Application()
 bool Application::init(std::string windowName)
 {
 	window = new sf::RenderWindow(sf::VideoMode(800, 600), windowName);
-    return window->isOpen();
+
+    if (!window->isOpen())
+    {  
+        return false;
+    }
+
+    guiContainer = new GUIContainer({0, 0}, {1, 1}, window);
+
+    guiContainer->addElement(new ButtonElement(guiContainer, "../assets/button_up.png", "../assets/button_down.png", "../assets/button_over.png", {0, 0}, {.1, .1}));
+
+    addInputListener(guiContainer);
+
+    return true;
 }
 
 void Application::run()
@@ -29,6 +41,8 @@ void Application::run()
             updateInputListeners(event);
         }
         window->clear();
+
+        guiContainer->render();
 
         window->display();
     }

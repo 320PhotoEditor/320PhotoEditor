@@ -11,7 +11,7 @@ GUIContainer::GUIContainer(sf::Vector2f pos, sf::Vector2f size, sf::RenderWindow
 
 sf::Vector2f GUIContainer::pixelToScreen(sf::Vector2i pixel)
 {
-    sf::Vector2u windowSize = renderWindow->getSize();
+    sf::Vector2u windowSize(800, 600);// = renderWindow->getSize();
 
     float aspect = (float)windowSize.x / (float)windowSize.y;
 
@@ -20,7 +20,7 @@ sf::Vector2f GUIContainer::pixelToScreen(sf::Vector2i pixel)
 
 sf::Vector2f GUIContainer::getPosition()
 {
-    return sf::Vector2f();
+    return pos;
 }
 
 void GUIContainer::setPosition(sf::Vector2f pos)
@@ -30,7 +30,7 @@ void GUIContainer::setPosition(sf::Vector2f pos)
 
 sf::Vector2f GUIContainer::getSize()
 {
-    return sf::Vector2f();
+    return size;
 }
 
 void GUIContainer::setSize(sf::Vector2f size)

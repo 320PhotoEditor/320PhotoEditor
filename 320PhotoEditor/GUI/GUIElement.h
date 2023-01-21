@@ -11,7 +11,6 @@ class GUIElement
 public:
 
 	GUIElement() {};
-	GUIElement(GUIContainer* container, sf::Sprite* sprite);
 
 	//add any additional things here that you want to render
 	//runs directly after the base sprite is rendered
@@ -32,7 +31,7 @@ public:
 	//set position relative to parent gui
 	void setPosition(sf::Vector2f pos);
 
-	void setParent(GUIContainer* container);
+	void setContainer(GUIContainer* container);
 
 	sf::Sprite* getSprite();
 	void setSprite(sf::Sprite* sprite);

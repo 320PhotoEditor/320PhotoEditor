@@ -7,7 +7,8 @@ class ButtonElement : public GUIElement
 
 public:
 
-	ButtonElement(GUIContainer* container, const sf::Texture& up, const sf::Texture& down, const sf::Texture& over);
+	ButtonElement(GUIContainer* container, sf::Texture* up, sf::Texture* down, sf::Texture* over, sf::Vector2f pos, sf::Vector2f size);
+	ButtonElement(GUIContainer* container, std::string up, std::string down, std::string over, sf::Vector2f pos, sf::Vector2f size);
 
 	void mousePressed(sf::Mouse::Button button);
 	void mouseReleased(sf::Mouse::Button button);
@@ -19,8 +20,8 @@ private:
 
 	bool isDown = false;
 
-	const sf::Texture& up;
-	const sf::Texture& down;
-	const sf::Texture& over;
+	sf::Texture* up;
+	sf::Texture* down;
+	sf::Texture* over;
 };
 
