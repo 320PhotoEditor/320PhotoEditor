@@ -77,6 +77,11 @@ void GUIContainer::setRenderWindow(sf::RenderWindow* renderWindow)
     this->renderWindow = renderWindow;
 }
 
+ButtonElement* GUIContainer::createButton(sf::Texture down, sf::Texture up, sf::Texture over)
+{
+    return nullptr;
+}
+
 void GUIContainer::mousePressed(sf::Mouse::Button button)
 {
     if (isCursorOver(cursorPos))

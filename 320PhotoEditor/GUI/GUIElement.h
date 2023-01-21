@@ -9,6 +9,7 @@ class GUIElement
 {
 public:
 
+	GUIElement() {};
 	GUIElement(GUIContainer* parent, sf::Sprite* sprite);
 
 	virtual void render() {};
@@ -27,6 +28,8 @@ public:
 	void setPosition(sf::Vector2f pos);
 
 	void setParent(GUIContainer* parent);
+
+	sf::Sprite* getSprite();
 
 private:
 	bool isCursorOver(sf::Vector2i cursorPos);

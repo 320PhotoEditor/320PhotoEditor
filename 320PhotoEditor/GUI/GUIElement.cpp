@@ -4,6 +4,7 @@ GUIElement::GUIElement(GUIContainer* parent, sf::Sprite* sprite)
 {
 	this->parent = parent;
 	visible = true;
+	
 }
 
 void GUIElement::_render()
@@ -35,6 +36,11 @@ void GUIElement::setPosition(sf::Vector2f pos)
 void GUIElement::setParent(GUIContainer* parent)
 {
 	this->parent = parent;
+}
+
+sf::Sprite* GUIElement::getSprite()
+{
+	return sprite;
 }
 
 bool GUIElement::isCursorOver(sf::Vector2i cursorPos)

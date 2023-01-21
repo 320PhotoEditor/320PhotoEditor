@@ -4,6 +4,8 @@
 #include "../InputListener.h"
 #include "GUIElement.h"
 
+#include "ButtonElement.h"
+
 class GUIElement;
 
 //an invisible container for GUIElements
@@ -31,6 +33,8 @@ public:
 
 	sf::RenderWindow* getRenderWindow();
 	void setRenderWindow(sf::RenderWindow* renderWindow);
+
+	ButtonElement* createButton(sf::Texture down, sf::Texture up, sf::Texture over);
 
 private:
 
