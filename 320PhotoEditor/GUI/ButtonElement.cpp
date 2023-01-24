@@ -1,7 +1,7 @@
 #include "ButtonElement.h"
 
 
-ButtonElement::ButtonElement(const sf::Texture& up, const sf::Texture& down, const sf::Texture& over) : GUIElement(new sf::Sprite(up)), up(&up), down(&down), over(&over)
+ButtonElement::ButtonElement(sf::Texture* up, sf::Texture* down, sf::Texture* over) : GUIElement(new sf::Sprite(*up)), up(up), down(down), over(over)
 {
 	setVisible(true);
 	sprite = (sf::Sprite*)drawtransform;
@@ -31,12 +31,7 @@ void ButtonElement::mouseMoved(sf::Vector2i pos)
 	cursorPos = pos;
 	if (isCursorOver(cursorPos) && buttonState != DOWN && buttonState != OVER)
 	{
-		buttonState = OVER;
 		sprite->setTexture(*over);
-	}
-	else if (buttonState != DOWN)
-	{
-		buttonState = UP;
-		sprite->setTexture(*up);
+		buttonState = OVER;
 	}
 }

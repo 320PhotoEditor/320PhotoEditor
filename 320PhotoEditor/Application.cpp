@@ -19,6 +19,8 @@ bool Application::init(std::string windowName)
         return false;
     }
 
+    window->setKeyRepeatEnabled(false);
+
     guiContainer = new GUIContainer({0, 0}, {1, 1}, window);
 
     sf::Texture* upTexture = new sf::Texture();
@@ -28,7 +30,7 @@ bool Application::init(std::string windowName)
     sf::Texture* overTexture = new sf::Texture();
     overTexture->loadFromFile("..\\assets\\button_over.png");
 
-    button = new ButtonElement(*upTexture, *downTexture, *overTexture);
+    button = new ButtonElement(upTexture, downTexture, overTexture);
 
     guiContainer->addElement(button);
 
