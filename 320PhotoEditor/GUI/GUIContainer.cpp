@@ -11,7 +11,7 @@ GUIContainer::GUIContainer(sf::Vector2f pos, sf::Vector2f size, sf::RenderWindow
 
 sf::Vector2f GUIContainer::pixelToScreen(sf::Vector2i pixel)
 {
-    sf::Vector2u windowSize(800, 600);// = renderWindow->getSize();
+    sf::Vector2u windowSize = renderWindow->getSize();
 
     float aspect = (float)windowSize.x / (float)windowSize.y;
 
@@ -41,6 +41,7 @@ void GUIContainer::setSize(sf::Vector2f size)
 void GUIContainer::addElement(GUIElement* element)
 {
     elements.insert(element);
+    element->setContainer(this);
 }
 
 void GUIContainer::removeElement(GUIElement* element)

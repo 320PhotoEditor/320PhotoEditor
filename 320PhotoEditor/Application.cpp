@@ -21,7 +21,22 @@ bool Application::init(std::string windowName)
 
     guiContainer = new GUIContainer({0, 0}, {1, 1}, window);
 
-    guiContainer->addElement(new ButtonElement(guiContainer, "../assets/button_up.png", "../assets/button_down.png", "../assets/button_over.png", {0, 0}, {.1, .1}));
+    sf::Texture upTexture = sf::Texture();
+    upTexture.loadFromFile("../assets/button_up.png");
+    sf::Texture downTexture = sf::Texture();
+    upTexture.loadFromFile("../assets/button_down.png");
+    sf::Texture overTexture = sf::Texture();
+    upTexture.loadFromFile("../assets/button_over.png");
+
+    button = new ButtonElement(upTexture, downTexture, overTexture);
+
+    guiContainer->addElement(button);
+
+    button->setSize({ 1, 1 });
+    button->setPosition({ .5, .5 });
+
+    guiContainer->setVisible(true);
+    guiContainer->setRenderWindow(window);
 
     addInputListener(guiContainer);
 

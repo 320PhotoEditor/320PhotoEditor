@@ -22,6 +22,8 @@ public:
 
 	GUIContainer* guiContainer;
 
+	ButtonElement* button;
+
 private:
 
 	void updateInputListeners(sf::Event event);

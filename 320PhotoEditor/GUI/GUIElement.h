@@ -5,17 +5,41 @@
 
 class GUIContainer;
 
+//used from creating a type that we can draw with and use the transform functions
+//example using it on sf::Sprite or sf::Text
+class DrawTransformWrapper
+{
+public:
+	template<class T, typename = std::enable_if_t<
+		std::is_base_of<sf::Drawable, T>::value &&
+		std::is_base_of<sf::Transformable, T>::value>>
+	static DrawTransformWrapper* CreateWrapper(T* obj)
+	{
+		return new DrawTransformWrapper(dynamic_cast<sf::Drawable*>(obj), dynamic_cast<sf::Transformable*>(obj));
+	}
+
+	sf::Drawable* drawable;
+	sf::Transformable* transformable;
+
+private:
+
+	DrawTransformWrapper(sf::Drawable* drawable, sf::Transformable* transformable) {
+		this->drawable = drawable;
+		this->transformable = transformable;
+	}
+};
+
 //base class for any gui element
 class GUIElement
 {
 public:
 
-	GUIElement() {};
+	template<class T>
+	GUIElement(T* drawtransform)
+	{
+		this->drawtransform = DrawTransformWrapper::CreateWrapper<T>(drawtransform);
+	}
 
-	//add any additional things here that you want to render
-	//runs directly after the base sprite is rendered
-	virtual void render() {};
-	
 	//internal render function, do not use
 	void _render();
 
@@ -33,14 +57,11 @@ public:
 
 	void setContainer(GUIContainer* container);
 
-	sf::Sprite* getSprite();
-	void setSprite(sf::Sprite* sprite);
-
 	bool isCursorOver(sf::Vector2i cursorPos);
 
-private:
+	DrawTransformWrapper* drawtransform;
 
-	sf::Sprite* sprite;
+private:
 
 	sf::Vector2f pos;
 	sf::Vector2f size;
