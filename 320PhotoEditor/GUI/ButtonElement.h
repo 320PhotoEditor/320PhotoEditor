@@ -17,12 +17,16 @@ private:
 
 	sf::Vector2i cursorPos;
 
-	bool isDown = false;
-
 	const sf::Texture* up;
 	const sf::Texture* down;
 	const sf::Texture* over;
 
 	sf::Sprite* sprite;
+
+	enum {
+		UP,
+		DOWN,
+		OVER
+	} buttonState;
 };
 
