@@ -1,10 +1,12 @@
 #include "ButtonElement.h"
 
+//TODO: fix issues where texture not updating
 
 ButtonElement::ButtonElement(sf::Texture* up, sf::Texture* down, sf::Texture* over) : GUIElement(new sf::Sprite(*up)), up(up), down(down), over(over)
 {
 	setVisible(true);
 	sprite = (sf::Sprite*)drawtransform;
+
 	buttonState = UP;
 }
 

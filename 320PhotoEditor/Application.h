@@ -23,6 +23,7 @@ public:
 	GUIContainer* guiContainer;
 
 	ButtonElement* button;
+	ButtonElement* button2;
 
 private:
 

@@ -13,10 +13,11 @@ void GUIElement::setVisible(bool visible)
 	this->visible = visible;
 }
 
-void GUIElement::setSize(sf::Vector2f size)
+void GUIElement::setScale(sf::Vector2f scale)
 {
-	drawtransform->transformable->setScale(size);
-	this->size = size;
+	sf::Vector2f containerScale = container->getScale();
+	drawtransform->transformable->setScale({scale.x * containerScale.x, scale.y * containerScale.y});
+	this->scale = scale;
 }
 
 void GUIElement::setPosition(sf::Vector2f pos)
@@ -38,9 +39,9 @@ bool GUIElement::isCursorOver(sf::Vector2i cursorPos)
 	sf::Vector2f cPos = container->pixelToScreen(cursorPos);
 
 	float left = pos.x;
-	float right = pos.x + size.x;
+	float right = pos.x + scale.x;
 	float top = pos.y;
-	float bottom = pos.y + size.y;
+	float bottom = pos.y + scale.y;
 
 	return cPos.x >= left && cPos.x <= right && cPos.y >= top && cPos.y <= bottom;
 }

@@ -12,7 +12,7 @@ Application::~Application()
 
 bool Application::init(std::string windowName)
 {
-	window = new sf::RenderWindow(sf::VideoMode(800, 600), windowName);
+	window = new sf::RenderWindow(sf::VideoMode(1280, 720), windowName);
 
     if (!window->isOpen())
     {  
@@ -31,11 +31,17 @@ bool Application::init(std::string windowName)
     overTexture->loadFromFile("..\\assets\\button_over.png");
 
     button = new ButtonElement(upTexture, downTexture, overTexture);
+    button2 = new ButtonElement(upTexture, downTexture, overTexture);
 
     guiContainer->addElement(button);
 
-    button->setSize({ 1, 1 });
-    button->setPosition({ .5, .5 });
+    button->setScale({ 1, 1 });
+    button->setPosition({ 0, 0 });
+
+    guiContainer->addElement(button2);
+
+    button2->setScale({ 1, 1 });
+    button2->setPosition({ .025, 0 });
 
     guiContainer->setVisible(true);
     guiContainer->setRenderWindow(window);

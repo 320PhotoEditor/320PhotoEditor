@@ -1,9 +1,9 @@
 #include "GUIContainer.h"
 
-GUIContainer::GUIContainer(sf::Vector2f pos, sf::Vector2f size, sf::RenderWindow* renderWindow)
+GUIContainer::GUIContainer(sf::Vector2f pos, sf::Vector2f scale, sf::RenderWindow* renderWindow)
 {
     this->pos = pos;
-    this->size = size;
+    this->scale = scale;
     this->renderWindow = renderWindow;
     visible = true;
     cursorPos = sf::Vector2i(0, 0);
@@ -28,14 +28,14 @@ void GUIContainer::setPosition(sf::Vector2f pos)
     this->pos = pos;
 }
 
-sf::Vector2f GUIContainer::getSize()
+sf::Vector2f GUIContainer::getScale()
 {
-    return size;
+    return scale;
 }
 
-void GUIContainer::setSize(sf::Vector2f size)
+void GUIContainer::setScale(sf::Vector2f scale)
 {
-    this->size = size;
+    this->scale = scale;
 }
 
 void GUIContainer::addElement(GUIElement* element)
@@ -115,9 +115,9 @@ bool GUIContainer::isCursorOver(sf::Vector2i cursorPos)
     sf::Vector2f cPos = pixelToScreen(cursorPos);
 
     float left = pos.x;
-    float right = pos.x + size.x;
+    float right = pos.x + scale.x;
     float top = pos.y;
-    float bottom = pos.y + size.y;
+    float bottom = pos.y + scale.y;
 
     return cPos.x >= left && cPos.x <= right && cPos.y >= top && cPos.y <= bottom;
 }

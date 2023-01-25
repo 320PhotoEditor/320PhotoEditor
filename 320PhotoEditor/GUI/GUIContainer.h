@@ -11,15 +11,16 @@ class GUIContainer : public InputListener
 {
 public:
 
-	GUIContainer(sf::Vector2f pos, sf::Vector2f size, sf::RenderWindow* renderWindow);
+	GUIContainer(sf::Vector2f pos, sf::Vector2f scale, sf::RenderWindow* renderWindow);
 
 	//converts pixel coords to screen coords with the range being 0-1 on y-axis and 0-aspect ratio on x-axis
 	sf::Vector2f pixelToScreen(sf::Vector2i pixel);
 
 	sf::Vector2f getPosition();
 	void setPosition(sf::Vector2f pos);
-	sf::Vector2f getSize();
-	void setSize(sf::Vector2f size);
+
+	sf::Vector2f getScale();
+	void setScale(sf::Vector2f scale);
 
 	void addElement(GUIElement* element);
 	void removeElement(GUIElement* element);
@@ -45,7 +46,7 @@ private:
 	bool visible;
 
 	sf::Vector2f pos;
-	sf::Vector2f size;
+	sf::Vector2f scale;
 
 	std::set<GUIElement*> elements;
 

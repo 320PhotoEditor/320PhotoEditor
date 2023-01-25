@@ -49,8 +49,8 @@ public:
 
 	void setVisible(bool visible);
 
-	//sets size relative to parent gui
-	void setSize(sf::Vector2f size);
+	//sets scale relative to parent gui
+	void setScale(sf::Vector2f scale);
 
 	//set position relative to parent gui
 	void setPosition(sf::Vector2f pos);
@@ -64,7 +64,7 @@ public:
 private:
 
 	sf::Vector2f pos;
-	sf::Vector2f size;
+	sf::Vector2f scale;
 
 	bool visible;
 
