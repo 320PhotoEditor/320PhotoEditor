@@ -47,7 +47,10 @@ ToolManager::~ToolManager()
 
 void ToolManager::buttonPressed(GUIElement* button, int status)
 {
-	currentTool->stop();
-	currentTool = tools.at((ButtonElement*)button);
-	currentTool->start();
+	if (status == ButtonElement::DOWN)
+	{
+		currentTool->stop();
+		currentTool = tools.at((ButtonElement*)button);
+		currentTool->start();
+	}
 }
