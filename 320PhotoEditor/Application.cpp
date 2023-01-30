@@ -35,13 +35,13 @@ bool Application::init(std::string windowName)
 
     guiContainer->addElement(button);
 
-    button->setScale({ 1, 1 });
+    button->setSize({ 0.05, 0.05 });
     button->setPosition({ 0, 0 });
 
     guiContainer->addElement(button2);
 
-    button2->setScale({ 1, 1 });
-    button2->setPosition({ .025, 0 });
+    button2->setSize({ 0.05, 0.05 });
+    button2->setPosition({ .5, .5 });
 
     guiContainer->setVisible(true);
     guiContainer->setRenderWindow(window);

@@ -5,40 +5,10 @@
 
 class GUIContainer;
 
-//used from creating a type that we can draw with and use the transform functions
-//example using it on sf::Sprite or sf::Text
-class DrawTransformWrapper
-{
-public:
-	template<class T, typename = std::enable_if_t<
-		std::is_base_of<sf::Drawable, T>::value &&
-		std::is_base_of<sf::Transformable, T>::value>>
-	static DrawTransformWrapper* CreateWrapper(T* obj)
-	{
-		return new DrawTransformWrapper(dynamic_cast<sf::Drawable*>(obj), dynamic_cast<sf::Transformable*>(obj));
-	}
-
-	sf::Drawable* drawable;
-	sf::Transformable* transformable;
-
-private:
-
-	DrawTransformWrapper(sf::Drawable* drawable, sf::Transformable* transformable) {
-		this->drawable = drawable;
-		this->transformable = transformable;
-	}
-};
-
 //base class for any gui element
 class GUIElement
 {
 public:
-
-	template<class T>
-	GUIElement(T* drawtransform)
-	{
-		this->drawtransform = DrawTransformWrapper::CreateWrapper<T>(drawtransform);
-	}
 
 	//internal render function, do not use
 	void _render();
@@ -49,24 +19,34 @@ public:
 
 	void setVisible(bool visible);
 
-	//sets scale relative to parent gui
-	void setScale(sf::Vector2f scale);
+	//sets size relative to parent gui
+	virtual void setSize(sf::Vector2f size) = 0;
 
 	//set position relative to parent gui
-	void setPosition(sf::Vector2f pos);
+	virtual void setPosition(sf::Vector2f pos) = 0;
 
 	void setContainer(GUIContainer* container);
 
 	bool isCursorOver(sf::Vector2i cursorPos);
 
-	DrawTransformWrapper* drawtransform;
+protected:
+
+	GUIElement()
+	{
+		drawable = nullptr;
+		container = nullptr;
+		visible = false;
+	}
+
+	void setDrawable(sf::Drawable* drawable);
+
+	sf::Drawable* drawable;
+	GUIContainer* container;
+
+	sf::Vector2f pos;
+	sf::Vector2f size;
 
 private:
 
-	sf::Vector2f pos;
-	sf::Vector2f scale;
-
 	bool visible;
-
-	GUIContainer* container;
 };

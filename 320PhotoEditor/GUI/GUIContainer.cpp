@@ -1,21 +1,12 @@
 #include "GUIContainer.h"
 
-GUIContainer::GUIContainer(sf::Vector2f pos, sf::Vector2f scale, sf::RenderWindow* renderWindow)
+GUIContainer::GUIContainer(sf::Vector2f pos, sf::Vector2f size, sf::RenderWindow* renderWindow)
 {
     this->pos = pos;
-    this->scale = scale;
+    this->size = size;
     this->renderWindow = renderWindow;
     visible = true;
     cursorPos = sf::Vector2i(0, 0);
-}
-
-sf::Vector2f GUIContainer::pixelToScreen(sf::Vector2i pixel)
-{
-    sf::Vector2u windowSize = renderWindow->getSize();
-
-    float aspect = (float)windowSize.x / (float)windowSize.y;
-
-    return sf::Vector2f((float)pixel.x / (float)windowSize.x * aspect, (float)pixel.y / (float)windowSize.y);
 }
 
 sf::Vector2f GUIContainer::getPosition()
@@ -28,14 +19,14 @@ void GUIContainer::setPosition(sf::Vector2f pos)
     this->pos = pos;
 }
 
-sf::Vector2f GUIContainer::getScale()
+sf::Vector2f GUIContainer::getSize()
 {
-    return scale;
+    return size;
 }
 
-void GUIContainer::setScale(sf::Vector2f scale)
+void GUIContainer::setSize(sf::Vector2f size)
 {
-    this->scale = scale;
+    this->size = size;
 }
 
 void GUIContainer::addElement(GUIElement* element)
@@ -112,12 +103,12 @@ void GUIContainer::mouseMoved(sf::Vector2i pos)
 
 bool GUIContainer::isCursorOver(sf::Vector2i cursorPos)
 {
-    sf::Vector2f cPos = pixelToScreen(cursorPos);
+    sf::Vector2f cPos = cursorPos / renderWindow->getSize();
 
     float left = pos.x;
-    float right = pos.x + scale.x;
+    float right = pos.x + size.x;
     float top = pos.y;
-    float bottom = pos.y + scale.y;
+    float bottom = pos.y + size.y;
 
     return cPos.x >= left && cPos.x <= right && cPos.y >= top && cPos.y <= bottom;
 }

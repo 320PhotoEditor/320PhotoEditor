@@ -4,29 +4,13 @@ void GUIElement::_render()
 {
 	if (visible)
 	{
-		container->getRenderWindow()->draw(*drawtransform->drawable);
+		container->getRenderWindow()->draw(*drawable);
 	}
 }
 
 void GUIElement::setVisible(bool visible)
 {
 	this->visible = visible;
-}
-
-void GUIElement::setScale(sf::Vector2f scale)
-{
-	sf::Vector2f containerScale = container->getScale();
-	drawtransform->transformable->setScale({scale.x * containerScale.x, scale.y * containerScale.y});
-	this->scale = scale;
-}
-
-void GUIElement::setPosition(sf::Vector2f pos)
-{
-	pos += container->getPosition();
-	sf::Vector2u winSize = container->getRenderWindow()->getSize();
-
-	drawtransform->transformable->setPosition({pos.x * winSize.x, pos.y * winSize.y});
-	this->pos = pos;
 }
 
 void GUIElement::setContainer(GUIContainer* container)
@@ -36,12 +20,21 @@ void GUIElement::setContainer(GUIContainer* container)
 
 bool GUIElement::isCursorOver(sf::Vector2i cursorPos)
 {
-	sf::Vector2f cPos = container->pixelToScreen(cursorPos);
+	sf::Vector2f containerPos = container->getPosition();
+	sf::Vector2f containerSize = container->getSize();
+	sf::Vector2u windowSize = container->getRenderWindow()->getSize();
 
-	float left = pos.x;
-	float right = pos.x + scale.x;
-	float top = pos.y;
-	float bottom = pos.y + scale.y;
+	sf::Vector2f cPos = cursorPos / windowSize;
+
+	float left = (pos.x * containerSize.x) + containerPos.x;
+	float right = ((pos.x + size.x) * containerSize.x) + containerPos.x;
+	float top = (pos.y * containerSize.y) + containerPos.y;
+	float bottom = ((pos.y + size.y) * containerSize.y) + containerPos.y;
 
 	return cPos.x >= left && cPos.x <= right && cPos.y >= top && cPos.y <= bottom;
+}
+
+void GUIElement::setDrawable(sf::Drawable* drawable)
+{
+	this->drawable = drawable;
 }

@@ -13,6 +13,9 @@ public:
 	void mouseReleased(sf::Mouse::Button button);
 	void mouseMoved(sf::Vector2i pos);
 
+	void setSize(sf::Vector2f size);
+	void setPosition(sf::Vector2f pos);
+
 private:
 
 	sf::Vector2i cursorPos;
