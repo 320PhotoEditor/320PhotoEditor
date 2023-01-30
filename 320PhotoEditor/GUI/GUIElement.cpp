@@ -2,7 +2,7 @@
 
 void GUIElement::_render()
 {
-	if (visible)
+	if (visible && drawable)
 	{
 		container->getRenderWindow()->draw(*drawable);
 	}
@@ -22,7 +22,7 @@ bool GUIElement::isCursorOver(sf::Vector2i cursorPos)
 {
 	sf::Vector2f containerPos = container->getPosition();
 	sf::Vector2f containerSize = container->getSize();
-	sf::Vector2u windowSize = container->getRenderWindow()->getSize();
+	float windowSize = container->getRenderWindow()->getSize().y;
 
 	sf::Vector2f cPos = cursorPos / windowSize;
 

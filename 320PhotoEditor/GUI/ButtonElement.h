@@ -16,6 +16,8 @@ public:
 	void setSize(sf::Vector2f size);
 	void setPosition(sf::Vector2f pos);
 
+	~ButtonElement();
+
 private:
 
 	sf::Vector2i cursorPos;

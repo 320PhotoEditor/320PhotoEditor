@@ -41,7 +41,7 @@ bool Application::init(std::string windowName)
     guiContainer->addElement(button2);
 
     button2->setSize({ 0.05, 0.05 });
-    button2->setPosition({ .5, .5 });
+    button2->setPosition({ .05, 0 });
 
     guiContainer->setVisible(true);
     guiContainer->setRenderWindow(window);

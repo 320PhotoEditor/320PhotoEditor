@@ -24,3 +24,8 @@ sf::Vector2f operator/(const sf::Vector2i& a, const sf::Vector2u& b)
 {
 	return sf::Vector2f((float)a.x / (float)b.x, (float)a.y / (float)b.y);
 }
+
+sf::Vector2f operator/(const sf::Vector2i& a, const float& b)
+{
+	return sf::Vector2f(a.x / b, a.y / b);
+}

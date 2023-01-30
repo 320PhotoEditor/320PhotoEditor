@@ -56,21 +56,29 @@ void ButtonElement::mouseMoved(sf::Vector2i pos)
 
 void ButtonElement::setSize(sf::Vector2f size)
 {
-	sf::Vector2u windowSize = container->getRenderWindow()->getSize();
-	float ySize = container->getSize().y * windowSize.y;
-	//using the y size so that ther is no aspect ratio resizing
-	sf::Vector2f containerSize(ySize, ySize);
+	//just need y size as were correcting for aspect ratio
+	float windowSize = container->getRenderWindow()->getSize().y;
+
+	sf::Vector2f containerSize = container->getSize() * windowSize;
 
 	sprite->setScale(size * containerSize / sprite->getTexture()->getSize());
 
-	//properly store the size with the aspect ratio in mind
-	this->size = { size.x * windowSize.y / windowSize.x, size.y };
+	this->size = size;
 }
 
 void ButtonElement::setPosition(sf::Vector2f pos)
 {
-	sf::Vector2f containerSize = container->getSize() * container->getRenderWindow()->getSize();
+	//just need y size as were correcting for aspect ratio
+	float windowSize = container->getRenderWindow()->getSize().y;
+
+	sf::Vector2f containerSize = container->getSize() * windowSize;
 	sf::Vector2f position = pos + container->getPosition();
+
 	sprite->setPosition(containerSize * position);
 	this->pos = pos;
+}
+
+ButtonElement::~ButtonElement()
+{
+	delete sprite;
 }
