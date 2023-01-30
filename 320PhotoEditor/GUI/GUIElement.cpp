@@ -34,6 +34,11 @@ bool GUIElement::isCursorOver(sf::Vector2i cursorPos)
 	return cPos.x >= left && cPos.x <= right && cPos.y >= top && cPos.y <= bottom;
 }
 
+void GUIElement::setUpdateFunction(std::function<void(GUIElement*, int)> updateFunc)
+{
+	this->updateFunc = updateFunc;
+}
+
 void GUIElement::setDrawable(sf::Drawable* drawable)
 {
 	this->drawable = drawable;

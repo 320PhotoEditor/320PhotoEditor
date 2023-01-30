@@ -7,6 +7,13 @@ class ButtonElement : public GUIElement
 
 public:
 
+	typedef enum
+	{
+		UP,
+		DOWN,
+		OVER
+	} ButtonState;
+
 	ButtonElement(sf::Texture* up, sf::Texture* down, sf::Texture* over);
 
 	void mousePressed(sf::Mouse::Button button);
@@ -28,10 +35,6 @@ private:
 
 	sf::Sprite* sprite;
 
-	enum {
-		UP,
-		DOWN,
-		OVER
-	} buttonState;
+    ButtonState buttonState;
 };
 

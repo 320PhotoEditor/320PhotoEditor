@@ -18,6 +18,8 @@ void ButtonElement::mousePressed(sf::Mouse::Button button)
 	{
 		sprite->setTexture(*down);
 		buttonState = DOWN;
+
+		updateFunc(this, DOWN);
 	}
 }
 
@@ -29,11 +31,15 @@ void ButtonElement::mouseReleased(sf::Mouse::Button button)
 		{
 			sprite->setTexture(*over);
 			buttonState = OVER;
+
+			updateFunc(this, OVER);
 		}
 		else
 		{
 			sprite->setTexture(*up);
 			buttonState = UP;
+
+			updateFunc(this, UP);
 		}
 	}
 }
@@ -51,7 +57,6 @@ void ButtonElement::mouseMoved(sf::Vector2i pos)
 		sprite->setTexture(*up);
 		buttonState = UP;
 	}
-
 }
 
 void ButtonElement::setSize(sf::Vector2f size)

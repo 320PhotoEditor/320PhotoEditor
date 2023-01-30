@@ -29,6 +29,8 @@ public:
 
 	bool isCursorOver(sf::Vector2i cursorPos);
 
+	void setUpdateFunction(std::function<void(GUIElement*, int)> updateFunc);
+
 protected:
 
 	GUIElement()
@@ -36,6 +38,7 @@ protected:
 		drawable = nullptr;
 		container = nullptr;
 		visible = false;
+		updateFunc = nullptr;
 	}
 
 	void setDrawable(sf::Drawable* drawable);
@@ -45,6 +48,9 @@ protected:
 
 	sf::Vector2f pos;
 	sf::Vector2f size;
+
+
+	std::function<void(GUIElement*, int)> updateFunc;
 
 private:
 

@@ -145,7 +145,10 @@
     <ClCompile Include="GUI\GUIContainer.cpp" />
     <ClCompile Include="GUI\GUIElement.cpp" />
     <ClCompile Include="InputListener.cpp" />
+    <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Tool\ToolManager.cpp" />
+    <ClCompile Include="Tool\Tool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -154,6 +157,9 @@
     <ClInclude Include="GUI\GUIContainer.h" />
     <ClInclude Include="GUI\GUIElement.h" />
     <ClInclude Include="InputListener.h" />
+    <ClInclude Include="Layer.h" />
+    <ClInclude Include="Tool\ToolManager.h" />
+    <ClInclude Include="Tool\Tool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

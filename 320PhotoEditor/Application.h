@@ -4,6 +4,8 @@
 #include "InputListener.h"
 #include "GUI/GUIContainer.h"
 #include "GUI/ButtonElement.h"
+#include "Tool/Tool.h"
+#include "Tool/ToolManager.h"
 
 class Application
 {
@@ -20,10 +22,7 @@ public:
 	void addInputListener(InputListener* listener);
 	void removeInputListener(InputListener* listener);
 
-	GUIContainer* guiContainer;
-
-	ButtonElement* button;
-	ButtonElement* button2;
+	ToolManager* toolManager;
 
 private:
 

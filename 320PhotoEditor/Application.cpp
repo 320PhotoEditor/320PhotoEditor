@@ -21,8 +21,6 @@ bool Application::init(std::string windowName)
 
     window->setKeyRepeatEnabled(false);
 
-    guiContainer = new GUIContainer({0, 0}, {1, 1}, window);
-
     sf::Texture* upTexture = new sf::Texture();
     upTexture->loadFromFile("..\\assets\\button_up.png");
     sf::Texture* downTexture = new sf::Texture();
@@ -30,23 +28,15 @@ bool Application::init(std::string windowName)
     sf::Texture* overTexture = new sf::Texture();
     overTexture->loadFromFile("..\\assets\\button_over.png");
 
-    button = new ButtonElement(upTexture, downTexture, overTexture);
-    button2 = new ButtonElement(upTexture, downTexture, overTexture);
+    toolManager = new ToolManager(window);
 
-    guiContainer->addElement(button);
+    for (int i = 0; i < 10; i++)
+    {
+        toolManager->addTool(new Tool(upTexture, downTexture, overTexture));
+    }
 
-    button->setSize({ 0.05, 0.05 });
-    button->setPosition({ 0, 0 });
 
-    guiContainer->addElement(button2);
-
-    button2->setSize({ 0.05, 0.05 });
-    button2->setPosition({ .05, 0 });
-
-    guiContainer->setVisible(true);
-    guiContainer->setRenderWindow(window);
-
-    addInputListener(guiContainer);
+    addInputListener(toolManager->getGUIContainer());
 
     return true;
 }
@@ -65,7 +55,7 @@ void Application::run()
         }
         window->clear();
 
-        guiContainer->render();
+        toolManager->update();
 
         window->display();
     }
