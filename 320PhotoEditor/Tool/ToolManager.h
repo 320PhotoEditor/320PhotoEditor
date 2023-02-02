@@ -39,8 +39,6 @@ private:
 
 	std::map<ButtonElement*, Tool*> tools;
 
-	PanelElement* background;
-
 	GUIContainer* toolSelector;
 
 	Tool* currentTool;

@@ -16,3 +16,8 @@ void LayerManager::removeSelectedLayer()
 {
 	layers.erase(selectedLayer);
 }
+
+Layer* LayerManager::getSelectedLayer()
+{
+	return selectedLayer;
+}

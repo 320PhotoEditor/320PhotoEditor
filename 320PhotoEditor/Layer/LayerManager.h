@@ -12,11 +12,13 @@ public:
 
 	//creates a new layer and then selects it
 	void createLayer(sf::Color color);
-
 	//removes the selected layer
 	void removeSelectedLayer();
 
+	Layer* getSelectedLayer();
 
+	//draws layer selection and image on screen
+	void update();
 
 private:
 
