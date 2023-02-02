@@ -8,7 +8,7 @@
 class LayerManager
 {
 public:
-	LayerManager(sf::Vector2u projectImageSize);
+	LayerManager(sf::RenderWindow* renderWindow, sf::Vector2u projectImageSize);
 
 	//creates a new layer and then selects it
 	void createLayer(sf::Color color);
@@ -21,6 +21,8 @@ public:
 	void update();
 
 private:
+
+	sf::RenderWindow* renderWindow;
 
 	sf::Vector2u projectImageSize;
 

@@ -1,6 +1,6 @@
 #include "LayerManager.h"
 
-LayerManager::LayerManager(sf::Vector2u projectImageSize)
+LayerManager::LayerManager(sf::RenderWindow* window, sf::Vector2u projectImageSize)
 {
 	this->projectImageSize = projectImageSize;
 	createLayer(sf::Color::White);
@@ -20,4 +20,12 @@ void LayerManager::removeSelectedLayer()
 Layer* LayerManager::getSelectedLayer()
 {
 	return selectedLayer;
+}
+
+void LayerManager::update()
+{
+	for (Layer* l : layers)
+	{
+		renderWindow->draw(*l->getSprite());
+	}
 }

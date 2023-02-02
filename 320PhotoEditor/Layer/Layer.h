@@ -10,7 +10,14 @@ public:
 
 	sf::Image* getImage();
 
+	sf::Sprite* getSprite();
+
+	~Layer();
+
 private:
+
+	sf::Texture texture;
+	sf::Sprite* sprite;
 
 	sf::Image* image;
 
