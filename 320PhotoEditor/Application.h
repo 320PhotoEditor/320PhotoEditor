@@ -4,7 +4,7 @@
 #include "InputListener.h"
 #include "GUI/GUIContainer.h"
 #include "GUI/ButtonElement.h"
-#include "Tool/Tool.h"
+#include "Tool/TestTool.h"
 #include "Tool/ToolManager.h"
 
 class Application

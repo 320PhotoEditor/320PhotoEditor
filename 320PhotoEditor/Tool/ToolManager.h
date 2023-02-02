@@ -5,10 +5,11 @@
 #include "../GUI/GUIContainer.h"
 #include "../GUI/ButtonElement.h"
 #include "../GUI/PanelElement.h"
+#include "../InputListener.h"
 
 #define PANEL_ROWS 4
 
-class ToolManager
+class ToolManager : public InputListener
 {
 public:
 
@@ -20,9 +21,18 @@ public:
 
 	void update();
 
+	void setLayerImage(sf::Image* layer);
+
 	~ToolManager();
 
 private:
+
+	void keyPressed(sf::Keyboard::Key key);
+	void keyReleased(sf::Keyboard::Key key);
+	void mousePressed(sf::Mouse::Button button);
+	void mouseReleased(sf::Mouse::Button button);
+	void mouseScrolled(int delta);
+	void mouseMoved(sf::Vector2i pos);
 
 	void buttonPressed(GUIElement* button, int status);
 
@@ -33,6 +43,8 @@ private:
 	GUIContainer* toolSelector;
 
 	Tool* currentTool;
+
+	sf::Image* layer;
 
 };
 

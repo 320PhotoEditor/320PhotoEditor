@@ -32,10 +32,10 @@ bool Application::init(std::string windowName)
 
     for (int i = 0; i < 10; i++)
     {
-        toolManager->addTool(new Tool(upTexture, downTexture, overTexture));
+        toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
     }
 
-
+    addInputListener(toolManager);
     addInputListener(toolManager->getGUIContainer());
 
     return true;

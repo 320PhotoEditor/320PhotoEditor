@@ -41,6 +41,16 @@ GUIContainer* ToolManager::getGUIContainer()
 void ToolManager::update()
 {
 	toolSelector->render();
+
+	if (currentTool)
+	{
+		currentTool->run();
+	}
+}
+
+void ToolManager::setLayerImage(sf::Image* layer)
+{
+	this->layer = layer;
 }
 
 ToolManager::~ToolManager()
@@ -54,12 +64,63 @@ ToolManager::~ToolManager()
 	delete toolSelector;
 }
 
+void ToolManager::keyPressed(sf::Keyboard::Key key)
+{
+	if (currentTool)
+	{
+		currentTool->keyPressed(key);
+	}
+}
+
+void ToolManager::keyReleased(sf::Keyboard::Key key)
+{
+	if (currentTool)
+	{
+		currentTool->keyReleased(key);
+	}
+}
+
+void ToolManager::mousePressed(sf::Mouse::Button button)
+{
+	if (currentTool)
+	{
+		currentTool->mousePressed(button);
+	}
+}
+
+void ToolManager::mouseReleased(sf::Mouse::Button button)
+{
+	if (currentTool)
+	{
+		currentTool->mouseReleased(button);
+	}
+}
+
+void ToolManager::mouseScrolled(int delta)
+{
+	if (currentTool)
+	{
+		currentTool->mouseScrolled(delta);
+	}
+}
+
+void ToolManager::mouseMoved(sf::Vector2i pos)
+{
+	if (currentTool)
+	{
+		currentTool->mouseMoved(pos);
+	}
+}
+
 void ToolManager::buttonPressed(GUIElement* button, int status)
 {
 	if (status == ButtonElement::DOWN)
 	{
-		currentTool->stop();
+		if (currentTool)
+		{
+			currentTool->stop();
+		}
 		currentTool = tools.at((ButtonElement*)button);
-		currentTool->start();
+		currentTool->start(layer);
 	}
 }
