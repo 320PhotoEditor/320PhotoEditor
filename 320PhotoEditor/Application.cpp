@@ -12,10 +12,10 @@ Application::~Application()
 
 bool Application::init(std::string windowName)
 {
-	window = new sf::RenderWindow(sf::VideoMode(1280, 720), windowName);
+    window = new sf::RenderWindow(sf::VideoMode(1280, 720), windowName);
 
     if (!window->isOpen())
-    {  
+    {
         return false;
     }
 
@@ -34,6 +34,9 @@ bool Application::init(std::string windowName)
     {
         toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
     }
+
+    layerManager = new LayerManager(window, { 800, 600 });
+    layerManager->createLayer(sf::Color::Blue);
 
     addInputListener(toolManager);
     addInputListener(toolManager->getGUIContainer());
@@ -55,6 +58,7 @@ void Application::run()
         }
         window->clear();
 
+        layerManager->update();
         toolManager->update();
 
         window->display();

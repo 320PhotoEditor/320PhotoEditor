@@ -2,6 +2,8 @@
 
 #include "../Common.h"
 
+//basically in image that we edit
+//dont create directly
 class Layer
 {
 public:

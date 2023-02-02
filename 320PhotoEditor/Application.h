@@ -6,6 +6,7 @@
 #include "GUI/ButtonElement.h"
 #include "Tool/TestTool.h"
 #include "Tool/ToolManager.h"
+#include "Layer/LayerManager.h"
 
 class Application
 {
@@ -22,13 +23,14 @@ public:
 	void addInputListener(InputListener* listener);
 	void removeInputListener(InputListener* listener);
 
-	ToolManager* toolManager;
-
 private:
 
 	void updateInputListeners(sf::Event event);
 
 	sf::RenderWindow* window;
+
+	ToolManager* toolManager;
+	LayerManager* layerManager;
 
 	std::set<InputListener*> inputListeners;
 };
