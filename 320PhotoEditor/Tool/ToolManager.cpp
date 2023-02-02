@@ -44,6 +44,15 @@ void ToolManager::setSelectedLayer(Layer* layer)
 	this->layer = layer;
 }
 
+void ToolManager::restartTool()
+{
+	if (currentTool)
+	{
+		currentTool->stop();
+		currentTool->start(layer);
+	}
+}
+
 ToolManager::~ToolManager()
 {
 	//cleanup buttons

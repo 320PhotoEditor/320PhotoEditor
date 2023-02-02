@@ -7,10 +7,13 @@ class TestTool : public Tool
 public:
 	TestTool(sf::Texture* up, sf::Texture* down, sf::Texture* over);
 
-	void start(Layer* layer) { std::cout << "started tool\n"; };
+	void start(Layer* layer);
 	void stop() {};
 	void run() {};
 
-	void keyPressed(sf::Keyboard::Key key) { std::cout << "tool activated\n"; };
+	void keyPressed(sf::Keyboard::Key key);
+private:
+
+	Layer* layer;
 };
 

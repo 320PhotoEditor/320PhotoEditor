@@ -24,6 +24,8 @@ public:
 
 	void setSelectedLayer(Layer* layer);
 
+	void restartTool();
+
 	~ToolManager();
 
 private:

@@ -23,6 +23,11 @@ sf::Sprite* Layer::getSprite()
 	return sprite;
 }
 
+void Layer::reload()
+{
+	texture.loadFromImage(*image);
+}
+
 Layer::~Layer()
 {
 	delete sprite;

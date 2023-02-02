@@ -14,6 +14,9 @@ public:
 
 	sf::Sprite* getSprite();
 
+	//reloads the image to render
+	void reload();
+
 	~Layer();
 
 private:

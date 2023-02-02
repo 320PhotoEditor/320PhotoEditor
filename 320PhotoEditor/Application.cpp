@@ -37,6 +37,7 @@ bool Application::init(std::string windowName)
 
     layerManager = new LayerManager(window, { 800, 600 });
     layerManager->createLayer(sf::Color::Blue);
+    toolManager->setSelectedLayer(layerManager->getSelectedLayer());
 
     addInputListener(toolManager);
     addInputListener(toolManager->getGUIContainer());
