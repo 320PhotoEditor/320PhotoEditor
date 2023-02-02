@@ -7,7 +7,7 @@ class TestTool : public Tool
 public:
 	TestTool(sf::Texture* up, sf::Texture* down, sf::Texture* over);
 
-	void start(sf::Image* layer) { std::cout << "started tool\n"; };
+	void start(Layer* layer) { std::cout << "started tool\n"; };
 	void stop() {};
 	void run() {};
 

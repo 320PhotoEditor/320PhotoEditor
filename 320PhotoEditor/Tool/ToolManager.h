@@ -6,6 +6,7 @@
 #include "../GUI/ButtonElement.h"
 #include "../GUI/PanelElement.h"
 #include "../InputListener.h"
+#include "../Layer/Layer.h"
 
 #define PANEL_ROWS 4
 
@@ -21,7 +22,7 @@ public:
 
 	void update();
 
-	void setLayerImage(sf::Image* layer);
+	void setSelectedLayer(Layer* layer);
 
 	~ToolManager();
 
@@ -44,7 +45,7 @@ private:
 
 	Tool* currentTool;
 
-	sf::Image* layer;
+	Layer* layer;
 
 };
 

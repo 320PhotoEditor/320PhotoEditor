@@ -48,7 +48,7 @@ void ToolManager::update()
 	}
 }
 
-void ToolManager::setLayerImage(sf::Image* layer)
+void ToolManager::setSelectedLayer(Layer* layer)
 {
 	this->layer = layer;
 }
