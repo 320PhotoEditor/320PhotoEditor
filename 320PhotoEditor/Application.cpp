@@ -19,6 +19,7 @@ bool Application::init(std::string windowName)
         return false;
     }
 
+    //TODO: clean this up, maybe have some sort of asset manager
     window->setKeyRepeatEnabled(false);
 
     sf::Texture* upTexture = new sf::Texture();
@@ -30,11 +31,8 @@ bool Application::init(std::string windowName)
 
     toolManager = new ToolManager(window);
 
-    for (int i = 0; i < 10; i++)
-    {
-        toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
-    }
-
+    toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
+    
     layerManager = new LayerManager(window, { 800, 600 });
     layerManager->createLayer(sf::Color::Blue);
     toolManager->setSelectedLayer(layerManager->getSelectedLayer());
