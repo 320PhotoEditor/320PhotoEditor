@@ -1,12 +1,12 @@
 #include "Application.h"
 
-#include <iostream>
 Application::Application()
 {
 }
 
 Application::~Application()
 {
+    delete toolManager;
 	delete window;
 }
 
