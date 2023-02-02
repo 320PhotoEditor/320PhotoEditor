@@ -4,13 +4,22 @@ ToolManager::ToolManager(sf::RenderWindow* renderWindow)
 {
 	toolSelector = new GUIContainer({0,0}, {.2, .3}, renderWindow);
 	toolSelector->setVisible(true);
+
+	sf::Texture* texture = new sf::Texture();
+	texture->loadFromFile("..\\assets\\button_up.png");
+	background = new PanelElement(texture);
+
+	toolSelector->addElement(background);
+
+	background->setPosition({ 0, 0 });
+	background->setSize({ 1, 1 });
+
 	currentTool = nullptr;
 }
 
 void ToolManager::addTool(Tool* tool)
 {
 	ButtonElement* button = new ButtonElement(tool->up, tool->down, tool->over);
-
 
 	button->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
 

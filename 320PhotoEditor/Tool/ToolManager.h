@@ -4,6 +4,7 @@
 #include "Tool.h"
 #include "../GUI/GUIContainer.h"
 #include "../GUI/ButtonElement.h"
+#include "../GUI/PanelElement.h"
 
 #define PANEL_ROWS 4
 
@@ -26,6 +27,8 @@ private:
 	void buttonPressed(GUIElement* button, int status);
 
 	std::map<ButtonElement*, Tool*> tools;
+
+	PanelElement* background;
 
 	GUIContainer* toolSelector;
 
