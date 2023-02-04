@@ -23,11 +23,11 @@ bool Application::init(std::string windowName)
     window->setKeyRepeatEnabled(false);
 
     sf::Texture* upTexture = new sf::Texture();
-    upTexture->loadFromFile("..\\assets\\button_up.png");
+    upTexture->loadFromFile("../assets/button_up.png");
     sf::Texture* downTexture = new sf::Texture();
-    downTexture->loadFromFile("..\\assets\\button_down.png");
+    downTexture->loadFromFile("../assets/button_down.png");
     sf::Texture* overTexture = new sf::Texture();
-    overTexture->loadFromFile("..\\assets\\button_over.png");
+    overTexture->loadFromFile("../assets/button_over.png");
 
     toolManager = new ToolManager(window);
 
@@ -38,7 +38,6 @@ bool Application::init(std::string windowName)
     toolManager->setSelectedLayer(layerManager->getSelectedLayer());
 
     addInputListener(toolManager);
-    addInputListener(toolManager->getGUIContainer());
 
     return true;
 }

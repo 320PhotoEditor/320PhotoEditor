@@ -47,5 +47,7 @@ private:
 
 	Layer* layer;
 
+	sf::RenderWindow* renderWindow;
+
 };
 

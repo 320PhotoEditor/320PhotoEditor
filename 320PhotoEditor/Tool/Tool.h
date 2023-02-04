@@ -3,6 +3,7 @@
 #include "../Common.h"
 #include "../InputListener.h"
 #include "../Layer/Layer.h"
+#include "../GUI/GUIContainer.h"
 
 class Tool : public InputListener
 {
@@ -19,6 +20,11 @@ public:
 	sf::Texture* down;
 	sf::Texture* over;
 
-private:
+	void setContainer(GUIContainer* container);
+	GUIContainer* getContainer();
+
+protected:
+
+	GUIContainer* container;
 };
 
