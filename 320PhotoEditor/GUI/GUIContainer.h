@@ -11,7 +11,8 @@ class GUIContainer : public InputListener
 {
 public:
 
-	GUIContainer(sf::Vector2f pos, sf::Vector2f size, sf::RenderWindow* renderWindow);
+	//rightAnchor sets for the x alignment to start from the right instead of the left
+	GUIContainer(sf::Vector2f pos, sf::Vector2f size, sf::RenderWindow* renderWindow, bool rightAnchor = false);
 
 	sf::Vector2f getPosition();
 	void setPosition(sf::Vector2f pos);
@@ -29,11 +30,11 @@ public:
 	sf::RenderWindow* getRenderWindow();
 	void setRenderWindow(sf::RenderWindow* renderWindow);
 
-private:
-
 	void mousePressed(sf::Mouse::Button button);
 	void mouseReleased(sf::Mouse::Button button);
 	void mouseMoved(sf::Vector2i pos);
+
+private:
 
 	bool isCursorOver(sf::Vector2i cursorPos);
 
@@ -46,5 +47,7 @@ private:
 	sf::Vector2f size;
 
 	std::set<GUIElement*> elements;
+
+	bool rightAnchor;
 
 };
