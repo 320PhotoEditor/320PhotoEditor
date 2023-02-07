@@ -32,6 +32,7 @@ private:
 	sf::Color paintColor;
 
 	sf::Vector2i cursorPos;
+	sf::Vector2i lastCursorPos;
 
 	Layer* layer;
 };

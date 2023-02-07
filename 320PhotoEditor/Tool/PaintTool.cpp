@@ -3,6 +3,7 @@
 PaintTool::PaintTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : Tool(up, down, over)
 {
 	paintColor = sf::Color::Black;
+	lastCursorPos = { 0, 0 };
 }
 
 void PaintTool::start(Layer* layer)
@@ -40,6 +41,7 @@ void PaintTool::mousePressed(sf::Mouse::Button button)
 	if (button == sf::Mouse::Button::Left)
 	{
 		isPainting = true;
+		lastCursorPos = cursorPos;
 		paint();
 	}
 }
@@ -54,6 +56,7 @@ void PaintTool::mouseMoved(sf::Vector2i pos)
 {
 	cursorPos = pos;
 	paint();
+	lastCursorPos = pos;
 }
 
 void PaintTool::buttonPressed(GUIElement* button, int status)
@@ -76,8 +79,15 @@ void PaintTool::paint()
 {
 	if (isPainting && layer->isCursorOver(cursorPos))
 	{
-		sf::Vector2i pixelPos = layer->cursorToPixel(cursorPos);
-		layer->getImage()->setPixel(pixelPos.x, pixelPos.y, paintColor);
+		sf::Vector2i paintPos = layer->cursorToPixel(cursorPos);
+		sf::Vector2i lastPaintPos = layer->isCursorOver(lastCursorPos) ? layer->cursorToPixel(lastCursorPos) : cursorPos;
+
+		for (float f = 0; f < 1; f += 0.1)
+		{
+			sf::Vector2i pos = lastPaintPos + (paintPos - lastPaintPos) * f;
+			layer->getImage()->setPixel(pos.x, pos.y, paintColor);
+		}
+
 		layer->reload();
 	}
 }
