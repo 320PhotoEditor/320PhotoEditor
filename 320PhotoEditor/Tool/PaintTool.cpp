@@ -6,10 +6,8 @@ PaintTool::PaintTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : To
 	lastCursorPos = { 0, 0 };
 }
 
-void PaintTool::start(Layer* layer)
+void PaintTool::init()
 {
-	this->layer = layer;
-
 	sf::Texture* upTexture = new sf::Texture();
 	upTexture->loadFromFile("../assets/button_up.png");
 	sf::Texture* downTexture = new sf::Texture();
@@ -34,6 +32,11 @@ void PaintTool::start(Layer* layer)
 	container->addElement(color3Button);
 	color3Button->setSize({ .25, .25 });
 	color3Button->setPosition({ 0.5, 0 });
+}
+
+void PaintTool::start(Layer* layer)
+{
+	this->layer = layer;
 }
 
 void PaintTool::mousePressed(sf::Mouse::Button button)
