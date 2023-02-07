@@ -28,11 +28,17 @@ bool Application::init(std::string windowName)
     downTexture->loadFromFile("../assets/button_down.png");
     sf::Texture* overTexture = new sf::Texture();
     overTexture->loadFromFile("../assets/button_over.png");
+    sf::Texture* mosUpTexture = new sf::Texture();
+    mosUpTexture->loadFromFile("../assets/mos_button_up.png");
+    sf::Texture* mosDownTexture = new sf::Texture();
+    mosDownTexture->loadFromFile("../assets/mos_button_down.png");
+
 
     toolManager = new ToolManager(window);
 
     toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
-    
+    toolManager->addTool(new TestTool(mosUpTexture, mosDownTexture, overTexture));
+
     layerManager = new LayerManager(window, { 800, 600 });
     layerManager->createLayer(sf::Color::Blue);
     toolManager->setSelectedLayer(layerManager->getSelectedLayer());
