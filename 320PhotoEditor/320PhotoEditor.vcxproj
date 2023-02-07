@@ -149,6 +149,7 @@
     <ClCompile Include="Layer\LayerManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="GUI\PanelElement.cpp" />
+    <ClCompile Include="Tool\PaintTool.cpp" />
     <ClCompile Include="Tool\TestTool.cpp" />
     <ClCompile Include="Tool\ToolManager.cpp" />
     <ClCompile Include="Tool\Tool.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Layer\Layer.h" />
     <ClInclude Include="GUI\PanelElement.h" />
     <ClInclude Include="Layer\LayerManager.h" />
+    <ClInclude Include="Tool\PaintTool.h" />
     <ClInclude Include="Tool\TestTool.h" />
     <ClInclude Include="Tool\ToolManager.h" />
     <ClInclude Include="Tool\Tool.h" />
