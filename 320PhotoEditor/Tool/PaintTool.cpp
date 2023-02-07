@@ -61,15 +61,20 @@ void PaintTool::mouseMoved(sf::Vector2i pos)
 
 void PaintTool::buttonPressed(GUIElement* button, int status)
 {
-	if (button == color1Button && status == ButtonElement::ButtonState::DOWN)
+	if (status != ButtonElement::ButtonState::DOWN)
+	{
+		return;
+	}
+
+	if (button == color1Button)
 	{
 		paintColor = sf::Color::Black;
 	}
-	if (button == color2Button && status == ButtonElement::ButtonState::DOWN)
+	if (button == color2Button)
 	{
 		paintColor = sf::Color::White;
 	}
-	if (button == color3Button && status == ButtonElement::ButtonState::DOWN)
+	if (button == color3Button)
 	{
 		paintColor = sf::Color::Blue;
 	}
