@@ -88,7 +88,7 @@ void PaintTool::paint()
 	if (isPainting && layer->isCursorOver(cursorPos))
 	{
 		sf::Vector2i paintPos = layer->cursorToPixel(cursorPos);
-		sf::Vector2i lastPaintPos = layer->isCursorOver(lastCursorPos) ? layer->cursorToPixel(lastCursorPos) : cursorPos;
+		sf::Vector2i lastPaintPos = layer->isCursorOver(lastCursorPos) ? layer->cursorToPixel(lastCursorPos) : paintPos;
 
 		for (float f = 0; f < 1; f += 0.1)
 		{
