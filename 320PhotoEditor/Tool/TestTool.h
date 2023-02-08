@@ -12,6 +12,7 @@ public:
 	void run() {};
 
 	void keyPressed(sf::Keyboard::Key key);
+    void mousePressed(sf::Mouse::Button button);
 private:
 
 	Layer* layer;

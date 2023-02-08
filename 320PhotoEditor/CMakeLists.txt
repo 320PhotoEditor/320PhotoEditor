@@ -12,7 +12,6 @@ include_directories(Layer)
 include_directories(Tool)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "/Users/davidoakes/CS320/320PhotoEditor/bin")
 
 add_executable(320PhotoEditor
@@ -40,6 +39,6 @@ add_executable(320PhotoEditor
         Common.h
         InputListener.cpp
         InputListener.h
-        Main.cpp)
+        Main.cpp Zoom/Zoom.cpp)
 
 target_link_libraries(320PhotoEditor sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
