@@ -4,10 +4,8 @@ TestTool::TestTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : Tool
 {
 }
 
-void TestTool::start(Layer* layer)
+void TestTool::init()
 {
-	this->layer = layer;
-
     sf::Texture* upTexture = new sf::Texture();
     upTexture->loadFromFile("../assets/button_up.png");
     sf::Texture* downTexture = new sf::Texture();
@@ -21,7 +19,12 @@ void TestTool::start(Layer* layer)
 
     button->setSize({ .25, .25 });
 
-    button->setPosition({0, 0});
+    button->setPosition({ 0, 0 });
+}
+
+void TestTool::start(Layer* layer)
+{
+	this->layer = layer;
 }
 
 void TestTool::keyPressed(sf::Keyboard::Key key)

@@ -25,6 +25,8 @@ void ToolManager::addTool(Tool* tool)
 	//create a tool config container for the tool
 	tool->setContainer(new GUIContainer({ 0, 0 }, { .2, .2 }, renderWindow, true));
 
+	tool->init();
+
 	tools.emplace(std::make_pair(button, tool));
 }
 

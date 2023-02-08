@@ -9,7 +9,7 @@ LayerManager::LayerManager(sf::RenderWindow* renderWindow, sf::Vector2u projectI
 
 void LayerManager::createLayer(sf::Color color)
 {
-	selectedLayer = new Layer(projectImageSize, color);
+	selectedLayer = new Layer(projectImageSize, color, renderWindow);
 	sf::Sprite* sprite = selectedLayer->getSprite();
 
 	sf::Vector2u imageCenter = projectImageSize / 2;
