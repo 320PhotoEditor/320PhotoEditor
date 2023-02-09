@@ -33,6 +33,7 @@ bool Application::init(std::string windowName)
 
     toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
     toolManager->addTool(new PaintTool(upTexture, downTexture, overTexture));
+    toolManager->addTool(new SelectTool(upTexture, downTexture, overTexture));
     
     layerManager = new LayerManager(window, { 800, 600 });
     layerManager->createLayer(sf::Color::Blue);
