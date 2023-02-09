@@ -118,7 +118,7 @@ void SelectTool::boxSelect()
 	//set the selection to white(selected)
 	for (int x = selectPos1.x; x != selectPos2.x; x += sign(selectPos2.x - selectPos1.x))
 	{
-		for (int y = selectPos1.y; y != selectPos2.x; y += sign(selectPos2.y - selectPos1.y))
+		for (int y = selectPos1.y; y != selectPos2.y; y += sign(selectPos2.y - selectPos1.y))
 		{
 			mask->setPixel(x, y, sf::Color::White);
 		}
@@ -136,7 +136,7 @@ void SelectTool::circleSelect()
 	//loop through the bounding box of the circle and find the pixels that are withing the circle by distance
 	for (int x = selectPos1.x - selectPos2.x; x != selectPos2.x; x += sign(selectPos2.x - selectPos1.x))
 	{
-		for (int y = selectPos1.y - selectPos2.y; y != selectPos2.x; y += sign(selectPos2.y - selectPos1.y))
+		for (int y = selectPos1.y - selectPos2.y; y != selectPos2.y; y += sign(selectPos2.y - selectPos1.y))
 		{
 			int distance = sqrt(pow(selectPos1.x - x, 2) + pow(selectPos1.y - y, 2));
 			if(distance <= radius)
