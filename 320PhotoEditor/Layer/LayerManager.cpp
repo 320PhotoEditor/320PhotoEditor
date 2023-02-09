@@ -4,7 +4,6 @@ LayerManager::LayerManager(sf::RenderWindow* renderWindow, sf::Vector2u projectI
 {
 	this->renderWindow = renderWindow;
 	this->projectImageSize = projectImageSize;
-	createLayer(sf::Color::White);
 }
 
 void LayerManager::createLayer(sf::Color color)
