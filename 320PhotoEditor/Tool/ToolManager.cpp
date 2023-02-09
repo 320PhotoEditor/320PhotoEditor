@@ -93,13 +93,10 @@ void ToolManager::mousePressed(sf::Mouse::Button button)
 	if (currentTool)
 	{
 		currentTool->mousePressed(button);
+		currentTool->getContainer()->mousePressed(button);
 	}
 
 	toolSelector->mousePressed(button);
-	for (auto tool : tools)
-	{
-		tool.second->getContainer()->mousePressed(button);
-	}
 }
 
 void ToolManager::mouseReleased(sf::Mouse::Button button)
@@ -107,13 +104,10 @@ void ToolManager::mouseReleased(sf::Mouse::Button button)
 	if (currentTool)
 	{
 		currentTool->mouseReleased(button);
+		currentTool->getContainer()->mouseReleased(button);
 	}
 
 	toolSelector->mouseReleased(button);
-	for (auto tool : tools)
-	{
-		tool.second->getContainer()->mouseReleased(button);
-	}
 }
 
 void ToolManager::mouseScrolled(int delta)
@@ -129,13 +123,10 @@ void ToolManager::mouseMoved(sf::Vector2i pos)
 	if (currentTool)
 	{
 		currentTool->mouseMoved(pos);
+		currentTool->getContainer()->mouseMoved(pos);
 	}
 
 	toolSelector->mouseMoved(pos);
-	for (auto tool : tools)
-	{
-		tool.second->getContainer()->mouseMoved(pos);
-	}
 }
 
 void ToolManager::buttonPressed(GUIElement* button, int status)
