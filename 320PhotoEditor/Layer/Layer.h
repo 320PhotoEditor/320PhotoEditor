@@ -10,7 +10,12 @@ public:
 
 	Layer(sf::Vector2u size, sf::Color color, sf::RenderWindow* renderWindow);
 
+	//actual image data
 	sf::Image* getImage();
+
+	//a mask that can be used for selections
+	//white used for selected and black for not selected
+	sf::Image* getMask();
 
 	sf::Sprite* getSprite();
 
@@ -30,6 +35,7 @@ private:
 	sf::Sprite* sprite;
 
 	sf::Image* image;
+	sf::Image* mask;
 
 	bool visible;
 };

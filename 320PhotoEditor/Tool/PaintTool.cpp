@@ -93,7 +93,10 @@ void PaintTool::paint()
 		for (float f = 0; f < 1; f += 0.1)
 		{
 			sf::Vector2i pos = lastPaintPos + (paintPos - lastPaintPos) * f;
-			layer->getImage()->setPixel(pos.x, pos.y, paintColor);
+			if (layer->getMask()->getPixel(pos.x, pos.y) == sf::Color::White)
+			{
+				layer->getImage()->setPixel(pos.x, pos.y, paintColor);
+			}
 		}
 
 		layer->reload();
