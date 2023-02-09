@@ -32,12 +32,15 @@ bool Application::init(std::string windowName)
     mosUpTexture->loadFromFile("../assets/mos_button_up.png");
     sf::Texture* mosDownTexture = new sf::Texture();
     mosDownTexture->loadFromFile("../assets/mos_button_down.png");
+    sf::Texture* mosOverTexture = new sf::Texture();
+    mosOverTexture->loadFromFile("../assets/mos_button_over.png");
 
 
     toolManager = new ToolManager(window);
 
     toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
     toolManager->addTool(new PaintTool(upTexture, downTexture, overTexture));
+    toolManager->addTool(new MosaicTool(mosUpTexture, mosDownTexture, mosOverTexture));
     
     layerManager = new LayerManager(window, { 800, 600 });
     layerManager->createLayer(sf::Color::Blue);

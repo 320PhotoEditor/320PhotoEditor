@@ -6,6 +6,7 @@
 #include "GUI/ButtonElement.h"
 #include "Tool/TestTool.h"
 #include "Tool/PaintTool.h"
+#include "Tool/MosaicTool.h"
 #include "Tool/ToolManager.h"
 #include "Layer/LayerManager.h"
 

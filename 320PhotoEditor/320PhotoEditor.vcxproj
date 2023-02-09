@@ -139,7 +139,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Application.cpp">
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
     <ClCompile Include="GUI\ColorPickerElement.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="GUI\ButtonElement.cpp" />
@@ -150,13 +152,18 @@
     <ClCompile Include="Layer\LayerManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="GUI\PanelElement.cpp" />
+    <ClCompile Include="Tool\MosaicTool.cpp">
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
     <ClCompile Include="Tool\PaintTool.cpp" />
     <ClCompile Include="Tool\TestTool.cpp" />
     <ClCompile Include="Tool\ToolManager.cpp" />
     <ClCompile Include="Tool\Tool.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
+    <ClInclude Include="Application.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
     <ClInclude Include="GUI\ColorPickerElement.h" />
     <ClInclude Include="GUI\ButtonElement.h" />
     <ClInclude Include="Common.h" />
@@ -166,6 +173,9 @@
     <ClInclude Include="Layer\Layer.h" />
     <ClInclude Include="GUI\PanelElement.h" />
     <ClInclude Include="Layer\LayerManager.h" />
+    <ClInclude Include="Tool\MosaicTool.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
     <ClInclude Include="Tool\PaintTool.h" />
     <ClInclude Include="Tool\TestTool.h" />
     <ClInclude Include="Tool\ToolManager.h" />
