@@ -5,6 +5,7 @@
 #include "GUI/GUIContainer.h"
 #include "GUI/ButtonElement.h"
 #include "Tool/TestTool.h"
+#include "Tool/PaintTool.h"
 #include "Tool/ToolManager.h"
 #include "Layer/LayerManager.h"
 

@@ -8,6 +8,7 @@ class TestTool : public Tool
 public:
 	TestTool(sf::Texture* up, sf::Texture* down, sf::Texture* over);
 
+	void init();
 	void start(Layer* layer);
 	void stop() {};
 	void run() {};
