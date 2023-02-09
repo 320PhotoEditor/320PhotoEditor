@@ -25,6 +25,7 @@ private:
 	void boxSelect();
 	void circleSelect();
 	void freeformSelect();
+	void setMaskColor(sf::Color color);
 
 	int sign(int x)
 	{
@@ -34,6 +35,7 @@ private:
 	ButtonElement* boxSelectButton;
 	ButtonElement* circleSelectButton;
 	ButtonElement* freeformSelectButton;
+	ButtonElement* allSelectButton;
 
 	enum
 	{

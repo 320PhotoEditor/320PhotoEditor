@@ -2,6 +2,7 @@
 
 SelectTool::SelectTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : Tool(up, down, over)
 {
+	selectMode = BOX;
 }
 
 void SelectTool::init()
@@ -30,6 +31,12 @@ void SelectTool::init()
 	container->addElement(freeformSelectButton);
 	freeformSelectButton->setSize({ .25, .25 });
 	freeformSelectButton->setPosition({ 0.5, 0 });
+
+	allSelectButton = new ButtonElement(upTexture, downTexture, overTexture);
+	allSelectButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	container->addElement(allSelectButton);
+	allSelectButton->setSize({ .25, .25 });
+	allSelectButton->setPosition({ 0.75, 0 });
 }
 
 void SelectTool::start(Layer* layer)
@@ -53,12 +60,6 @@ void SelectTool::mouseReleased(sf::Mouse::Button button)
 		selectPos2 = layer->cursorToPixel(cursorPos);
 
 		sf::Image* mask = layer->getMask();
-
-		//fast way of setting all the pixels in the image
-		//just casting away the const when getting the pixel pointer
-		auto px = reinterpret_cast<sf::Color*>(const_cast<sf::Uint8*>(mask->getPixelsPtr()));
-		//fill the entire image with black(not selected)
-		std::fill(px, px + mask->getSize().x * mask->getSize().y, sf::Color::Black);
 
 		switch (selectMode)
 		{
@@ -93,18 +94,25 @@ void SelectTool::buttonPressed(GUIElement* button, int status)
 	{
 		selectMode = BOX;
 	}
-	if (button == circleSelectButton)
+	else if (button == circleSelectButton)
 	{
 		selectMode = CIRCLE;
 	}
-	if (button == freeformSelectButton)
+	else if (button == freeformSelectButton)
 	{
 		selectMode = FREEFORM;
+	}
+	else if (button == allSelectButton)
+	{
+		setMaskColor(sf::Color::White);
 	}
 }
 
 void SelectTool::boxSelect()
 {
+	//clear the mask
+	setMaskColor(sf::Color::Black);
+
 	sf::Image* mask = layer->getMask();
 
 	//set the selection to white(selected)
@@ -119,8 +127,22 @@ void SelectTool::boxSelect()
 
 void SelectTool::circleSelect()
 {
+	setMaskColor(sf::Color::Black);
+	//TODO: add circle
 }
 
 void SelectTool::freeformSelect()
 {
+	setMaskColor(sf::Color::Black);
+	//TODO: add freeform
+}
+
+void SelectTool::setMaskColor(sf::Color color)
+{
+	sf::Image* mask = layer->getMask();
+	//fast way of setting all the pixels in the image
+	//just casting away the const when getting the pixel pointer
+	auto px = reinterpret_cast<sf::Color*>(const_cast<sf::Uint8*>(mask->getPixelsPtr()));
+	//fill the entire image with the color
+	std::fill(px, px + mask->getSize().x * mask->getSize().y, color);
 }
