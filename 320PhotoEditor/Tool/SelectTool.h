@@ -18,7 +18,16 @@ public:
 	void mouseReleased(sf::Mouse::Button button);
 	void mouseMoved(sf::Vector2i pos);
 
+	void buttonPressed(GUIElement* button, int status);
+
 private:
+
+	enum
+	{
+		BOX,
+		CIRCLE,
+		FREEFORM
+	} selectMode;
 
 	int sign(int x)
 	{

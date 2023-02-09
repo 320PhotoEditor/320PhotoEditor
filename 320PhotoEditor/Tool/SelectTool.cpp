@@ -33,8 +33,10 @@ void SelectTool::mouseReleased(sf::Mouse::Button button)
 		//fast way of setting all the pixels in the image
 		//just casting away the const when getting the pixel pointer
 		auto px = reinterpret_cast<sf::Color*>(const_cast<sf::Uint8*>(mask->getPixelsPtr()));
+		//fill the entire image with black(not selected)
 		std::fill(px, px + mask->getSize().x * mask->getSize().y, sf::Color::Black);
 
+		//set the selection to white(selected)
 		for (int x = selectPos1.x; x != selectPos2.x; x += sign(selectPos2.x - selectPos1.x))
 		{
 			for (int y = selectPos1.y; y != selectPos2.x; y += sign(selectPos2.y - selectPos1.y))
@@ -50,4 +52,8 @@ void SelectTool::mouseReleased(sf::Mouse::Button button)
 void SelectTool::mouseMoved(sf::Vector2i pos)
 {
 	cursorPos = pos;
+}
+
+void SelectTool::buttonPressed(GUIElement* button, int status)
+{
 }

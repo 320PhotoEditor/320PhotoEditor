@@ -4,7 +4,7 @@ Layer::Layer(sf::Vector2u size, sf::Color color, sf::RenderWindow* renderWindow)
 {
 	image = new sf::Image();
 	image->create(size.x, size.y, color);
-
+	
 	mask = new sf::Image();
 	mask->create(size.x, size.y, sf::Color::White);
 
