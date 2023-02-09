@@ -22,6 +22,19 @@ public:
 
 private:
 
+	void boxSelect();
+	void circleSelect();
+	void freeformSelect();
+
+	int sign(int x)
+	{
+		return (x > 0) - (x < 0);
+	}
+
+	ButtonElement* boxSelectButton;
+	ButtonElement* circleSelectButton;
+	ButtonElement* freeformSelectButton;
+
 	enum
 	{
 		BOX,
@@ -29,13 +42,9 @@ private:
 		FREEFORM
 	} selectMode;
 
-	int sign(int x)
-	{
-		return (x > 0) - (x < 0);
-	}
-
 	sf::Vector2i selectPos1;
 	sf::Vector2i selectPos2;
+	std::vector<sf::Vector2i> selectPosFreeForm;
 
 	bool isSelecting = false;
 

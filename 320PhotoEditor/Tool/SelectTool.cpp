@@ -6,6 +6,30 @@ SelectTool::SelectTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : 
 
 void SelectTool::init()
 {
+	sf::Texture* upTexture = new sf::Texture();
+	upTexture->loadFromFile("../assets/button_up.png");
+	sf::Texture* downTexture = new sf::Texture();
+	downTexture->loadFromFile("../assets/button_down.png");
+	sf::Texture* overTexture = new sf::Texture();
+	overTexture->loadFromFile("../assets/button_over.png");
+
+	boxSelectButton = new ButtonElement(upTexture, downTexture, overTexture);
+	boxSelectButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	container->addElement(boxSelectButton);
+	boxSelectButton->setSize({ .25, .25 });
+	boxSelectButton->setPosition({ 0, 0 });
+
+	circleSelectButton = new ButtonElement(upTexture, downTexture, overTexture);
+	circleSelectButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	container->addElement(circleSelectButton);
+	circleSelectButton->setSize({ .25, .25 });
+	circleSelectButton->setPosition({ 0.25, 0 });
+
+	freeformSelectButton = new ButtonElement(upTexture, downTexture, overTexture);
+	freeformSelectButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	container->addElement(freeformSelectButton);
+	freeformSelectButton->setSize({ .25, .25 });
+	freeformSelectButton->setPosition({ 0.5, 0 });
 }
 
 void SelectTool::start(Layer* layer)
@@ -36,13 +60,17 @@ void SelectTool::mouseReleased(sf::Mouse::Button button)
 		//fill the entire image with black(not selected)
 		std::fill(px, px + mask->getSize().x * mask->getSize().y, sf::Color::Black);
 
-		//set the selection to white(selected)
-		for (int x = selectPos1.x; x != selectPos2.x; x += sign(selectPos2.x - selectPos1.x))
+		switch (selectMode)
 		{
-			for (int y = selectPos1.y; y != selectPos2.x; y += sign(selectPos2.y - selectPos1.y))
-			{
-				mask->setPixel(x, y, sf::Color::White);
-			}
+		case BOX:
+			boxSelect();
+			break;
+		case CIRCLE:
+			circleSelect();
+			break;
+		case FREEFORM:
+			freeformSelect();
+			break;
 		}
 
 		isSelecting = false;
@@ -55,5 +83,44 @@ void SelectTool::mouseMoved(sf::Vector2i pos)
 }
 
 void SelectTool::buttonPressed(GUIElement* button, int status)
+{
+	if (status != ButtonElement::ButtonState::DOWN)
+	{
+		return;
+	}
+
+	if (button == boxSelectButton)
+	{
+		selectMode = BOX;
+	}
+	if (button == circleSelectButton)
+	{
+		selectMode = CIRCLE;
+	}
+	if (button == freeformSelectButton)
+	{
+		selectMode = FREEFORM;
+	}
+}
+
+void SelectTool::boxSelect()
+{
+	sf::Image* mask = layer->getMask();
+
+	//set the selection to white(selected)
+	for (int x = selectPos1.x; x != selectPos2.x; x += sign(selectPos2.x - selectPos1.x))
+	{
+		for (int y = selectPos1.y; y != selectPos2.x; y += sign(selectPos2.y - selectPos1.y))
+		{
+			mask->setPixel(x, y, sf::Color::White);
+		}
+	}
+}
+
+void SelectTool::circleSelect()
+{
+}
+
+void SelectTool::freeformSelect()
 {
 }
