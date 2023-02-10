@@ -39,6 +39,9 @@ bool Application::init(std::string windowName)
     layerManager->createLayer(sf::Color::Blue);
     toolManager->setSelectedLayer(layerManager->getSelectedLayer());
 
+    applicationMenu = new ApplicationMenu(window, layerManager);
+
+    addInputListener(applicationMenu->getGUIContainer());
     addInputListener(toolManager);
 
     return true;
@@ -58,6 +61,7 @@ void Application::run()
         }
         window->clear();
 
+        applicationMenu->update();
         layerManager->update();
         toolManager->update();
 

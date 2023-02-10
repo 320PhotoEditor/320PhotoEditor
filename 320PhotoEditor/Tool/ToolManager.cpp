@@ -3,7 +3,7 @@
 ToolManager::ToolManager(sf::RenderWindow* renderWindow)
 {
 	this->renderWindow = renderWindow;
-	toolSelector = new GUIContainer({0, 0}, {.2, .3}, renderWindow);
+	toolSelector = new GUIContainer({0, 0.025}, {.2, .3}, renderWindow);
 	toolSelector->setVisible(true);
 
 	currentTool = nullptr;
@@ -23,7 +23,7 @@ void ToolManager::addTool(Tool* tool)
 	button->setPosition(sf::Vector2f(((int)tools.size() % PANEL_ROWS) * (1.0 / PANEL_ROWS), (int)(tools.size() / PANEL_ROWS) * (1.0 / PANEL_ROWS) * 0.666));
 
 	//create a tool config container for the tool
-	tool->setContainer(new GUIContainer({ 0, 0 }, { .2, .2 }, renderWindow, true));
+	tool->setContainer(new GUIContainer({ 0, 0.025 }, { .2, .2 }, renderWindow, true));
 
 	tool->init();
 
