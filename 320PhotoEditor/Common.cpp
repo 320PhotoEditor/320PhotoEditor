@@ -39,3 +39,8 @@ sf::Vector2u operator/(const sf::Vector2u& a, const int& b)
 {
 	return sf::Vector2u(a.x / b, a.y / b);
 }
+
+sf::Vector2i operator*(const sf::Vector2i a, const float& b)
+{
+	return sf::Vector2i(a.x * b, a.y * b);
+}

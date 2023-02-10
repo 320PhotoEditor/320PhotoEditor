@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "FilterTool.h"
 
 Application::Application()
 {
@@ -12,7 +13,7 @@ Application::~Application()
 
 bool Application::init(std::string windowName)
 {
-    window = new sf::RenderWindow(sf::VideoMode(1280, 720), windowName);
+    window = new sf::RenderWindow(sf::VideoMode(2000, 1500), windowName);
 
     if (!window->isOpen())
     {
@@ -23,22 +24,31 @@ bool Application::init(std::string windowName)
     window->setKeyRepeatEnabled(false);
 
     sf::Texture* upTexture = new sf::Texture();
-    upTexture->loadFromFile("..//assets//button_up.png");
+//<<<<<<< HEAD
+/*    upTexture->loadFromFile("..//assets//button_up.png");
     sf::Texture* downTexture = new sf::Texture();
     downTexture->loadFromFile("..//assets//button_down.png");
     sf::Texture* overTexture = new sf::Texture();
     overTexture->loadFromFile("..//assets//button_over.png");
+//=======
+*/  upTexture->loadFromFile("../assets/button_up.png");
+    sf::Texture* downTexture = new sf::Texture();
+    downTexture->loadFromFile("../assets/button_down.png");
+    sf::Texture* overTexture = new sf::Texture();
+    overTexture->loadFromFile("../assets/button_over.png");
+//>>>>>>> main
 
     toolManager = new ToolManager(window);
 
     toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
+    toolManager->addTool(new PaintTool(upTexture, downTexture, overTexture));
+    toolManager->addTool(new FilterTool(upTexture, downTexture, overTexture));
     
-    layerManager = new LayerManager(window, { 800, 600 });
+    layerManager = new LayerManager(window, { 500, 500 });
     layerManager->createLayer(sf::Color::Blue);
     toolManager->setSelectedLayer(layerManager->getSelectedLayer());
 
     addInputListener(toolManager);
-    addInputListener(toolManager->getGUIContainer());
 
     return true;
 }

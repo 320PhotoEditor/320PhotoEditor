@@ -21,11 +21,13 @@ void PanelElement::setSize(sf::Vector2f size)
 
 void PanelElement::setPosition(sf::Vector2f pos)
 {
-	float windowSize = container->getRenderWindow()->getSize().y;
+	sf::Vector2u windowSize = container->getRenderWindow()->getSize();
 
-	sf::Vector2f containerSize = container->getSize() * windowSize;
-	sf::Vector2f position = pos + container->getPosition();
+	float aspect = (float)windowSize.x / (float)windowSize.y;
 
-	sprite->setPosition(containerSize * position);
+	sf::Vector2f position = pos * container->getSize() + container->getPosition();
+	position.x /= aspect;
+
+	sprite->setPosition(position * windowSize);
 	this->pos = pos;
 }

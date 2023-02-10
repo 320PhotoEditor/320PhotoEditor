@@ -73,13 +73,14 @@ void ButtonElement::setSize(sf::Vector2f size)
 
 void ButtonElement::setPosition(sf::Vector2f pos)
 {
-	//just need y size as were correcting for aspect ratio
-	float windowSize = container->getRenderWindow()->getSize().y;
+	sf::Vector2u windowSize = container->getRenderWindow()->getSize();
 
-	sf::Vector2f containerSize = container->getSize() * windowSize;
-	sf::Vector2f position = pos + container->getPosition();
+	float aspect = (float)windowSize.x / (float)windowSize.y;
 
-	sprite->setPosition(containerSize * position);
+	sf::Vector2f position = pos * container->getSize() + container->getPosition();
+	position.x /= aspect;
+
+	sprite->setPosition(position * windowSize);
 	this->pos = pos;
 }
 

@@ -39,6 +39,6 @@ add_executable(320PhotoEditor
         Common.h
         InputListener.cpp
         InputListener.h
-        Main.cpp Zoom/Zoom.cpp)
+        Main.cpp Zoom/Zoom.cpp Tool/PaintTool.cpp GUI/ColorPickerElement.cpp Tool/FilterTool.cpp Tool/FilterTool.h)
 
 target_link_libraries(320PhotoEditor sfml-system sfml-window sfml-graphics sfml-audio sfml-network)

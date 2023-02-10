@@ -1,10 +1,11 @@
 #include "GUIContainer.h"
 
-GUIContainer::GUIContainer(sf::Vector2f pos, sf::Vector2f size, sf::RenderWindow* renderWindow)
+GUIContainer::GUIContainer(sf::Vector2f pos, sf::Vector2f size, sf::RenderWindow* renderWindow, bool rightAnchor)
 {
-    this->pos = pos;
     this->size = size;
     this->renderWindow = renderWindow;
+    this->rightAnchor = rightAnchor;
+    setPosition(pos);
     visible = true;
     cursorPos = sf::Vector2i(0, 0);
 }
@@ -16,7 +17,15 @@ sf::Vector2f GUIContainer::getPosition()
 
 void GUIContainer::setPosition(sf::Vector2f pos)
 {
-    this->pos = pos;
+    if (rightAnchor)
+    {
+        float aspect = (float)renderWindow->getSize().x / (float)renderWindow->getSize().y;
+        this->pos = { aspect - pos.x - size.x, pos.y };
+    }
+    else
+    {
+        this->pos = pos;
+    }
 }
 
 sf::Vector2f GUIContainer::getSize()
@@ -103,7 +112,10 @@ void GUIContainer::mouseMoved(sf::Vector2i pos)
 
 bool GUIContainer::isCursorOver(sf::Vector2i cursorPos)
 {
-    sf::Vector2f cPos = cursorPos / renderWindow->getSize();
+    sf::Vector2u windowSize = renderWindow->getSize();
+    sf::Vector2f cPos = cursorPos / windowSize;
+    float aspect = (float)windowSize.x / (float)windowSize.y;
+    cPos.x *= aspect;
 
     float left = pos.x;
     float right = pos.x + size.x;
