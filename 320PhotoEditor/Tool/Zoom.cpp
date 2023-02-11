@@ -21,28 +21,11 @@ void Zoom::init() {
     container->addElement(color1Button);
     color1Button->setSize({0.25, 0.25});
     color1Button->setPosition({0.75, 0.75});
-
  }
 
 void Zoom::start(Layer* layer)
 {
     this->layer = layer;
-}
-
-sf::Image* Zoom::getImage()
-{
-    return image;
-}
-
-sf::Sprite* Zoom::getSprite()
-{
-    return sprite;
-}
-
-sf::Vector2i Zoom::cursorToPixel(sf::Vector2i cursorPos)
-{
-    //TODO: make adjust for image scale and position
-    return sf::Vector2i(cursorPos.x - sprite->getPosition().x, cursorPos.y - sprite->getPosition().y);
 }
 
 void Zoom::mouseMoved(sf::Vector2i pos)
@@ -57,25 +40,20 @@ void Zoom::buttonPressed(GUIElement* button, int status)
 
 void Zoom::mousePressed(sf::Mouse::Button button)
 {
-    if (layer->isCursorOver(cursorPos))
+    if (button == sf::Mouse::Button::Left)
     {
-        zoom();
+        if (layer->isCursorOver(cursorPos)) {
+            zoom();
+            lastCursorPos = cursorPos;
+        }
     }
 }
 
 int Zoom::zoom()
 {
-
-    Application application;
-
     sf::RenderWindow renderWindow (sf::VideoMode(500, 500), "Zoom Window");
     layerManager = new LayerManager(&renderWindow, {500, 500});
     layerManager->createLayer(sf::Color::Blue);
-    //toolManager->setSelectedLayer(layerManager->getSelectedLayer());
-
-//    layer->getImage();
-//    layer->reload();
-    //    renderWindow.display();
 
     while (renderWindow.isOpen())
     {
@@ -88,16 +66,18 @@ int Zoom::zoom()
             }
         }
 
+
+
+        sf::View view(sf::FloatRect(0.f, 0.f, 500.f, 500.f));
+//        view.setCenter(cursorPos.x, cursorPos.y);
+//        view.setSize(100, 100);
+
+        view.setSize(200, 200);
+        renderWindow.setView(view);
         renderWindow.clear();
         layerManager->update();
         renderWindow.display();
+        view.reset(sf::FloatRect(0.f, 0.f, 500.f, 500.f));
     }
-
-    if (!application.init("Test"))
-    {
-        return EXIT_FAILURE;
-    }
-
-    application.run();
 }
 

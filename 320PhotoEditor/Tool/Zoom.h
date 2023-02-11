@@ -13,12 +13,6 @@ public:
 
     Zoom(sf::Texture *up, sf::Texture *down, sf::Texture *over);
 
-    sf::Image* getImage();
-
-    sf::Sprite* getSprite();
-
-    sf::Vector2i cursorToPixel(sf::Vector2i cursorPos);
-
     void init();
     void start(Layer* layer);
     void stop() {};
@@ -39,7 +33,6 @@ private:
 
     ButtonElement* color1Button;
 
-//    sf::RenderWindow* renderWindow;
     sf::Texture texture;
     sf::Sprite* sprite;
     sf::Image* image;
@@ -48,10 +41,4 @@ private:
 
     Layer* layer;
     LayerManager* layerManager;
-    ToolManager* toolManager;
-
-    std::set<InputListener*> inputListeners;
-
-
-//    bool visible;
 };
