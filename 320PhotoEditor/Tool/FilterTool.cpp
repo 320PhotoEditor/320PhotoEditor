@@ -54,6 +54,8 @@ void FilterTool::buttonPressed(GUIElement* button, int status)
 {
     if (button == bwButton)
     {
+        int buttonPress = 0;
+        sf::Color color;
         int a,b;
         for (a = 0; a < 500; a++)
         {
