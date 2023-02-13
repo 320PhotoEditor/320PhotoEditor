@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Tool.h"
+#include "ToolManager.h"
+#include "../Layer/LayerManager.h"
+#include "../InputListener.h"
 #include "../GUI/ButtonElement.h"
 
 class MosaicTool : public Tool
@@ -16,9 +19,14 @@ public:
 	//void keyPressed(sf::Keyboard::Key key);
 
 	void buttonPressed(GUIElement* button, int status);
+	void addInputListener(InputListener* listener);
 private:
+
+	ToolManager* toolManager;
+	LayerManager* layerManager;
 	ButtonElement* selectButton;
 	Layer* layer;
 	sf::RenderWindow* newWindow;
+	std::set<InputListener*> inputListeners;
 };
 
