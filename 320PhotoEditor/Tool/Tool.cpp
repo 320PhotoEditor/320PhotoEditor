@@ -13,3 +13,8 @@ GUIContainer* Tool::getContainer()
 {
 	return container;
 }
+
+void Tool::setMenu(ApplicationMenu* applicationMenu)
+{
+	this->applicationMenu = applicationMenu;
+}

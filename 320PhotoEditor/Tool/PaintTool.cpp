@@ -87,6 +87,8 @@ void PaintTool::paint()
 {
 	if (isPainting && layer->isCursorOver(cursorPos))
 	{
+		paintColor = applicationMenu->getForegroundColor();
+
 		sf::Vector2i paintPos = layer->cursorToPixel(cursorPos);
 		sf::Vector2i lastPaintPos = layer->isCursorOver(lastCursorPos) ? layer->cursorToPixel(lastCursorPos) : paintPos;
 

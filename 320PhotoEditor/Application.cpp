@@ -29,11 +29,14 @@ bool Application::init(std::string windowName)
     sf::Texture* overTexture = new sf::Texture();
     overTexture->loadFromFile("../assets/button_over.png");
 
-    toolManager = new ToolManager(window);
+    sf::Texture* paintupTexture = new sf::Texture();
+    paintupTexture->loadFromFile("../assets/paint_button_up.png");
+    sf::Texture* paintdownTexture = new sf::Texture();
+    paintdownTexture->loadFromFile("../assets/paint_button_down.png");
+    sf::Texture* paintoverTexture = new sf::Texture();
+    paintoverTexture->loadFromFile("../assets/paint_button_over.png");
 
-    toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
-    toolManager->addTool(new PaintTool(upTexture, downTexture, overTexture));
-    toolManager->addTool(new SelectTool(upTexture, downTexture, overTexture));
+    toolManager = new ToolManager(window);
     
     layerManager = new LayerManager(window, { 800, 600 });
     layerManager->createLayer(sf::Color::Blue);
@@ -41,7 +44,14 @@ bool Application::init(std::string windowName)
 
     applicationMenu = new ApplicationMenu(window, layerManager);
 
-    addInputListener(applicationMenu->getGUIContainer());
+    toolManager->setApplicationMenu(applicationMenu);
+
+    toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
+    toolManager->addTool(new PaintTool(paintupTexture, paintdownTexture, paintoverTexture));
+    toolManager->addTool(new SelectTool(upTexture, downTexture, overTexture));
+
+    addInputListener(applicationMenu->getMenuContainer());
+    addInputListener(applicationMenu->getColorContainer());
     addInputListener(toolManager);
 
     return true;

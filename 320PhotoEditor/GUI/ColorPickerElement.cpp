@@ -5,6 +5,7 @@ ColorPickerElement::ColorPickerElement()
 	img = sf::Texture();
 	img.loadFromFile("../assets/color_picker.png");
 	sprite = new sf::Sprite(img);
+	lightness = 0.5;
 
 	setDrawable(sprite);
 	setVisible(true);
@@ -13,6 +14,10 @@ ColorPickerElement::ColorPickerElement()
 void ColorPickerElement::mousePressed(sf::Mouse::Button button)
 {
 	dragging = isCursorOver(cursorPos);
+	if (dragging)
+	{
+		calcColor();
+	}
 }
 
 void ColorPickerElement::mouseReleased(sf::Mouse::Button button)
@@ -23,16 +28,15 @@ void ColorPickerElement::mouseReleased(sf::Mouse::Button button)
 void ColorPickerElement::mouseMoved(sf::Vector2i pos)
 {
 	cursorPos = pos;
+
+	if (isCursorOver(pos) && dragging)
+	{
+		calcColor();
+	}
 }
 
 void ColorPickerElement::setSize(sf::Vector2f size)
 {
-	if (size.x != size.y)
-	{
-		std::cerr << "Error: Color picker size must be square\n";
-		size.y = size.x;
-	}
-
 	float windowSize = container->getRenderWindow()->getSize().y;
 
 	sf::Vector2f containerSize = container->getSize() * windowSize;
@@ -63,4 +67,24 @@ sf::Color ColorPickerElement::getPickedColor()
 void ColorPickerElement::setPickedColor(sf::Color color)
 {
 	pickedColor = color;
+}
+
+void ColorPickerElement::setLightness(float lightness)
+{
+	this->lightness = lightness;
+}
+
+float ColorPickerElement::getLightness()
+{
+	return lightness;
+}
+
+void ColorPickerElement::calcColor()
+{
+	sf::Vector2f scale = sprite->getScale() * sprite->getTexture()->getSize();
+	sf::Vector2f pos = sprite->getPosition();
+
+	sf::Vector2f onPos = cursorPos - pos;
+
+	pickedColor = hsl2rgb(onPos.x / scale.x, onPos.y / scale.y, lightness);
 }

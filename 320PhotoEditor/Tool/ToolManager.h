@@ -7,6 +7,7 @@
 #include "../GUI/PanelElement.h"
 #include "../InputListener.h"
 #include "../Layer/Layer.h"
+#include "../ApplicationMenu.h"
 
 #define PANEL_ROWS 4
 
@@ -25,6 +26,8 @@ public:
 	void setSelectedLayer(Layer* layer);
 
 	void restartTool();
+
+	void setApplicationMenu(ApplicationMenu* applicationMenu);
 
 	~ToolManager();
 
@@ -49,5 +52,6 @@ private:
 
 	sf::RenderWindow* renderWindow;
 
+	ApplicationMenu* applicationMenu;
 };
 

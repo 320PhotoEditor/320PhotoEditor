@@ -2,6 +2,7 @@
 
 #include "GUI/GUIContainer.h"
 #include "GUI/ButtonElement.h"
+#include "GUI/ColorPickerElement.h"
 #include "Layer/LayerManager.h"1
 
 #include <fstream>
@@ -14,7 +15,12 @@ public:
 	~ApplicationMenu();
 
 	void update();
-	GUIContainer* getGUIContainer();
+
+	sf::Color getForegroundColor();
+	sf::Color getBackgroundColor();
+
+	GUIContainer* getMenuContainer();
+	GUIContainer* getColorContainer();
 
 private:
 
@@ -23,7 +29,11 @@ private:
 	LayerManager* layerManager;
 
 	GUIContainer* menuContainer;
+	GUIContainer* colorContainer;
 	ButtonElement* fileMenuButton;
+	ButtonElement* incrLightness;
+	ButtonElement* decrLightness;
+	ColorPickerElement* colorPicker;
 
 };
 

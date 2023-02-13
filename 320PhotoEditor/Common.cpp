@@ -30,6 +30,11 @@ sf::Vector2f operator/(const sf::Vector2u& a, const sf::Vector2u& b)
 	return sf::Vector2f((float)a.x / b.x, (float)a.y / b.y);
 }
 
+sf::Vector2f operator-(const sf::Vector2i& a, const sf::Vector2f& b)
+{
+	return sf::Vector2f(a.x - b.x, a.x - b.x);
+}
+
 sf::Vector2f operator/(const sf::Vector2i& a, const float& b)
 {
 	return sf::Vector2f(a.x / b, a.y / b);
@@ -43,4 +48,42 @@ sf::Vector2u operator/(const sf::Vector2u& a, const int& b)
 sf::Vector2i operator*(const sf::Vector2i a, const float& b)
 {
 	return sf::Vector2i(a.x * b, a.y * b);
+}
+
+float hue2rgb(float p, float q, float t)
+{
+
+	if (t < 0)
+		t += 1;
+	if (t > 1)
+		t -= 1;
+	if (t < 1. / 6)
+		return p + (q - p) * 6 * t;
+	if (t < 1. / 2)
+		return q;
+	if (t < 2. / 3)
+		return p + (q - p) * (2. / 3 - t) * 6;
+
+	return p;
+
+}
+
+sf::Color hsl2rgb(float h, float s, float l)
+{
+	sf::Color rgb;
+
+	if (0 == s)
+	{
+		rgb.r = rgb.g = rgb.b = l;
+	}
+	else
+	{
+		float q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+		float p = 2 * l - q;
+		rgb.r = hue2rgb(p, q, h + 1. / 3) * 255;
+		rgb.g = hue2rgb(p, q, h) * 255;
+		rgb.b = hue2rgb(p, q, h - 1. / 3) * 255;
+	}
+
+	return rgb;
 }

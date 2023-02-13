@@ -24,7 +24,7 @@ void ToolManager::addTool(Tool* tool)
 
 	//create a tool config container for the tool
 	tool->setContainer(new GUIContainer({ 0, 0.025 }, { .2, .2 }, renderWindow, true));
-
+	tool->setMenu(applicationMenu);
 	tool->init();
 
 	tools.emplace(std::make_pair(button, tool));
@@ -58,6 +58,11 @@ void ToolManager::restartTool()
 		currentTool->stop();
 		currentTool->start(layer);
 	}
+}
+
+void ToolManager::setApplicationMenu(ApplicationMenu* applicationMenu)
+{
+	this->applicationMenu = applicationMenu;
 }
 
 ToolManager::~ToolManager()
