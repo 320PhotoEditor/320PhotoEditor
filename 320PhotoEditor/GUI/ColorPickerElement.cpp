@@ -86,5 +86,5 @@ void ColorPickerElement::calcColor()
 
 	sf::Vector2f onPos = cursorPos - pos;
 
-	pickedColor = hsl2rgb(onPos.x / scale.x, onPos.y / scale.y, lightness);
+	pickedColor = hsl2rgb(onPos.x / scale.x, 1 - (onPos.y / scale.y), lightness);
 }
