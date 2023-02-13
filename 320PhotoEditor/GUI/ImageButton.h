@@ -1,16 +1,15 @@
-#pragma once
+/*#pragma once
 
-#include "Tool.h"
-#include "ToolManager.h"
-//#include "../Layer/LayerManager.h"
+#include "../Tool/Tool.h"
+#include "../Tool/ToolManager.h"
+#include "../Layer/LayerManager.h"
 #include "../InputListener.h"
-#include "../GUI/ButtonElement.h"
-#include "../GUI/ImageButton.h"
+#include "ButtonElement.h"
 
-class MosaicTool : public Tool
+class ImageButton
 {
 public:
-	MosaicTool(sf::Texture* up, sf::Texture* down, sf::Texture* over);
+	ImageButton(sf::Texture* up, sf::Texture* down, sf::Texture* over);
 
 	void init();
 	void start(Layer* layer);
@@ -23,12 +22,10 @@ public:
 	void addInputListener(InputListener* listener);
 private:
 
-	ToolManager* toolManager;
-	//LayerManager* layerManager;
+
 	ButtonElement* selectButton;
-	//ButtonElement* imageButton;
+	ButtonElement* imageButton;
 	Layer* layer;
 	sf::RenderWindow* newWindow;
 	std::set<InputListener*> inputListeners;
-};
-
+};*/

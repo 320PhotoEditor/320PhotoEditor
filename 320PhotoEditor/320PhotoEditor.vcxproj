@@ -147,6 +147,7 @@
     <ClCompile Include="GUI\ButtonElement.cpp" />
     <ClCompile Include="GUI\GUIContainer.cpp" />
     <ClCompile Include="GUI\GUIElement.cpp" />
+    <ClCompile Include="GUI\ImageButton.cpp" />
     <ClCompile Include="InputListener.cpp" />
     <ClCompile Include="Layer\Layer.cpp" />
     <ClCompile Include="Layer\LayerManager.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="GUI\GUIContainer.h" />
     <ClInclude Include="GUI\GUIElement.h" />
+    <ClInclude Include="GUI\ImageButton.h" />
     <ClInclude Include="InputListener.h" />
     <ClInclude Include="Layer\Layer.h" />
     <ClInclude Include="GUI\PanelElement.h" />

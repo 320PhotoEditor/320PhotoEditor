@@ -28,8 +28,8 @@ void MosaicTool::start(Layer* layer)
 
 void MosaicTool::buttonPressed(GUIElement* button, int status)
 {
-    std::cout << button << "\n";
-    std::cout << selectButton << "\n";
+    //std::cout << button << "\n";
+    //std::cout << selectButton << "\n";
 
     if (status != ButtonElement::ButtonState::DOWN)
     {
@@ -40,26 +40,18 @@ if (button == selectButton) {
 
         newWindow = new sf::RenderWindow(sf::VideoMode(500,500), "Test");
 
-        sf::Texture texture;
+        //sf::Texture* texture = new sf::Texture();
 
-        if (!texture.loadFromFile("../assets/Samples/Sample_Image1.JPG"))
-        {
-        }
+        //texture->loadFromFile("../assets/Samples/Sample_Image1.JPG");
 
-        toolManager = new ToolManager(newWindow);
+        //toolManager = new ToolManager(newWindow);
 
-        toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
-        toolManager->addTool(new PaintTool(upTexture, downTexture, overTexture));
-        toolManager->addTool(new MosaicTool(mosUpTexture, mosDownTexture, mosOverTexture));
+        //toolManager->addTool(new ImageButton(texture, texture, texture));
 
-        layerManager = new LayerManager(newWindow, { 800, 600 });
-        layerManager->createLayer(sf::Color::Blue);
-        toolManager->setSelectedLayer(layerManager->getSelectedLayer());
+        //addInputListener(toolManager);
 
-        addInputListener(toolManager);
-
-        sf::Sprite sprite;
-        sprite.setTexture(texture);
+        //sf::Sprite sprite;
+        //sprite.setTexture(texture);
 
 
         while (newWindow->isOpen())
@@ -76,7 +68,8 @@ if (button == selectButton) {
             // clear the window with black color
             newWindow->clear(sf::Color::Black);
 
-            newWindow->draw(sprite);
+            //layerManager->update();
+            //toolManager->update();
 
             // end the current frame
             newWindow->display();
