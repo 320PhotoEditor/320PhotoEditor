@@ -7,7 +7,7 @@ Application::Application()
 Application::~Application()
 {
     delete toolManager;
-	delete window;
+	  delete window;
 }
 
 bool Application::init(std::string windowName)
@@ -28,6 +28,13 @@ bool Application::init(std::string windowName)
     downTexture->loadFromFile("../assets/button_down.png");
     sf::Texture* overTexture = new sf::Texture();
     overTexture->loadFromFile("../assets/button_over.png");
+    sf::Texture* mosUpTexture = new sf::Texture();
+    mosUpTexture->loadFromFile("../assets/mos_button_up.png");
+    sf::Texture* mosDownTexture = new sf::Texture();
+    mosDownTexture->loadFromFile("../assets/mos_button_down.png");
+    sf::Texture* mosOverTexture = new sf::Texture();
+    mosOverTexture->loadFromFile("../assets/mos_button_over.png");
+
 
     sf::Texture* paintupTexture = new sf::Texture();
     paintupTexture->loadFromFile("../assets/paint_button_up.png");
@@ -49,6 +56,7 @@ bool Application::init(std::string windowName)
     toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
     toolManager->addTool(new PaintTool(paintupTexture, paintdownTexture, paintoverTexture));
     toolManager->addTool(new SelectTool(upTexture, downTexture, overTexture));
+    toolManager->addTool(new MosaicTool(mosUpTexture, mosDownTexture, mosOverTexture));
 
     addInputListener(applicationMenu->getMenuContainer());
     addInputListener(applicationMenu->getColorContainer());

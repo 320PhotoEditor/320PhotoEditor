@@ -64,6 +64,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ApplicationMenu.cpp">
+       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\MosaicTool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\ImageButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -114,6 +120,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ApplicationMenu.h">
+    <ClInclude Include="Tool\MosaicTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\ImageButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
