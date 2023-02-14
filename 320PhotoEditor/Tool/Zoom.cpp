@@ -3,9 +3,9 @@
 Zoom::Zoom(sf::Texture *up, sf::Texture *down, sf::Texture *over) : Tool(up, down, over)
 {
     texture = sf::Texture();
-
-    sprite = new sf::Sprite(texture);
     lastCursorPos = {0, 0};
+    renderWindow = nullptr;
+    zoomFactor = 3;
 }
 
 void Zoom::init() {
@@ -16,12 +16,18 @@ void Zoom::init() {
     sf::Texture *overTexture = new sf::Texture();
     overTexture->loadFromFile("../assets/button_over.png");
 
-    color1Button = new ButtonElement(upTexture, downTexture, overTexture);
-    color1Button->setUpdateFunction([this](GUIElement *element, int status) { this->buttonPressed(element, status); });
-    container->addElement(color1Button);
-    color1Button->setSize({0.25, 0.25});
-    color1Button->setPosition({0.75, 0.75});
- }
+    addButton = new ButtonElement(upTexture, downTexture, overTexture);
+    addButton->setUpdateFunction([this](GUIElement *element, int status) { this->buttonPressed(element, status); });
+    container->addElement(addButton);
+    addButton->setSize({0.25, 0.25});
+    addButton->setPosition({0.75, 0.75});
+
+    subtractButton = new ButtonElement(upTexture, downTexture, overTexture);
+    subtractButton->setUpdateFunction([this](GUIElement *element, int status) { this->buttonPressed(element, status); });
+    container->addElement(subtractButton);
+    subtractButton->setSize({0.25, 0.25});
+    subtractButton->setPosition({0.5, 0.75});
+}
 
 void Zoom::start(Layer* layer)
 {
@@ -33,9 +39,21 @@ void Zoom::mouseMoved(sf::Vector2i pos)
     cursorPos = pos;
 }
 
-void Zoom::buttonPressed(GUIElement* button, int status)
+int Zoom::buttonPressed(GUIElement* button, int status)
 {
+    if (button == addButton)
+    {
+        zoomFactor++;
+        std::cout << zoomFactor;
+        return(0);
+    }
 
+    if (button == subtractButton)
+    {
+        zoomFactor--;
+        std::cout << zoomFactor;
+        return(0);
+    }
 }
 
 void Zoom::mousePressed(sf::Mouse::Button button)
@@ -49,35 +67,38 @@ void Zoom::mousePressed(sf::Mouse::Button button)
     }
 }
 
-int Zoom::zoom()
+void Zoom::run()
 {
-    sf::RenderWindow renderWindow (sf::VideoMode(500, 500), "Zoom Window");
-    layerManager = new LayerManager(&renderWindow, {500, 500});
-    layerManager->createLayer(sf::Color::Blue);
+    sf::Event event;
+    if (renderWindow == nullptr) return;
 
-    while (renderWindow.isOpen())
-    {
-        sf::Event event;
-        while (renderWindow.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                renderWindow.close();
-            }
+    while (renderWindow->pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+            renderWindow->close();
+//            delete zoomSprite;  TODO: investigate crash...
+//            delete zoomImage;
         }
-
-
-
-        sf::View view(sf::FloatRect(0.f, 0.f, 500.f, 500.f));
-//        view.setCenter(cursorPos.x, cursorPos.y);
-//        view.setSize(100, 100);
-
-        view.setSize(200, 200);
-        renderWindow.setView(view);
-        renderWindow.clear();
-        layerManager->update();
-        renderWindow.display();
-        view.reset(sf::FloatRect(0.f, 0.f, 500.f, 500.f));
     }
+
+    renderWindow->clear();
+    renderWindow->draw(*zoomSprite);
+    renderWindow->display();
 }
+
+void Zoom::zoom()
+{
+    renderWindow = new sf::RenderWindow(sf::VideoMode(500, 500), "Zoom Window");
+
+    zoomImage = new sf::Image();
+    sf::Vector2i position = layer->cursorToPixel(cursorPos);
+    sf::Rect rect(position.x - (500/(2*zoomFactor)), position.y - (500/(2*zoomFactor)), (500/zoomFactor), (500/zoomFactor));
+    zoomImage->create(500, 500);
+    zoomImage->copy(*layer->getImage(), 0, 0, rect);
+
+    texture.loadFromImage(*zoomImage);
+    zoomSprite = new sf::Sprite(texture);
+    zoomSprite->setScale(zoomFactor, zoomFactor);
+}
+
+
 

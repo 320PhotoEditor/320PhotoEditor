@@ -16,29 +16,30 @@ public:
     void init();
     void start(Layer* layer);
     void stop() {};
-    void run() {};
+    void run();
     bool isCursorOver(sf::Vector2i cursorPos);
     void mouseMoved(sf::Vector2i pos);
-    int zoom();
+    void zoom();
 
     void mousePressed(sf::Mouse::Button button);
-    void buttonPressed(GUIElement* button, int status);
+    int buttonPressed(GUIElement* button, int status);
 
     //reloads the image to render
-    void reload();
+//    int update();
 
     ~Zoom();
 
 private:
 
-    ButtonElement* color1Button;
-
-    sf::Texture texture;
-    sf::Sprite* sprite;
-    sf::Image* image;
-    sf::Vector2i cursorPos;
-    sf::Vector2i lastCursorPos;
+    int zoomFactor;
+    ButtonElement* addButton;
+    ButtonElement* subtractButton;
 
     Layer* layer;
-    LayerManager* layerManager;
+    sf::Texture texture;
+    sf::Sprite* zoomSprite;
+    sf::Image* zoomImage;
+    sf::Vector2i cursorPos;
+    sf::Vector2i lastCursorPos;
+    sf::RenderWindow* renderWindow;
 };

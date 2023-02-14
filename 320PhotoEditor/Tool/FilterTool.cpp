@@ -95,7 +95,11 @@ void FilterTool::buttonPressed(GUIElement* button, int status)
             for (b = 0; b < 500; b++)
             {
                 sf::Color color = layer->getImage()->getPixel(a, b);
-                layer->getImage()->setPixel(a, b, sf::Color(100, 1, 1, 50));
+
+                int red, green, blue;
+                red = (0.5 * color.r);
+
+                layer->getImage()->setPixel(a, b, sf::Color(red, color.g, color.b, 150));
             }
         }
 
@@ -110,6 +114,7 @@ void FilterTool::buttonPressed(GUIElement* button, int status)
             for (b = 0; b < 500; b++)
             {
                 sf::Color color = layer->getImage()->getPixel(a, b);
+
                 layer->getImage()->setPixel(a, b, sf::Color(1, 1, 1, 1));
             }
         }
