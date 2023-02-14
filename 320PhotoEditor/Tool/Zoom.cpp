@@ -39,20 +39,24 @@ void Zoom::mouseMoved(sf::Vector2i pos)
     cursorPos = pos;
 }
 
-void Zoom::buttonPressed(GUIElement* button, int status)
-{
+void Zoom::buttonPressed(GUIElement* button, int status) {
+    if (status != ButtonElement::ButtonState::DOWN)
+    {
+        return;
+    }
+    
     if (button == addButton)
     {
         zoomFactor++;
         std::cout << "zoom factor: " << zoomFactor << "\n";
-        return;
+//        return;
     }
 
     if (button == subtractButton)
     {
         zoomFactor--;
         std::cout << "zoom factor: " << zoomFactor << "\n";
-        return;
+//        return;
     }
 }
 
@@ -62,7 +66,7 @@ void Zoom::mousePressed(sf::Mouse::Button button)
     {
         if (layer->isCursorOver(cursorPos)) {
             zoom();
-            lastCursorPos = cursorPos;
+//            lastCursorPos = cursorPos;
         }
     }
 }
