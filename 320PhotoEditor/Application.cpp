@@ -7,7 +7,7 @@ Application::Application()
 Application::~Application()
 {
     delete toolManager;
-	delete window;
+	  delete window;
 }
 
 bool Application::init(std::string windowName)
@@ -36,16 +36,30 @@ bool Application::init(std::string windowName)
     mosOverTexture->loadFromFile("../assets/mos_button_over.png");
 
 
-    toolManager = new ToolManager(window);
+    sf::Texture* paintupTexture = new sf::Texture();
+    paintupTexture->loadFromFile("../assets/paint_button_up.png");
+    sf::Texture* paintdownTexture = new sf::Texture();
+    paintdownTexture->loadFromFile("../assets/paint_button_down.png");
+    sf::Texture* paintoverTexture = new sf::Texture();
+    paintoverTexture->loadFromFile("../assets/paint_button_over.png");
 
-    toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
-    toolManager->addTool(new PaintTool(upTexture, downTexture, overTexture));
-    toolManager->addTool(new MosaicTool(mosUpTexture, mosDownTexture, mosOverTexture));
+    toolManager = new ToolManager(window);
     
     layerManager = new LayerManager(window, { 800, 600 });
-    layerManager->createLayer(sf::Color::Blue);
+    layerManager->createLayer(sf::Color::White);
     toolManager->setSelectedLayer(layerManager->getSelectedLayer());
 
+    applicationMenu = new ApplicationMenu(window, layerManager);
+
+    toolManager->setApplicationMenu(applicationMenu);
+
+    toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
+    toolManager->addTool(new PaintTool(paintupTexture, paintdownTexture, paintoverTexture));
+    toolManager->addTool(new SelectTool(upTexture, downTexture, overTexture));
+    toolManager->addTool(new MosaicTool(mosUpTexture, mosDownTexture, mosOverTexture));
+
+    addInputListener(applicationMenu->getMenuContainer());
+    addInputListener(applicationMenu->getColorContainer());
     addInputListener(toolManager);
 
     return true;
@@ -65,6 +79,7 @@ void Application::run()
         }
         window->clear();
 
+        applicationMenu->update();
         layerManager->update();
         toolManager->update();
 

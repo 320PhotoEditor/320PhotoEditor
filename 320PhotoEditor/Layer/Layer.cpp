@@ -4,6 +4,9 @@ Layer::Layer(sf::Vector2u size, sf::Color color, sf::RenderWindow* renderWindow)
 {
 	image = new sf::Image();
 	image->create(size.x, size.y, color);
+	
+	mask = new sf::Image();
+	mask->create(size.x, size.y, sf::Color::White);
 
 	texture = sf::Texture();
 	texture.loadFromImage(*image);
@@ -18,6 +21,11 @@ Layer::Layer(sf::Vector2u size, sf::Color color, sf::RenderWindow* renderWindow)
 sf::Image* Layer::getImage()
 {
 	return image;
+}
+
+sf::Image* Layer::getMask()
+{
+	return mask;
 }
 
 sf::Sprite* Layer::getSprite()

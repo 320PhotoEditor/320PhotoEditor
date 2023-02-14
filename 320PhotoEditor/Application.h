@@ -6,9 +6,11 @@
 #include "GUI/ButtonElement.h"
 #include "Tool/TestTool.h"
 #include "Tool/PaintTool.h"
+#include "Tool/SelectTool.h"
 #include "Tool/MosaicTool.h"
 #include "Tool/ToolManager.h"
 #include "Layer/LayerManager.h"
+#include "ApplicationMenu.h"
 
 class Application
 {
@@ -33,6 +35,7 @@ private:
 
 	ToolManager* toolManager;
 	LayerManager* layerManager;
+	ApplicationMenu* applicationMenu;
 
 	std::set<InputListener*> inputListeners;
 };

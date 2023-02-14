@@ -60,6 +60,12 @@
     <ClCompile Include="GUI\ColorPickerElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Tool\SelectTool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplicationMenu.cpp">
+       <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Tool\MosaicTool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -110,6 +116,10 @@
     <ClInclude Include="GUI\ColorPickerElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Tool\SelectTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationMenu.h">
     <ClInclude Include="Tool\MosaicTool.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -4,6 +4,7 @@
 #include "../InputListener.h"
 #include "../Layer/Layer.h"
 #include "../GUI/GUIContainer.h"
+#include "../ApplicationMenu.h"
 
 class Tool : public InputListener
 {
@@ -24,8 +25,11 @@ public:
 	void setContainer(GUIContainer* container);
 	GUIContainer* getContainer();
 
+	void setMenu(ApplicationMenu* applicationMenu);
+
 protected:
 
 	GUIContainer* container;
+	ApplicationMenu* applicationMenu;
 };
 

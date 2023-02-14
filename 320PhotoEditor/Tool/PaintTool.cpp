@@ -4,6 +4,7 @@ PaintTool::PaintTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : To
 {
 	paintColor = sf::Color::Black;
 	lastCursorPos = { 0, 0 };
+	paintSize = 1;
 }
 
 void PaintTool::init()
@@ -15,23 +16,17 @@ void PaintTool::init()
 	sf::Texture* overTexture = new sf::Texture();
 	overTexture->loadFromFile("../assets/button_over.png");
 
-	color1Button = new ButtonElement(upTexture, downTexture, overTexture);
-	color1Button->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
-	container->addElement(color1Button);
-	color1Button->setSize({ .25, .25 });
-	color1Button->setPosition({ 0, 0 });
+	incrSizeButton = new ButtonElement(upTexture, downTexture, overTexture);
+	incrSizeButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	container->addElement(incrSizeButton);
+	incrSizeButton->setSize({ .25, .25 });
+	incrSizeButton->setPosition({ 0, 0 });
 
-	color2Button = new ButtonElement(upTexture, downTexture, overTexture);
-	color2Button->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
-	container->addElement(color2Button);
-	color2Button->setSize({ .25, .25 });
-	color2Button->setPosition({ 0.25, 0 });
-
-	color3Button = new ButtonElement(upTexture, downTexture, overTexture);
-	color3Button->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
-	container->addElement(color3Button);
-	color3Button->setSize({ .25, .25 });
-	color3Button->setPosition({ 0.5, 0 });
+	decrSizeButton = new ButtonElement(upTexture, downTexture, overTexture);
+	decrSizeButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	container->addElement(decrSizeButton);
+	decrSizeButton->setSize({ .25, .25 });
+	decrSizeButton->setPosition({ 0.25, 0 });
 }
 
 void PaintTool::start(Layer* layer)
@@ -69,17 +64,15 @@ void PaintTool::buttonPressed(GUIElement* button, int status)
 		return;
 	}
 
-	if (button == color1Button)
+	if (button == incrSizeButton)
 	{
-		paintColor = sf::Color::Black;
+		paintSize = std::min(++paintSize, 25);
+		std::cout << paintSize << std::endl;
 	}
-	if (button == color2Button)
+	else if (button == decrSizeButton)
 	{
-		paintColor = sf::Color::White;
-	}
-	if (button == color3Button)
-	{
-		paintColor = sf::Color::Blue;
+		paintSize = std::max(--paintSize, 1);
+		std::cout << paintSize << std::endl;
 	}
 }
 
@@ -87,13 +80,30 @@ void PaintTool::paint()
 {
 	if (isPainting && layer->isCursorOver(cursorPos))
 	{
+		paintColor = applicationMenu->getForegroundColor();
+
 		sf::Vector2i paintPos = layer->cursorToPixel(cursorPos);
 		sf::Vector2i lastPaintPos = layer->isCursorOver(lastCursorPos) ? layer->cursorToPixel(lastCursorPos) : paintPos;
 
 		for (float f = 0; f < 1; f += 0.1)
 		{
 			sf::Vector2i pos = lastPaintPos + (paintPos - lastPaintPos) * f;
-			layer->getImage()->setPixel(pos.x, pos.y, paintColor);
+			if (layer->getMask()->getPixel(pos.x, pos.y) == sf::Color::White)
+			{
+				//TODO: this slows down alot when painting with the radius being large, maybe time to implement compute shaders or use some other method of finding what pixel is in the circle
+				//or multhithread might work
+				
+				//loop through the bounding box of the circle and find the pixels that are withing the circle by distance
+				for (int x = pos.x - paintSize; x != pos.x + paintSize; x++)
+				{
+					for (int y = pos.y - paintSize; y != pos.y + paintSize; y++)
+					{
+						int distance = sqrt(pow(pos.x - x, 2) + pow(pos.y - y, 2));
+						if (distance <= paintSize)
+							layer->getImage()->setPixel(x, y, paintColor);
+					}
+				}
+			}
 		}
 
 		layer->reload();
