@@ -1,4 +1,6 @@
 #include "Application.h"
+#include "FilterTool.h"
+#include "Zoom.h"
 
 Application::Application()
 {
@@ -12,7 +14,7 @@ Application::~Application()
 
 bool Application::init(std::string windowName)
 {
-    window = new sf::RenderWindow(sf::VideoMode(1280, 720), windowName);
+    window = new sf::RenderWindow(sf::VideoMode(2000, 1500), windowName);
 
     if (!window->isOpen())
     {
@@ -28,13 +30,13 @@ bool Application::init(std::string windowName)
     downTexture->loadFromFile("../assets/button_down.png");
     sf::Texture* overTexture = new sf::Texture();
     overTexture->loadFromFile("../assets/button_over.png");
+    
     sf::Texture* mosUpTexture = new sf::Texture();
     mosUpTexture->loadFromFile("../assets/mos_button_up.png");
     sf::Texture* mosDownTexture = new sf::Texture();
     mosDownTexture->loadFromFile("../assets/mos_button_down.png");
     sf::Texture* mosOverTexture = new sf::Texture();
     mosOverTexture->loadFromFile("../assets/mos_button_over.png");
-
 
     sf::Texture* paintupTexture = new sf::Texture();
     paintupTexture->loadFromFile("../assets/paint_button_up.png");
@@ -43,10 +45,14 @@ bool Application::init(std::string windowName)
     sf::Texture* paintoverTexture = new sf::Texture();
     paintoverTexture->loadFromFile("../assets/paint_button_over.png");
 
+    layerManager = new LayerManager(window, { 500, 500 });
+    layerManager->createLayer(sf::Color::Blue);
+
     toolManager = new ToolManager(window);
     
     layerManager = new LayerManager(window, { 800, 600 });
     layerManager->createLayer(sf::Color::White);
+    
     toolManager->setSelectedLayer(layerManager->getSelectedLayer());
 
     applicationMenu = new ApplicationMenu(window, layerManager);
@@ -57,6 +63,8 @@ bool Application::init(std::string windowName)
     toolManager->addTool(new PaintTool(paintupTexture, paintdownTexture, paintoverTexture));
     toolManager->addTool(new SelectTool(upTexture, downTexture, overTexture));
     toolManager->addTool(new MosaicTool(mosUpTexture, mosDownTexture, mosOverTexture));
+    toolManager->addTool(new FilterTool(upTexture, downTexture, overTexture));
+    toolManager->addTool(new Zoom(upTexture, downTexture, overTexture));
 
     addInputListener(applicationMenu->getMenuContainer());
     addInputListener(applicationMenu->getColorContainer());
