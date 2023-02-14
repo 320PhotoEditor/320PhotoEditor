@@ -22,7 +22,7 @@ public:
     void zoom();
 
     void mousePressed(sf::Mouse::Button button);
-    int buttonPressed(GUIElement* button, int status);
+    void buttonPressed(GUIElement* button, int status);
 
     //reloads the image to render
 //    int update();

@@ -20,13 +20,13 @@ void Zoom::init() {
     addButton->setUpdateFunction([this](GUIElement *element, int status) { this->buttonPressed(element, status); });
     container->addElement(addButton);
     addButton->setSize({0.25, 0.25});
-    addButton->setPosition({0.75, 0.75});
+    addButton->setPosition({0.5, 0.25});
 
     subtractButton = new ButtonElement(upTexture, downTexture, overTexture);
     subtractButton->setUpdateFunction([this](GUIElement *element, int status) { this->buttonPressed(element, status); });
     container->addElement(subtractButton);
     subtractButton->setSize({0.25, 0.25});
-    subtractButton->setPosition({0.5, 0.75});
+    subtractButton->setPosition({0.25, 0.25});
 }
 
 void Zoom::start(Layer* layer)
@@ -39,20 +39,20 @@ void Zoom::mouseMoved(sf::Vector2i pos)
     cursorPos = pos;
 }
 
-int Zoom::buttonPressed(GUIElement* button, int status)
+void Zoom::buttonPressed(GUIElement* button, int status)
 {
     if (button == addButton)
     {
         zoomFactor++;
-        std::cout << zoomFactor;
-        return(0);
+        std::cout << "zoom factor: " << zoomFactor << "\n";
+        return;
     }
 
     if (button == subtractButton)
     {
         zoomFactor--;
-        std::cout << zoomFactor;
-        return(0);
+        std::cout << "zoom factor: " << zoomFactor << "\n";
+        return;
     }
 }
 
