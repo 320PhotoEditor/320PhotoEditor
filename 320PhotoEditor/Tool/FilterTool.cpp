@@ -20,12 +20,6 @@ void FilterTool::init()
     bwButton->setSize({ .25, .25 });
     bwButton->setPosition({ 0.25, 0.5 });
 
-    windowButton = new ButtonElement(upTexture, downTexture, overTexture);
-    windowButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
-    container->addElement(windowButton);
-    windowButton->setSize({ .25, .25 });
-    windowButton->setPosition({ 0.5, 0.5 });
-
     orangeButton = new ButtonElement(upTexture, downTexture, overTexture);
     orangeButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
     container->addElement(orangeButton);
@@ -68,23 +62,6 @@ void FilterTool::buttonPressed(GUIElement* button, int status)
         }
 
         layer->reload();
-    }
-
-    if (button == windowButton)
-    {
-        sf::RenderWindow newWindow(sf::VideoMode(500, 500), "Zoom Window");
-        while (newWindow.isOpen())
-        {
-            sf::Event event;
-            while (newWindow.pollEvent(event))
-            {
-                switch (event.type) {
-                    case sf::Event::Closed:
-                        newWindow.close();
-                        break;
-                }
-            }
-        }
     }
 
     if (button == orangeButton)

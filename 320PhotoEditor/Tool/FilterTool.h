@@ -21,7 +21,6 @@ public:
 private:
 
     ButtonElement* bwButton;
-    ButtonElement* windowButton;
     ButtonElement* orangeButton;
     ButtonElement* refreshButton;
 //    sf::Vector2i cursorPos;
