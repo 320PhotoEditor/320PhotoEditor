@@ -9,7 +9,7 @@ Application::Application()
 Application::~Application()
 {
     delete toolManager;
-	delete window;
+	  delete window;
 }
 
 bool Application::init(std::string windowName)
@@ -25,31 +25,49 @@ bool Application::init(std::string windowName)
     window->setKeyRepeatEnabled(false);
 
     sf::Texture* upTexture = new sf::Texture();
-//<<<<<<< HEAD
-/*    upTexture->loadFromFile("..//assets//button_up.png");
-    sf::Texture* downTexture = new sf::Texture();
-    downTexture->loadFromFile("..//assets//button_down.png");
-    sf::Texture* overTexture = new sf::Texture();
-    overTexture->loadFromFile("..//assets//button_over.png");
-//=======
-*/  upTexture->loadFromFile("../assets/button_up.png");
+    upTexture->loadFromFile("../assets/button_up.png");
     sf::Texture* downTexture = new sf::Texture();
     downTexture->loadFromFile("../assets/button_down.png");
     sf::Texture* overTexture = new sf::Texture();
     overTexture->loadFromFile("../assets/button_over.png");
-//>>>>>>> main
+    
+    sf::Texture* mosUpTexture = new sf::Texture();
+    mosUpTexture->loadFromFile("../assets/mos_button_up.png");
+    sf::Texture* mosDownTexture = new sf::Texture();
+    mosDownTexture->loadFromFile("../assets/mos_button_down.png");
+    sf::Texture* mosOverTexture = new sf::Texture();
+    mosOverTexture->loadFromFile("../assets/mos_button_over.png");
 
-    toolManager = new ToolManager(window);
-
-    toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
-    toolManager->addTool(new PaintTool(upTexture, downTexture, overTexture));
-    toolManager->addTool(new FilterTool(upTexture, downTexture, overTexture));
-    toolManager->addTool(new Zoom(upTexture, downTexture, overTexture));
+    sf::Texture* paintupTexture = new sf::Texture();
+    paintupTexture->loadFromFile("../assets/paint_button_up.png");
+    sf::Texture* paintdownTexture = new sf::Texture();
+    paintdownTexture->loadFromFile("../assets/paint_button_down.png");
+    sf::Texture* paintoverTexture = new sf::Texture();
+    paintoverTexture->loadFromFile("../assets/paint_button_over.png");
 
     layerManager = new LayerManager(window, { 500, 500 });
     layerManager->createLayer(sf::Color::Blue);
+
+    toolManager = new ToolManager(window);
+    
+    layerManager = new LayerManager(window, { 800, 600 });
+    layerManager->createLayer(sf::Color::White);
+    
     toolManager->setSelectedLayer(layerManager->getSelectedLayer());
 
+    applicationMenu = new ApplicationMenu(window, layerManager);
+
+    toolManager->setApplicationMenu(applicationMenu);
+
+    toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
+    toolManager->addTool(new PaintTool(paintupTexture, paintdownTexture, paintoverTexture));
+    toolManager->addTool(new SelectTool(upTexture, downTexture, overTexture));
+    toolManager->addTool(new MosaicTool(mosUpTexture, mosDownTexture, mosOverTexture));
+    toolManager->addTool(new FilterTool(upTexture, downTexture, overTexture));
+    toolManager->addTool(new Zoom(upTexture, downTexture, overTexture));
+
+    addInputListener(applicationMenu->getMenuContainer());
+    addInputListener(applicationMenu->getColorContainer());
     addInputListener(toolManager);
 
     return true;
@@ -69,6 +87,7 @@ void Application::run()
         }
         window->clear();
 
+        applicationMenu->update();
         layerManager->update();
         toolManager->update();
 

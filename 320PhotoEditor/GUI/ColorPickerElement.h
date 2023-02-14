@@ -18,9 +18,16 @@ public:
 	sf::Color getPickedColor();
 	void setPickedColor(sf::Color color);
 
+	void setLightness(float lightness);
+	float getLightness();
+
 private:
 
+	void calcColor();
+
 	sf::Vector2i cursorPos;
+
+	float lightness;
 
 	bool dragging = false;
 

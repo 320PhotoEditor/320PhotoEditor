@@ -3,7 +3,7 @@
 ToolManager::ToolManager(sf::RenderWindow* renderWindow)
 {
 	this->renderWindow = renderWindow;
-	toolSelector = new GUIContainer({0, 0}, {.2, .3}, renderWindow);
+	toolSelector = new GUIContainer({0, 0.025}, {.2, .3}, renderWindow);
 	toolSelector->setVisible(true);
 
 	currentTool = nullptr;
@@ -23,8 +23,8 @@ void ToolManager::addTool(Tool* tool)
 	button->setPosition(sf::Vector2f(((int)tools.size() % PANEL_ROWS) * (1.0 / PANEL_ROWS), (int)(tools.size() / PANEL_ROWS) * (1.0 / PANEL_ROWS) * 0.666));
 
 	//create a tool config container for the tool
-	tool->setContainer(new GUIContainer({ 0, 0 }, { .2, .2 }, renderWindow, true));
-
+	tool->setContainer(new GUIContainer({ 0, 0.025 }, { .2, .2 }, renderWindow, true));
+	tool->setMenu(applicationMenu);
 	tool->init();
 
 	tools.emplace(std::make_pair(button, tool));
@@ -60,6 +60,11 @@ void ToolManager::restartTool()
 	}
 }
 
+void ToolManager::setApplicationMenu(ApplicationMenu* applicationMenu)
+{
+	this->applicationMenu = applicationMenu;
+}
+
 ToolManager::~ToolManager()
 {
 	//cleanup buttons
@@ -93,13 +98,10 @@ void ToolManager::mousePressed(sf::Mouse::Button button)
 	if (currentTool)
 	{
 		currentTool->mousePressed(button);
+		currentTool->getContainer()->mousePressed(button);
 	}
 
 	toolSelector->mousePressed(button);
-	for (auto tool : tools)
-	{
-		tool.second->getContainer()->mousePressed(button);
-	}
 }
 
 void ToolManager::mouseReleased(sf::Mouse::Button button)
@@ -107,13 +109,10 @@ void ToolManager::mouseReleased(sf::Mouse::Button button)
 	if (currentTool)
 	{
 		currentTool->mouseReleased(button);
+		currentTool->getContainer()->mouseReleased(button);
 	}
 
 	toolSelector->mouseReleased(button);
-	for (auto tool : tools)
-	{
-		tool.second->getContainer()->mouseReleased(button);
-	}
 }
 
 void ToolManager::mouseScrolled(int delta)
@@ -129,13 +128,10 @@ void ToolManager::mouseMoved(sf::Vector2i pos)
 	if (currentTool)
 	{
 		currentTool->mouseMoved(pos);
+		currentTool->getContainer()->mouseMoved(pos);
 	}
 
 	toolSelector->mouseMoved(pos);
-	for (auto tool : tools)
-	{
-		tool.second->getContainer()->mouseMoved(pos);
-	}
 }
 
 void ToolManager::buttonPressed(GUIElement* button, int status)
