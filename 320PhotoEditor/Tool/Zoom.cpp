@@ -3,7 +3,6 @@
 Zoom::Zoom(sf::Texture *up, sf::Texture *down, sf::Texture *over) : Tool(up, down, over)
 {
     texture = sf::Texture();
-    lastCursorPos = {0, 0};
     renderWindow = nullptr;
     zoomFactor = 3;
 }
@@ -44,7 +43,7 @@ void Zoom::buttonPressed(GUIElement* button, int status) {
     {
         return;
     }
-    
+
     if (button == addButton)
     {
         zoomFactor++;
@@ -66,7 +65,6 @@ void Zoom::mousePressed(sf::Mouse::Button button)
     {
         if (layer->isCursorOver(cursorPos)) {
             zoom();
-//            lastCursorPos = cursorPos;
         }
     }
 }

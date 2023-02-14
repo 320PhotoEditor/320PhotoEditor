@@ -40,6 +40,5 @@ private:
     sf::Sprite* zoomSprite;
     sf::Image* zoomImage;
     sf::Vector2i cursorPos;
-    sf::Vector2i lastCursorPos;
     sf::RenderWindow* renderWindow;
 };
