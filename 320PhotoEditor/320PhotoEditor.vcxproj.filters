@@ -120,6 +120,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ApplicationMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Tool\MosaicTool.h">
       <Filter>Header Files</Filter>
     </ClInclude>

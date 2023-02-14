@@ -153,7 +153,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="GUI\PanelElement.cpp" />
     <ClCompile Include="Tool\SelectTool.cpp" />
-    <ClCompile Include="Tool\MosaicTool.cpp">
+    <ClCompile Include="Tool\MosaicTool.cpp" />
     <ClCompile Include="Tool\PaintTool.cpp" />
     <ClCompile Include="Tool\TestTool.cpp" />
     <ClCompile Include="Tool\ToolManager.cpp" />
@@ -173,7 +173,7 @@
     <ClInclude Include="GUI\PanelElement.h" />
     <ClInclude Include="Layer\LayerManager.h" />
     <ClInclude Include="Tool\SelectTool.h" />
-    <ClInclude Include="Tool\MosaicTool.h">
+    <ClInclude Include="Tool\MosaicTool.h" />
     <ClInclude Include="Tool\PaintTool.h" />
     <ClInclude Include="Tool\TestTool.h" />
     <ClInclude Include="Tool\ToolManager.h" />
