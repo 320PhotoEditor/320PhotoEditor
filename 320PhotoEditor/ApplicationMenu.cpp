@@ -80,7 +80,7 @@ void ApplicationMenu::buttonPressed(GUIElement* button, int status)
 
 	//TODO: add some sort of open file dialog
 	//for now just type in the file path
-	std::string filename = "";
+	std::string filename = "C:\\Users\\Conso\\Pictures\\testimage.png";
 
 	if (button == fileMenuButton)
 	{
@@ -94,6 +94,7 @@ void ApplicationMenu::buttonPressed(GUIElement* button, int status)
 		test.close();
 
 		layerManager->getSelectedLayer()->getImage()->loadFromFile(filename);
+		layerManager->getSelectedLayer()->reload();
 	}
 	else if (button == incrLightness)
 	{

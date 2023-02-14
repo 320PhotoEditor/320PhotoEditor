@@ -24,13 +24,14 @@ private:
 
 	void paint();
 
-	ButtonElement* color1Button;
-	ButtonElement* color2Button;
-	ButtonElement* color3Button;
+	ButtonElement* incrSizeButton;
+	ButtonElement* decrSizeButton;
 
 	bool isPainting = false;
 
 	sf::Color paintColor;
+
+	int paintSize = 1;
 
 	sf::Vector2i cursorPos;
 	sf::Vector2i lastCursorPos;

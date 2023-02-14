@@ -15,23 +15,17 @@ void PaintTool::init()
 	sf::Texture* overTexture = new sf::Texture();
 	overTexture->loadFromFile("../assets/button_over.png");
 
-	color1Button = new ButtonElement(upTexture, downTexture, overTexture);
-	color1Button->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
-	container->addElement(color1Button);
-	color1Button->setSize({ .25, .25 });
-	color1Button->setPosition({ 0, 0 });
+	incrSizeButton = new ButtonElement(upTexture, downTexture, overTexture);
+	incrSizeButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	container->addElement(incrSizeButton);
+	incrSizeButton->setSize({ .25, .25 });
+	incrSizeButton->setPosition({ 0, 0 });
 
-	color2Button = new ButtonElement(upTexture, downTexture, overTexture);
-	color2Button->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
-	container->addElement(color2Button);
-	color2Button->setSize({ .25, .25 });
-	color2Button->setPosition({ 0.25, 0 });
-
-	color3Button = new ButtonElement(upTexture, downTexture, overTexture);
-	color3Button->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
-	container->addElement(color3Button);
-	color3Button->setSize({ .25, .25 });
-	color3Button->setPosition({ 0.5, 0 });
+	decrSizeButton = new ButtonElement(upTexture, downTexture, overTexture);
+	decrSizeButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	container->addElement(decrSizeButton);
+	decrSizeButton->setSize({ .25, .25 });
+	decrSizeButton->setPosition({ 0.25, 0 });
 }
 
 void PaintTool::start(Layer* layer)
@@ -69,17 +63,15 @@ void PaintTool::buttonPressed(GUIElement* button, int status)
 		return;
 	}
 
-	if (button == color1Button)
+	if (button == incrSizeButton)
 	{
-		paintColor = sf::Color::Black;
+		paintSize = std::min(paintSize+1, 25);
+		std::cout << paintSize << std::endl;
 	}
-	if (button == color2Button)
+	else if (button == decrSizeButton)
 	{
-		paintColor = sf::Color::White;
-	}
-	if (button == color3Button)
-	{
-		paintColor = sf::Color::Blue;
+		paintSize = std::max(paintSize - 1, 1);
+		std::cout << paintSize << std::endl;
 	}
 }
 
