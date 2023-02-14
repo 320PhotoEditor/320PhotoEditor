@@ -14,12 +14,9 @@ public:
 	void run() {};
 
 	void keyPressed(sf::Keyboard::Key key);
-//<<<<<<< HEAD
-//    void mousePressed(sf::Mouse::Button button);
-//=======
 
-	void buttonPressed(GUIElement* button, int status) { }
-//>>>>>>> main
+	void buttonPressed(GUIElement* button, int status) {}
+
 private:
 
 	Layer* layer;

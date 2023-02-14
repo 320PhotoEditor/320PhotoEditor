@@ -1,6 +1,4 @@
 #include "Application.h"
-#include "FilterTool.h"
-#include "Zoom.h"
 
 Application::Application()
 {
@@ -14,7 +12,7 @@ Application::~Application()
 
 bool Application::init(std::string windowName)
 {
-    window = new sf::RenderWindow(sf::VideoMode(2000, 1500), windowName);
+    window = new sf::RenderWindow(sf::VideoMode(1280, 720), windowName);
 
     if (!window->isOpen())
     {
@@ -44,9 +42,6 @@ bool Application::init(std::string windowName)
     paintdownTexture->loadFromFile("../assets/paint_button_down.png");
     sf::Texture* paintoverTexture = new sf::Texture();
     paintoverTexture->loadFromFile("../assets/paint_button_over.png");
-
-    layerManager = new LayerManager(window, { 500, 500 });
-    layerManager->createLayer(sf::Color::Blue);
 
     toolManager = new ToolManager(window);
     

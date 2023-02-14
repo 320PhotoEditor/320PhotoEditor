@@ -1,11 +1,8 @@
 #pragma once
 
 #include "Tool.h"
-#include "GUI/ButtonElement.h"
-#include "Layer/LayerManager.h"
+#include "../GUI/ButtonElement.h"
 #include "ToolManager.h"
-#include "InputListener.h"
-#include "Application.h"
 
 class Zoom : public Tool
 {
@@ -17,7 +14,7 @@ public:
     void start(Layer* layer);
     void stop() {};
     void run();
-    bool isCursorOver(sf::Vector2i cursorPos);
+
     void mouseMoved(sf::Vector2i pos);
     void zoom();
 

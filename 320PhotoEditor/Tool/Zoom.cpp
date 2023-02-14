@@ -93,7 +93,7 @@ void Zoom::zoom()
 
     zoomImage = new sf::Image();
     sf::Vector2i position = layer->cursorToPixel(cursorPos);
-    sf::Rect rect(position.x - (500/(2*zoomFactor)), position.y - (500/(2*zoomFactor)), (500/zoomFactor), (500/zoomFactor));
+    sf::IntRect rect(position.x - (500/(2*zoomFactor)), position.y - (500/(2*zoomFactor)), (500/zoomFactor), (500/zoomFactor));
     zoomImage->create(500, 500);
     zoomImage->copy(*layer->getImage(), 0, 0, rect);
 
