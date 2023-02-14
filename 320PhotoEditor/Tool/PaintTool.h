@@ -31,7 +31,7 @@ private:
 
 	sf::Color paintColor;
 
-	int paintSize = 1;
+	int paintSize;
 
 	sf::Vector2i cursorPos;
 	sf::Vector2i lastCursorPos;

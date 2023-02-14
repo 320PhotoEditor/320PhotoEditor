@@ -4,6 +4,7 @@ PaintTool::PaintTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : To
 {
 	paintColor = sf::Color::Black;
 	lastCursorPos = { 0, 0 };
+	paintSize = 1;
 }
 
 void PaintTool::init()
@@ -65,12 +66,12 @@ void PaintTool::buttonPressed(GUIElement* button, int status)
 
 	if (button == incrSizeButton)
 	{
-		paintSize = std::min(paintSize+1, 25);
+		paintSize = std::min(++paintSize, 25);
 		std::cout << paintSize << std::endl;
 	}
 	else if (button == decrSizeButton)
 	{
-		paintSize = std::max(paintSize - 1, 1);
+		paintSize = std::max(--paintSize, 1);
 		std::cout << paintSize << std::endl;
 	}
 }
@@ -89,7 +90,19 @@ void PaintTool::paint()
 			sf::Vector2i pos = lastPaintPos + (paintPos - lastPaintPos) * f;
 			if (layer->getMask()->getPixel(pos.x, pos.y) == sf::Color::White)
 			{
-				layer->getImage()->setPixel(pos.x, pos.y, paintColor);
+				//TODO: this slows down alot when painting with the radius being large, maybe time to implement compute shaders or use some other method of finding what pixel is in the circle
+				//or multhithread might work
+				
+				//loop through the bounding box of the circle and find the pixels that are withing the circle by distance
+				for (int x = pos.x - paintSize; x != pos.x + paintSize; x++)
+				{
+					for (int y = pos.y - paintSize; y != pos.y + paintSize; y++)
+					{
+						int distance = sqrt(pow(pos.x - x, 2) + pow(pos.y - y, 2));
+						if (distance <= paintSize)
+							layer->getImage()->setPixel(x, y, paintColor);
+					}
+				}
 			}
 		}
 
