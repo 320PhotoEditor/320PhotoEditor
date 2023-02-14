@@ -57,9 +57,9 @@ void FilterTool::buttonPressed(GUIElement* button, int status)
         int buttonPress = 0;
         sf::Color color;
         int a,b;
-        for (a = 0; a < 500; a++)
+        for (a = 0; a < layer->getImage()->getSize().x; a++)
         {
-            for (b = 0; b < 500; b++)
+            for (b = 0; b < layer->getImage()->getSize().y; b++)
             {
                 sf::Color color2 = layer->getImage()->getPixel(a, b);
                 int grayscale = ((color2.r * 0.299) + (color2.g * 0.587) + (color2.b * 0.114));
@@ -90,9 +90,9 @@ void FilterTool::buttonPressed(GUIElement* button, int status)
     if (button == orangeButton)
     {
         int a,b;
-        for (a = 0; a < 500; a++)
+        for (a = 0; a < layer->getImage()->getSize().x; a++)
         {
-            for (b = 0; b < 500; b++)
+            for (b = 0; b < layer->getImage()->getSize().y; b++)
             {
                 sf::Color color = layer->getImage()->getPixel(a, b);
 
@@ -109,9 +109,9 @@ void FilterTool::buttonPressed(GUIElement* button, int status)
     if (button == refreshButton)
     {
         int a,b;
-        for (a = 0; a < 500; a++)
+        for (a = 0; a < layer->getImage()->getSize().x; a++)
         {
-            for (b = 0; b < 500; b++)
+            for (b = 0; b < layer->getImage()->getSize().y; b++)
             {
                 sf::Color color = layer->getImage()->getPixel(a, b);
 
