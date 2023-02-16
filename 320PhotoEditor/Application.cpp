@@ -7,7 +7,7 @@ Application::Application()
 Application::~Application()
 {
     delete toolManager;
-	  delete window;
+	delete window;
 }
 
 bool Application::init(std::string windowName)
@@ -76,8 +76,11 @@ void Application::run()
         while (window->pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
+            {
                 window->close();
+            }
 
+            updateWindowListeners(event);
             updateInputListeners(event);
         }
         window->clear();
@@ -138,6 +141,19 @@ void Application::updateInputListeners(sf::Event event)
         for (const auto& listener : inputListeners)
         {
             listener->mouseMoved(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
+        }
+        break;
+    }
+}
+
+void Application::updateWindowListeners(sf::Event event)
+{
+    switch (event.type)
+    {
+    case sf::Event::Resized:
+        for (const auto& listener : windowListeners)
+        {
+            listener->windowResize();
         }
         break;
     }

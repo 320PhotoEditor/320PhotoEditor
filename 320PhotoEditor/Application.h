@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "InputListener.h"
+#include "WindowListener.h"
 #include "GUI/GUIContainer.h"
 #include "GUI/ButtonElement.h"
 #include "Tool/TestTool.h"
@@ -32,6 +33,7 @@ public:
 private:
 
 	void updateInputListeners(sf::Event event);
+	void updateWindowListeners(sf::Event event);
 
 	sf::RenderWindow* window;
 
@@ -40,4 +42,5 @@ private:
 	ApplicationMenu* applicationMenu;
 
 	std::set<InputListener*> inputListeners;
+	std::set<WindowListener*> windowListeners;
 };
