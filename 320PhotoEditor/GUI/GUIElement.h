@@ -25,6 +25,9 @@ public:
 	//set position relative to parent gui
 	virtual void setPosition(sf::Vector2f pos) = 0;
 
+	//rebuilds the element by resetting the size and position
+	void rebuild();
+
 	void setContainer(GUIContainer* container);
 
 	bool isCursorOver(sf::Vector2i cursorPos);

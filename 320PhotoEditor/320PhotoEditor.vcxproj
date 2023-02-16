@@ -141,7 +141,6 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ApplicationMenu.cpp" />
-    <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="GUI\ColorPickerElement.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="GUI\ButtonElement.cpp" />
@@ -161,11 +160,11 @@
     <ClCompile Include="Tool\ToolManager.cpp" />
     <ClCompile Include="Tool\Tool.cpp" />
     <ClCompile Include="Tool\Zoom.cpp" />
+    <ClCompile Include="WindowListener.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationMenu.h" />
-    <ClInclude Include="ComputeShader.h" />
     <ClInclude Include="GUI\ColorPickerElement.h" />
     <ClInclude Include="GUI\ButtonElement.h" />
     <ClInclude Include="Common.h" />
@@ -184,6 +183,7 @@
     <ClInclude Include="Tool\ToolManager.h" />
     <ClInclude Include="Tool\Tool.h" />
     <ClInclude Include="Tool\Zoom.h" />
+    <ClInclude Include="WindowListener.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -65,6 +65,10 @@ bool Application::init(std::string windowName)
     addInputListener(applicationMenu->getColorContainer());
     addInputListener(toolManager);
 
+    addWindowListener(applicationMenu->getMenuContainer());
+    addWindowListener(applicationMenu->getColorContainer());
+    addWindowListener(toolManager);
+
     return true;
 }
 
@@ -101,6 +105,16 @@ void Application::addInputListener(InputListener* listener)
 void Application::removeInputListener(InputListener* listener)
 {
     inputListeners.erase(listener);
+}
+
+void Application::addWindowListener(WindowListener* listener)
+{
+    windowListeners.insert(listener);
+}
+
+void Application::removeWindowListener(WindowListener* listener)
+{
+    windowListeners.erase(listener);
 }
 
 void Application::updateInputListeners(sf::Event event)
@@ -151,6 +165,8 @@ void Application::updateWindowListeners(sf::Event event)
     switch (event.type)
     {
     case sf::Event::Resized:
+
+        std::cout << window->getSize().x << std::endl;
         for (const auto& listener : windowListeners)
         {
             listener->windowResize();

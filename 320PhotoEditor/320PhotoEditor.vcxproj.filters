@@ -78,7 +78,7 @@
     <ClCompile Include="Tool\FilterTool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ComputeShader.cpp">
+    <ClCompile Include="WindowListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -143,7 +143,7 @@
     <ClInclude Include="Tool\FilterTool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ComputeShader.h">
+    <ClInclude Include="WindowListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

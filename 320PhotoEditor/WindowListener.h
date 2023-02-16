@@ -6,5 +6,5 @@ class WindowListener
 {
 public:
 
-	virtual void windowResize();
+	virtual void windowResize() {};
 };

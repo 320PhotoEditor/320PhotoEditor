@@ -13,6 +13,12 @@ void GUIElement::setVisible(bool visible)
 	this->visible = visible;
 }
 
+void GUIElement::rebuild()
+{
+	setSize(size);
+	setPosition(pos);
+}
+
 void GUIElement::setContainer(GUIContainer* container)
 {
 	this->container = container;

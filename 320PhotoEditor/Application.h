@@ -30,6 +30,9 @@ public:
 	void addInputListener(InputListener* listener);
 	void removeInputListener(InputListener* listener);
 
+	void addWindowListener(WindowListener* listener);
+	void removeWindowListener(WindowListener* listener);
+
 private:
 
 	void updateInputListeners(sf::Event event);

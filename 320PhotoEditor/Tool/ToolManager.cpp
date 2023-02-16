@@ -134,6 +134,11 @@ void ToolManager::mouseMoved(sf::Vector2i pos)
 	toolSelector->mouseMoved(pos);
 }
 
+void ToolManager::windowResize()
+{
+	toolSelector->windowResize();
+}
+
 void ToolManager::buttonPressed(GUIElement* button, int status)
 {
 	if (status == ButtonElement::DOWN)
