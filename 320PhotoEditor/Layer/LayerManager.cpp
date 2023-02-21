@@ -4,12 +4,17 @@ LayerManager::LayerManager(sf::RenderWindow* renderWindow, sf::Vector2u projectI
 {
 	this->renderWindow = renderWindow;
 	this->projectImageSize = projectImageSize;
+
+	selectionContainer = new GUIContainer({0, 0.25 }, {.2, .75}, renderWindow, true);
 }
 
 void LayerManager::createLayer(sf::Color color)
 {
-	selectedLayer = new Layer(projectImageSize, color, renderWindow);
-	sf::Sprite* sprite = selectedLayer->getSprite();
+	Layer* layer = new Layer(projectImageSize, color, renderWindow);
+	
+	ButtonElement* button = createLayerButton(layer->getImage());
+
+	sf::Sprite* sprite = layer->getSprite();
 
 	sf::Vector2u imageCenter = projectImageSize / 2;
 	sf::Vector2u screenCenter = renderWindow->getSize() / 2;
@@ -18,7 +23,8 @@ void LayerManager::createLayer(sf::Color color)
 
 	sprite->setPosition(offset);
 
-	layers.insert(selectedLayer);
+	layers.push_back(std::make_pair(layer, button));
+	selectedLayer = layers.size() - 1;
 }
 
 void LayerManager::createLayerFromFile(std::string filePath)
@@ -31,9 +37,9 @@ void LayerManager::createLayerFromFile(std::string filePath)
 		return;
 	}
 
-	selectedLayer = layer;
+	ButtonElement* button = createLayerButton(layer->getImage());
 
-	sf::Sprite* sprite = selectedLayer->getSprite();
+	sf::Sprite* sprite = layer->getSprite();
 
 	sf::Vector2u imageCenter = projectImageSize / 2;
 	sf::Vector2u screenCenter = renderWindow->getSize() / 2;
@@ -42,23 +48,41 @@ void LayerManager::createLayerFromFile(std::string filePath)
 
 	sprite->setPosition(offset);
 
-	layers.insert(selectedLayer);
+	layers.push_back(std::make_pair(layer, button));
+	selectedLayer = layers.size() - 1;
 }
 
 void LayerManager::removeSelectedLayer()
 {
-	layers.erase(selectedLayer);
+	selectionContainer->removeElement(layers.at(selectedLayer).second);
+	delete layers.at(selectedLayer).second;
+	layers.erase(layers.begin() + selectedLayer);
+	delete layers.at(selectedLayer).first;
 }
 
 Layer* LayerManager::getSelectedLayer()
 {
-	return selectedLayer;
+	return layers.at(selectedLayer).first;
 }
 
 void LayerManager::update()
 {
-	for (Layer* l : layers)
+	selectionContainer->render();
+
+	for (auto l : layers)
 	{
-		renderWindow->draw(*l->getSprite());
+		renderWindow->draw(*l.first->getSprite());
 	}
+}
+
+ButtonElement* LayerManager::createLayerButton(sf::Image* img)
+{
+	sf::Texture* tex = new sf::Texture();
+	tex->loadFromImage(*img);
+	ButtonElement* button = new ButtonElement(tex, tex, tex);
+	selectionContainer->addElement(button);
+	button->setPosition({ 0,0 });
+	button->setSize({ 0.3, 0.075 });
+
+	return button;
 }

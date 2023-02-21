@@ -3,6 +3,7 @@
 #include "../Common.h"
 #include "../GUI/GUIContainer.h"
 #include "Layer.h"
+#include "../GUI/ButtonElement.h"
 
 //handles layer selection gui
 class LayerManager
@@ -26,11 +27,15 @@ public:
 
 private:
 
+	ButtonElement* createLayerButton(sf::Image* img);
+
 	sf::RenderWindow* renderWindow;
 
 	sf::Vector2u projectImageSize;
 
-	std::set<Layer*> layers;
+	std::vector<std::pair<Layer*, ButtonElement*>> layers;
 
-	Layer* selectedLayer;
+	unsigned int selectedLayer;
+
+	GUIContainer* selectionContainer;
 };
