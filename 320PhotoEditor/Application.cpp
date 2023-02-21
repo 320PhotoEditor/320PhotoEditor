@@ -170,8 +170,6 @@ void Application::updateWindowListeners(sf::Event event)
     switch (event.type)
     {
     case sf::Event::Resized:
-
-        std::cout << window->getSize().x << std::endl;
         for (const auto& listener : windowListeners)
         {
             listener->windowResize();

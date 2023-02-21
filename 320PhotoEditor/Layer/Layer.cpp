@@ -18,6 +18,24 @@ Layer::Layer(sf::Vector2u size, sf::Color color, sf::RenderWindow* renderWindow)
 	this->renderWindow = renderWindow;
 }
 
+Layer::Layer(std::string filePath, sf::RenderWindow* renderWindow)
+{
+	image = new sf::Image();
+	image->loadFromFile(filePath);
+
+	mask = new sf::Image();
+	mask->create(image->getSize().x, image->getSize().y, sf::Color::White);
+
+	texture = sf::Texture();
+	texture.loadFromImage(*image);
+
+	sprite = new sf::Sprite(texture);
+
+	visible = true;
+
+	this->renderWindow = renderWindow;
+}
+
 sf::Image* Layer::getImage()
 {
 	return image;

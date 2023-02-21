@@ -97,7 +97,6 @@ sf::Color hsl2rgb(float h, float s, float l)
 		OPENFILENAME ofn;
 		TCHAR szFile[260] = { 0 };
 
-		// Initialize OPENFILENAME
 		ZeroMemory(&ofn, sizeof(ofn));
 		ofn.lStructSize = sizeof(ofn);
 		ofn.hwndOwner = (HWND)parentWindow->getSystemHandle();

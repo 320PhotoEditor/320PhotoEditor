@@ -12,6 +12,10 @@ public:
 
 	//creates a new layer and then selects it
 	void createLayer(sf::Color color);
+
+	//also selects when successfully loaded
+	void createLayerFromFile(std::string filePath);
+	
 	//removes the selected layer
 	void removeSelectedLayer();
 

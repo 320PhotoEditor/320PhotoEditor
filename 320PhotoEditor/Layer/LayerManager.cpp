@@ -21,6 +21,30 @@ void LayerManager::createLayer(sf::Color color)
 	layers.insert(selectedLayer);
 }
 
+void LayerManager::createLayerFromFile(std::string filePath)
+{
+	Layer* layer = new Layer(filePath, renderWindow);
+
+	if (layer->getImage() == nullptr)
+	{
+		delete layer;
+		return;
+	}
+
+	selectedLayer = layer;
+
+	sf::Sprite* sprite = selectedLayer->getSprite();
+
+	sf::Vector2u imageCenter = projectImageSize / 2;
+	sf::Vector2u screenCenter = renderWindow->getSize() / 2;
+
+	sf::Vector2f offset(screenCenter.x - imageCenter.x, screenCenter.y - imageCenter.y);
+
+	sprite->setPosition(offset);
+
+	layers.insert(selectedLayer);
+}
+
 void LayerManager::removeSelectedLayer()
 {
 	layers.erase(selectedLayer);

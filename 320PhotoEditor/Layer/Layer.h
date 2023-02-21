@@ -9,6 +9,7 @@ class Layer
 public:
 
 	Layer(sf::Vector2u size, sf::Color color, sf::RenderWindow* renderWindow);
+	Layer(std::string filePath, sf::RenderWindow* renderWindow);
 
 	//actual image data
 	sf::Image* getImage();
