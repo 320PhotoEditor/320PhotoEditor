@@ -2,6 +2,7 @@
 
 ApplicationMenu::ApplicationMenu(sf::RenderWindow* renderWindow, LayerManager* layerManager)
 {
+	this->renderWindow = renderWindow;
 	this->layerManager = layerManager;
 
 	menuContainer = new GUIContainer({ 0, 0 }, { 1, 0.025 }, renderWindow);

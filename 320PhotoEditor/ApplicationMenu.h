@@ -28,6 +28,8 @@ private:
 
 	LayerManager* layerManager;
 
+	sf::RenderWindow* renderWindow;
+
 	GUIContainer* menuContainer;
 	GUIContainer* colorContainer;
 	ButtonElement* fileMenuButton;
