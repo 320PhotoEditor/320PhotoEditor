@@ -121,7 +121,9 @@ sf::Color hsl2rgb(float h, float s, float l)
 #elif __APPLE__
 	std::string openFileDialog()
 	{
-		return "";
+		std::string path;
+		std::cin >> path;
+		return path;
 	}
 #else
 	std::string openFileDialog()
