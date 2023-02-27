@@ -3,15 +3,17 @@
 #include "GUI/GUIContainer.h"
 #include "GUI/ButtonElement.h"
 #include "GUI/ColorPickerElement.h"
-#include "Layer/LayerManager.h"1
+#include "Layer/LayerManager.h"
 
 #include <fstream>
+
+class ToolManager;
 
 class ApplicationMenu
 {
 public:
 
-	ApplicationMenu(sf::RenderWindow* renderWindow, LayerManager* toolManager);
+	ApplicationMenu(sf::RenderWindow* renderWindow, LayerManager* layerManager, ToolManager* toolManager);
 	~ApplicationMenu();
 
 	void update();
@@ -27,6 +29,7 @@ private:
 	void buttonPressed(GUIElement* button, int status);
 
 	LayerManager* layerManager;
+	ToolManager* toolManager;
 
 	sf::RenderWindow* renderWindow;
 

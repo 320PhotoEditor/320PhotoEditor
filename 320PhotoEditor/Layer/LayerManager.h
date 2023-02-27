@@ -9,7 +9,7 @@
 class LayerManager
 {
 public:
-	LayerManager(sf::RenderWindow* renderWindow, sf::Vector2u projectImageSize);
+	LayerManager(sf::RenderWindow* renderWindow, sf::Vector2u defaultImageSize);
 
 	//creates a new layer and then selects it
 	void createLayer(sf::Color color);
@@ -29,9 +29,11 @@ private:
 
 	ButtonElement* createLayerButton(sf::Image* img);
 
+	void buttonPressed(GUIElement* button, int status);
+
 	sf::RenderWindow* renderWindow;
 
-	sf::Vector2u projectImageSize;
+	sf::Vector2u defaultImageSize;
 
 	std::vector<std::pair<Layer*, ButtonElement*>> layers;
 

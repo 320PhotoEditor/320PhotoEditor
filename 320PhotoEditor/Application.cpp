@@ -50,7 +50,7 @@ bool Application::init(std::string windowName)
     
     toolManager->setSelectedLayer(layerManager->getSelectedLayer());
 
-    applicationMenu = new ApplicationMenu(window, layerManager);
+    applicationMenu = new ApplicationMenu(window, layerManager, toolManager);
 
     toolManager->setApplicationMenu(applicationMenu);
 

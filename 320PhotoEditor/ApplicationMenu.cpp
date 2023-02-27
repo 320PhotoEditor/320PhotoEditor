@@ -1,9 +1,11 @@
 #include "ApplicationMenu.h"
+#include "Tool/ToolManager.h"
 
-ApplicationMenu::ApplicationMenu(sf::RenderWindow* renderWindow, LayerManager* layerManager)
+ApplicationMenu::ApplicationMenu(sf::RenderWindow* renderWindow, LayerManager* layerManager, ToolManager* toolManager)
 {
 	this->renderWindow = renderWindow;
 	this->layerManager = layerManager;
+	this->toolManager = toolManager;
 
 	menuContainer = new GUIContainer({ 0, 0 }, { 1, 0.025 }, renderWindow);
 	colorContainer = new GUIContainer({ 0, 0.325 }, { 0.2, 0.4 }, renderWindow);
@@ -91,8 +93,10 @@ void ApplicationMenu::buttonPressed(GUIElement* button, int status)
 		}
 		test.close();
 
-		layerManager->getSelectedLayer()->getImage()->loadFromFile(filename);
-		layerManager->getSelectedLayer()->reload();
+		//layerManager->removeSelectedLayer();
+		layerManager->createLayerFromFile(filename);
+		toolManager->setSelectedLayer(layerManager->getSelectedLayer());
+		toolManager->restartTool();
 	}
 	else if (button == incrLightness)
 	{
