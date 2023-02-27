@@ -78,13 +78,10 @@ void ApplicationMenu::buttonPressed(GUIElement* button, int status)
 		return;
 	}
 
-
-	//TODO: add some sort of open file dialog
-	//for now just type in the file path
-	std::string filename = "C:\\Users\\Conso\\Pictures\\testimage.png";
-
 	if (button == fileMenuButton)
 	{
+		std::string filename = openFileDialog(renderWindow);
+
 		//check if file exists before attempting load
 		std::ifstream test(filename);
 		if (!test)
