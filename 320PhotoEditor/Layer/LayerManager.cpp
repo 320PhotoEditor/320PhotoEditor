@@ -19,8 +19,9 @@ void LayerManager::createLayer(sf::Color color)
 	sf::Vector2u imageCenter = projectImageSize / 2;
 	sf::Vector2u screenCenter = renderWindow->getSize() / 2;
 
-	sf::Vector2f offset(screenCenter.x - imageCenter.x, screenCenter.y - imageCenter.y);
+	sf::Vector2f offset(screenCenter.x, screenCenter.y);
 
+	sprite->setOrigin({ (float)imageCenter.x, (float)imageCenter.y });
 	sprite->setPosition(offset);
 
 	layers.push_back(std::make_pair(layer, button));
