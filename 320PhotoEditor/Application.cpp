@@ -64,6 +64,7 @@ bool Application::init(std::string windowName)
     addInputListener(applicationMenu->getMenuContainer());
     addInputListener(applicationMenu->getColorContainer());
     addInputListener(toolManager);
+    addInputListener(layerManager);
 
     addWindowListener(applicationMenu->getMenuContainer());
     addWindowListener(applicationMenu->getColorContainer());

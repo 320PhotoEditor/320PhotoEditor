@@ -2,7 +2,7 @@
 
 //TODO: fix issues where texture not updating
 
-ButtonElement::ButtonElement(sf::Texture* up, sf::Texture* down, sf::Texture* over) :  up(up), down(down), over(over)
+ButtonElement::ButtonElement(sf::Texture* up, sf::Texture* down, sf::Texture* over, bool toggle) :  up(up), down(down), over(over)
 {
 	sprite = new sf::Sprite(*up);
 
@@ -10,21 +10,46 @@ ButtonElement::ButtonElement(sf::Texture* up, sf::Texture* down, sf::Texture* ov
 	setVisible(true);
 
 	buttonState = UP;
+
+	this->toggle = toggle;
 }
 
 void ButtonElement::mousePressed(sf::Mouse::Button button)
 {
 	if (isCursorOver(cursorPos))
 	{
-		sprite->setTexture(*down);
-		buttonState = DOWN;
+		if (toggle)
+		{
+			if (buttonState == DOWN)
+			{
+				sprite->setTexture(*up);
+				buttonState = UP;
+				updateFunc(this, UP);
+			}
+			else
+			{
+				sprite->setTexture(*down);
+				buttonState = DOWN;
+				updateFunc(this, DOWN);
+			}
+		}
+		else
+		{
+			sprite->setTexture(*down);
+			buttonState = DOWN;
 
-		updateFunc(this, DOWN);
+			updateFunc(this, DOWN);
+		}
 	}
 }
 
 void ButtonElement::mouseReleased(sf::Mouse::Button button)
 {
+	if (toggle)
+	{
+		return;
+	}
+
 	if (buttonState == DOWN)
 	{
 		if (isCursorOver(cursorPos))
@@ -47,6 +72,11 @@ void ButtonElement::mouseReleased(sf::Mouse::Button button)
 void ButtonElement::mouseMoved(sf::Vector2i pos)
 {
 	cursorPos = pos;
+	if (toggle)
+	{
+		return;
+	}
+
 	if (isCursorOver(cursorPos) && buttonState != DOWN)
 	{
 		sprite->setTexture(*over);

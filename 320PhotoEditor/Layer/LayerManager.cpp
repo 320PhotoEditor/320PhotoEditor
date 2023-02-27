@@ -13,6 +13,7 @@ void LayerManager::createLayer(sf::Color color)
 	Layer* layer = new Layer(defaultImageSize, color, renderWindow);
 	
 	ButtonElement* button = createLayerButton(layer->getImage());
+	ButtonElement* visButton = createVisButton();
 
 	sf::Sprite* sprite = layer->getSprite();
 
@@ -24,7 +25,7 @@ void LayerManager::createLayer(sf::Color color)
 	sprite->setOrigin({ (float)imageCenter.x, (float)imageCenter.y });
 	sprite->setPosition(offset);
 
-	layers.push_back(std::make_pair(layer, button));
+	layers.push_back(std::make_tuple(layer, true, button, visButton));
 	selectedLayer = layers.size() - 1;
 }
 
@@ -39,6 +40,7 @@ void LayerManager::createLayerFromFile(std::string filePath)
 	}
 
 	ButtonElement* button = createLayerButton(layer->getImage());
+	ButtonElement* visButton = createVisButton();
 
 	sf::Sprite* sprite = layer->getSprite();
 
@@ -50,31 +52,36 @@ void LayerManager::createLayerFromFile(std::string filePath)
 	sprite->setOrigin({ (float)imageCenter.x, (float)imageCenter.y });
 	sprite->setPosition(offset);
 
-	layers.push_back(std::make_pair(layer, button));
+	layers.push_back(std::make_tuple(layer, true, button, visButton));
 	selectedLayer = layers.size() - 1;
 }
 
 void LayerManager::removeSelectedLayer()
 {
-	selectionContainer->removeElement(layers.at(selectedLayer).second);
-	delete layers.at(selectedLayer).second;
-	delete layers.at(selectedLayer).first;
+	selectionContainer->removeElement(std::get<2>(layers.at(selectedLayer)));
+	delete std::get<2>(layers.at(selectedLayer));
+	selectionContainer->removeElement(std::get<3>(layers.at(selectedLayer)));
+	delete std::get<3>(layers.at(selectedLayer));
+	delete std::get<0>(layers.at(selectedLayer));
 	layers.erase(layers.begin() + selectedLayer);
 	selectedLayer--;
 }
 
 Layer* LayerManager::getSelectedLayer()
 {
-	return layers.at(selectedLayer).first;
+	return std::get<0>(layers.at(selectedLayer));
 }
 
 void LayerManager::update()
 {
 	selectionContainer->render();
 
-	for (auto l : layers)
+	for (LayerData l : layers)
 	{
-		renderWindow->draw(*l.first->getSprite());
+		if (std::get<1>(l))
+		{
+			renderWindow->draw(*std::get<0>(l)->getSprite());
+		}
 	}
 }
 
@@ -84,7 +91,24 @@ ButtonElement* LayerManager::createLayerButton(sf::Image* img)
 	tex->loadFromImage(*img);
 	ButtonElement* button = new ButtonElement(tex, tex, tex);
 	selectionContainer->addElement(button);
+	button->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
 	button->setPosition({ 0, 1 - (layers.size() * 0.08f) - 0.1f });
+	button->setSize({ 0.3, 0.075 });
+
+	return button;
+}
+
+ButtonElement* LayerManager::createVisButton()
+{
+	sf::Texture* upTexture = new sf::Texture();
+	upTexture->loadFromFile("../assets/button_up.png");
+	sf::Texture* downTexture = new sf::Texture();
+	downTexture->loadFromFile("../assets/button_down.png");
+
+	ButtonElement* button = new ButtonElement(upTexture, downTexture, nullptr, true);
+	selectionContainer->addElement(button);
+	button->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	button->setPosition({ 0.35, 1 - (layers.size() * 0.08f) - 0.1f });
 	button->setSize({ 0.3, 0.075 });
 
 	return button;
@@ -92,18 +116,34 @@ ButtonElement* LayerManager::createLayerButton(sf::Image* img)
 
 void LayerManager::buttonPressed(GUIElement* button, int status)
 {
-	if (status != ButtonElement::ButtonState::DOWN)
-	{
-		return;
-	}
-
 	int i = 0;
-	for (auto layer : layers)
+	for (LayerData layer : layers)
 	{
-		if (layer.second == button)
+		if (std::get<2>(layer) == button  && status != ButtonElement::ButtonState::DOWN)
 		{
 			selectedLayer = i;
+			break;
+		}
+		else if (std::get<3>(layer) == button)
+		{
+			std::get<1>(layers.at(i)) = (status == ButtonElement::ButtonState::UP);
+			break;
 		}
 		i++;
 	}
+}
+
+void LayerManager::mousePressed(sf::Mouse::Button button)
+{
+	selectionContainer->mousePressed(button);
+}
+
+void LayerManager::mouseReleased(sf::Mouse::Button button)
+{
+	selectionContainer->mouseReleased(button);
+}
+
+void LayerManager::mouseMoved(sf::Vector2i pos)
+{
+	selectionContainer->mouseMoved(pos);
 }

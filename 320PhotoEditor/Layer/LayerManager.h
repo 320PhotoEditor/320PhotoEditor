@@ -6,7 +6,7 @@
 #include "../GUI/ButtonElement.h"
 
 //handles layer selection gui
-class LayerManager
+class LayerManager : public InputListener
 {
 public:
 	LayerManager(sf::RenderWindow* renderWindow, sf::Vector2u defaultImageSize);
@@ -28,14 +28,22 @@ public:
 private:
 
 	ButtonElement* createLayerButton(sf::Image* img);
+	ButtonElement* createVisButton();
 
 	void buttonPressed(GUIElement* button, int status);
+
+	void mousePressed(sf::Mouse::Button button);
+	void mouseReleased(sf::Mouse::Button button);
+	void mouseMoved(sf::Vector2i pos);
 
 	sf::RenderWindow* renderWindow;
 
 	sf::Vector2u defaultImageSize;
 
-	std::vector<std::pair<Layer*, ButtonElement*>> layers;
+	//layer, visiblity then its select button and visiblity button
+	typedef std::tuple<Layer*, bool, ButtonElement*, ButtonElement*> LayerData;
+
+	std::vector<LayerData> layers;
 
 	unsigned int selectedLayer;
 
