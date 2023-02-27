@@ -9,12 +9,9 @@ PaintTool::PaintTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : To
 
 void PaintTool::init()
 {
-	sf::Texture* upTexture = new sf::Texture();
-	upTexture->loadFromFile("../assets/button_up.png");
-	sf::Texture* downTexture = new sf::Texture();
-	downTexture->loadFromFile("../assets/button_down.png");
-	sf::Texture* overTexture = new sf::Texture();
-	overTexture->loadFromFile("../assets/button_over.png");
+	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
+	sf::Texture* downTexture = AssetManager::getInstance().getTexture("../assets/button_down.png");
+	sf::Texture* overTexture = AssetManager::getInstance().getTexture("../assets/button_over.png");
 
 	incrSizeButton = new ButtonElement(upTexture, downTexture, overTexture);
 	incrSizeButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });

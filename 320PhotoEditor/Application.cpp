@@ -22,26 +22,17 @@ bool Application::init(std::string windowName)
     //TODO: clean this up, maybe have some sort of asset manager
     window->setKeyRepeatEnabled(false);
 
-    sf::Texture* upTexture = new sf::Texture();
-    upTexture->loadFromFile("../assets/button_up.png");
-    sf::Texture* downTexture = new sf::Texture();
-    downTexture->loadFromFile("../assets/button_down.png");
-    sf::Texture* overTexture = new sf::Texture();
-    overTexture->loadFromFile("../assets/button_over.png");
-    
-    sf::Texture* mosUpTexture = new sf::Texture();
-    mosUpTexture->loadFromFile("../assets/mos_button_up.png");
-    sf::Texture* mosDownTexture = new sf::Texture();
-    mosDownTexture->loadFromFile("../assets/mos_button_down.png");
-    sf::Texture* mosOverTexture = new sf::Texture();
-    mosOverTexture->loadFromFile("../assets/mos_button_over.png");
+    sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
+    sf::Texture* downTexture = AssetManager::getInstance().getTexture("../assets/button_down.png");
+    sf::Texture* overTexture = AssetManager::getInstance().getTexture("../assets/button_over.png");
 
-    sf::Texture* paintupTexture = new sf::Texture();
-    paintupTexture->loadFromFile("../assets/paint_button_up.png");
-    sf::Texture* paintdownTexture = new sf::Texture();
-    paintdownTexture->loadFromFile("../assets/paint_button_down.png");
-    sf::Texture* paintoverTexture = new sf::Texture();
-    paintoverTexture->loadFromFile("../assets/paint_button_over.png");
+    sf::Texture* paintupTexture = AssetManager::getInstance().getTexture("../assets/paint_button_up.png");
+    sf::Texture* paintdownTexture = AssetManager::getInstance().getTexture("../assets/paint_button_down.png");
+    sf::Texture* paintoverTexture = AssetManager::getInstance().getTexture("../assets/paint_button_over.png");
+
+    sf::Texture* mosUpTexture = AssetManager::getInstance().getTexture("../assets/mos_button_up.png");
+    sf::Texture* mosDownTexture = AssetManager::getInstance().getTexture("../assets/mos_button_down.png");
+    sf::Texture* mosOverTexture = AssetManager::getInstance().getTexture("../assets/mos_button_over.png");
 
     toolManager = new ToolManager(window);
     

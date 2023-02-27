@@ -100,10 +100,8 @@ ButtonElement* LayerManager::createLayerButton(sf::Image* img)
 
 ButtonElement* LayerManager::createVisButton()
 {
-	sf::Texture* upTexture = new sf::Texture();
-	upTexture->loadFromFile("../assets/button_up.png");
-	sf::Texture* downTexture = new sf::Texture();
-	downTexture->loadFromFile("../assets/button_down.png");
+	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
+	sf::Texture* downTexture = AssetManager::getInstance().getTexture("../assets/button_down.png");
 
 	ButtonElement* button = new ButtonElement(upTexture, downTexture, nullptr, true);
 	selectionContainer->addElement(button);

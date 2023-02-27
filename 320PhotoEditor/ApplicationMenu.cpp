@@ -10,12 +10,9 @@ ApplicationMenu::ApplicationMenu(sf::RenderWindow* renderWindow, LayerManager* l
 	menuContainer = new GUIContainer({ 0, 0 }, { 1, 0.025 }, renderWindow);
 	colorContainer = new GUIContainer({ 0, 0.325 }, { 0.2, 0.4 }, renderWindow);
 
-	sf::Texture* upTexture = new sf::Texture();
-	upTexture->loadFromFile("../assets/button_up.png");
-	sf::Texture* downTexture = new sf::Texture();
-	downTexture->loadFromFile("../assets/button_down.png");
-	sf::Texture* overTexture = new sf::Texture();
-	overTexture->loadFromFile("../assets/button_over.png");
+	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
+	sf::Texture* downTexture = AssetManager::getInstance().getTexture("../assets/button_down.png");
+	sf::Texture* overTexture = AssetManager::getInstance().getTexture("../assets/button_over.png");
 
 	fileMenuButton = new ButtonElement(upTexture, downTexture, overTexture);
 	fileMenuButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });

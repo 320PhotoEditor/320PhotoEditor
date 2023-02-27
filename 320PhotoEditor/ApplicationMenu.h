@@ -4,6 +4,7 @@
 #include "GUI/ButtonElement.h"
 #include "GUI/ColorPickerElement.h"
 #include "Layer/LayerManager.h"
+#include "AssetManager.h"
 
 #include <fstream>
 

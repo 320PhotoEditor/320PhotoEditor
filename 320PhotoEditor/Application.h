@@ -14,6 +14,7 @@
 #include "Tool/Zoom.h"
 #include "Layer/LayerManager.h"
 #include "ApplicationMenu.h"
+#include "AssetManager.h"
 
 class Application
 {

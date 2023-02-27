@@ -4,6 +4,7 @@
 #include "../GUI/GUIContainer.h"
 #include "Layer.h"
 #include "../GUI/ButtonElement.h"
+#include "../AssetManager.h"
 
 //handles layer selection gui
 class LayerManager : public InputListener

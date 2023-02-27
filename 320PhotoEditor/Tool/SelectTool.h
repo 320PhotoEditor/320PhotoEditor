@@ -2,6 +2,7 @@
 
 #include "Tool.h"
 #include "../GUI/ButtonElement.h"
+#include "../AssetManager.h"
 
 class SelectTool : public Tool
 {
