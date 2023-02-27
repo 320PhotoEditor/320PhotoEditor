@@ -6,11 +6,13 @@
 #include "../GUI/ButtonElement.h"
 #include "../AssetManager.h"
 
+class ToolManager;
+
 //handles layer selection gui
 class LayerManager : public InputListener
 {
 public:
-	LayerManager(sf::RenderWindow* renderWindow, sf::Vector2u defaultImageSize);
+	LayerManager(sf::RenderWindow* renderWindow, ToolManager* toolManager, sf::Vector2u defaultImageSize);
 
 	//creates a new layer and then selects it
 	void createLayer(sf::Color color);
@@ -38,6 +40,7 @@ private:
 	void mouseMoved(sf::Vector2i pos);
 
 	sf::RenderWindow* renderWindow;
+	ToolManager* toolManager;
 
 	sf::Vector2u defaultImageSize;
 

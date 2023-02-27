@@ -1,8 +1,10 @@
 #include "LayerManager.h"
+#include "../Tool/ToolManager.h"
 
-LayerManager::LayerManager(sf::RenderWindow* renderWindow, sf::Vector2u defaultImageSize)
+LayerManager::LayerManager(sf::RenderWindow* renderWindow, ToolManager* toolManager, sf::Vector2u defaultImageSize)
 {
 	this->renderWindow = renderWindow;
+	this->toolManager = toolManager;
 	this->defaultImageSize = defaultImageSize;
 
 	selectionContainer = new GUIContainer({0, 0.25 }, {.2, .75}, renderWindow, true);
@@ -117,9 +119,11 @@ void LayerManager::buttonPressed(GUIElement* button, int status)
 	int i = 0;
 	for (LayerData layer : layers)
 	{
-		if (std::get<2>(layer) == button  && status != ButtonElement::ButtonState::DOWN)
+		if (std::get<2>(layer) == button && status != ButtonElement::ButtonState::DOWN)
 		{
 			selectedLayer = i;
+			toolManager->setSelectedLayer(getSelectedLayer());
+			toolManager->restartTool();
 			break;
 		}
 		else if (std::get<3>(layer) == button)
