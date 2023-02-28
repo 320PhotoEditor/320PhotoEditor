@@ -1,27 +1,24 @@
 #include "Layer.h"
 
 Layer::Layer(sf::Vector2u size, sf::Color color, sf::RenderWindow* renderWindow)
-{
-	image = new sf::Image();
+{	
+	sf::Image* image = new sf::Image();
 	image->create(size.x, size.y, color);
-	
-	mask = new sf::Image();
-	mask->create(size.x, size.y, sf::Color::White);
 
-	texture = sf::Texture();
-	texture.loadFromImage(*image);
-
-	sprite = new sf::Sprite(texture);
-
-	visible = true;
-
-	this->renderWindow = renderWindow;
+	createLayer(image, renderWindow);
 }
 
 Layer::Layer(std::string filePath, sf::RenderWindow* renderWindow)
 {
-	image = new sf::Image();
+	sf::Image* image = new sf::Image();
 	image->loadFromFile(filePath);
+
+	createLayer(image, renderWindow);
+}
+
+void Layer::createLayer(sf::Image* image, sf::RenderWindow* renderWindow)
+{
+	this->image = image;
 
 	mask = new sf::Image();
 	mask->create(image->getSize().x, image->getSize().y, sf::Color::White);
