@@ -7,7 +7,7 @@ Application::Application()
 Application::~Application()
 {
     delete toolManager;
-	  delete window;
+	delete window;
 }
 
 bool Application::init(std::string windowName)
@@ -22,35 +22,26 @@ bool Application::init(std::string windowName)
     //TODO: clean this up, maybe have some sort of asset manager
     window->setKeyRepeatEnabled(false);
 
-    sf::Texture* upTexture = new sf::Texture();
-    upTexture->loadFromFile("../assets/button_up.png");
-    sf::Texture* downTexture = new sf::Texture();
-    downTexture->loadFromFile("../assets/button_down.png");
-    sf::Texture* overTexture = new sf::Texture();
-    overTexture->loadFromFile("../assets/button_over.png");
-    
-    sf::Texture* mosUpTexture = new sf::Texture();
-    mosUpTexture->loadFromFile("../assets/mos_button_up.png");
-    sf::Texture* mosDownTexture = new sf::Texture();
-    mosDownTexture->loadFromFile("../assets/mos_button_down.png");
-    sf::Texture* mosOverTexture = new sf::Texture();
-    mosOverTexture->loadFromFile("../assets/mos_button_over.png");
+    sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
+    sf::Texture* downTexture = AssetManager::getInstance().getTexture("../assets/button_down.png");
+    sf::Texture* overTexture = AssetManager::getInstance().getTexture("../assets/button_over.png");
 
-    sf::Texture* paintupTexture = new sf::Texture();
-    paintupTexture->loadFromFile("../assets/paint_button_up.png");
-    sf::Texture* paintdownTexture = new sf::Texture();
-    paintdownTexture->loadFromFile("../assets/paint_button_down.png");
-    sf::Texture* paintoverTexture = new sf::Texture();
-    paintoverTexture->loadFromFile("../assets/paint_button_over.png");
+    sf::Texture* paintupTexture = AssetManager::getInstance().getTexture("../assets/paint_button_up.png");
+    sf::Texture* paintdownTexture = AssetManager::getInstance().getTexture("../assets/paint_button_down.png");
+    sf::Texture* paintoverTexture = AssetManager::getInstance().getTexture("../assets/paint_button_over.png");
+
+    sf::Texture* mosUpTexture = AssetManager::getInstance().getTexture("../assets/mos_button_up.png");
+    sf::Texture* mosDownTexture = AssetManager::getInstance().getTexture("../assets/mos_button_down.png");
+    sf::Texture* mosOverTexture = AssetManager::getInstance().getTexture("../assets/mos_button_over.png");
 
     toolManager = new ToolManager(window);
     
-    layerManager = new LayerManager(window, { 800, 600 });
+    layerManager = new LayerManager(window, toolManager, { 800, 600 });
     layerManager->createLayer(sf::Color::White);
     
     toolManager->setSelectedLayer(layerManager->getSelectedLayer());
 
-    applicationMenu = new ApplicationMenu(window, layerManager);
+    applicationMenu = new ApplicationMenu(window, layerManager, toolManager);
 
     toolManager->setApplicationMenu(applicationMenu);
 
@@ -64,6 +55,11 @@ bool Application::init(std::string windowName)
     addInputListener(applicationMenu->getMenuContainer());
     addInputListener(applicationMenu->getColorContainer());
     addInputListener(toolManager);
+    addInputListener(layerManager);
+
+    addWindowListener(applicationMenu->getMenuContainer());
+    addWindowListener(applicationMenu->getColorContainer());
+    addWindowListener(toolManager);
 
     return true;
 }
@@ -76,8 +72,16 @@ void Application::run()
         while (window->pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
+            {
                 window->close();
+            }
+            else if (event.type == sf::Event::Resized)
+            {
+                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                window->setView(sf::View(visibleArea));
+            }
 
+            updateWindowListeners(event);
             updateInputListeners(event);
         }
         window->clear();
@@ -98,6 +102,16 @@ void Application::addInputListener(InputListener* listener)
 void Application::removeInputListener(InputListener* listener)
 {
     inputListeners.erase(listener);
+}
+
+void Application::addWindowListener(WindowListener* listener)
+{
+    windowListeners.insert(listener);
+}
+
+void Application::removeWindowListener(WindowListener* listener)
+{
+    windowListeners.erase(listener);
 }
 
 void Application::updateInputListeners(sf::Event event)
@@ -138,6 +152,19 @@ void Application::updateInputListeners(sf::Event event)
         for (const auto& listener : inputListeners)
         {
             listener->mouseMoved(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
+        }
+        break;
+    }
+}
+
+void Application::updateWindowListeners(sf::Event event)
+{
+    switch (event.type)
+    {
+    case sf::Event::Resized:
+        for (const auto& listener : windowListeners)
+        {
+            listener->windowResize();
         }
         break;
     }

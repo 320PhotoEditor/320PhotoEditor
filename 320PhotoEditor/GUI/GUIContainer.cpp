@@ -17,6 +17,7 @@ sf::Vector2f GUIContainer::getPosition()
 
 void GUIContainer::setPosition(sf::Vector2f pos)
 {
+    rawPos = pos;
     if (rightAnchor)
     {
         float aspect = (float)renderWindow->getSize().x / (float)renderWindow->getSize().y;
@@ -107,6 +108,15 @@ void GUIContainer::mouseMoved(sf::Vector2i pos)
     for (const auto& element : elements)
     {
         element->mouseMoved(pos);
+    }
+}
+
+void GUIContainer::windowResize()
+{
+    setPosition(rawPos);
+    for (GUIElement* element : elements)
+    {
+        element->rebuild();
     }
 }
 
