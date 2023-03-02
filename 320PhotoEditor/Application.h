@@ -15,6 +15,7 @@
 #include "Layer/LayerManager.h"
 #include "ApplicationMenu.h"
 #include "AssetManager.h"
+#include "ComputeShader.h"
 
 class Application
 {

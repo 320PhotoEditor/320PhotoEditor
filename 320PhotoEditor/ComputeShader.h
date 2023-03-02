@@ -24,6 +24,8 @@ public:
 
 	static void use(unsigned int ID);
 
+	void printComputeStats();
+
 private:
 
 	unsigned int ID;
