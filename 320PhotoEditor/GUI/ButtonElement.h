@@ -14,7 +14,9 @@ public:
 		OVER
 	} ButtonState;
 
-	ButtonElement(sf::Texture* up, sf::Texture* down, sf::Texture* over);
+	//when toggle is true, buttons toggle instead of being pressed once
+	//over texture is not used when toggle is set to true
+	ButtonElement(sf::Texture* up, sf::Texture* down, sf::Texture* over, bool toggle = false);
 
 	void mousePressed(sf::Mouse::Button button);
 	void mouseReleased(sf::Mouse::Button button);
@@ -36,5 +38,7 @@ private:
 	sf::Sprite* sprite;
 
     ButtonState buttonState;
+
+	bool toggle;
 };
 

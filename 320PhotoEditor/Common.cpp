@@ -87,3 +87,48 @@ sf::Color hsl2rgb(float h, float s, float l)
 
 	return rgb;
 }
+
+#ifdef _WIN32
+	#include <Windows.h>
+	#include <tchar.h>
+	#include <atlstr.h>
+	std::string openFileDialog(sf::RenderWindow* parentWindow)
+	{
+		OPENFILENAME ofn;
+		TCHAR szFile[260] = { 0 };
+
+		ZeroMemory(&ofn, sizeof(ofn));
+		ofn.lStructSize = sizeof(ofn);
+		ofn.hwndOwner = (HWND)parentWindow->getSystemHandle();
+		ofn.lpstrFile = szFile;
+		ofn.nMaxFile = sizeof(szFile);
+		ofn.lpstrFilter = _T("All\0*.*\0");
+		ofn.nFilterIndex = 1;
+		ofn.lpstrFileTitle = NULL;
+		ofn.nMaxFileTitle = 0;
+		ofn.lpstrInitialDir = NULL;
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+		if (GetOpenFileName(&ofn) == TRUE)
+		{
+			return std::string(CW2A(ofn.lpstrFile));
+		}
+
+		std::cerr << "Error: open file dialog fail" << std::endl;
+
+		return "";
+	}
+#elif __APPLE__
+	std::string openFileDialog()
+	{
+		std::string path;
+		std::cin >> path;
+		return path;
+	}
+#else
+	std::string openFileDialog()
+	{
+		std::cerr << "Error: Unkown OS, unable to create open file dialog"
+		return "";
+	}
+#endif

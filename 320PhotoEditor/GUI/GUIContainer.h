@@ -2,12 +2,13 @@
 
 #include "../Common.h"
 #include "../InputListener.h"
+#include "../WindowListener.h"
 #include "GUIElement.h"
 
 class GUIElement;
 
 //an invisible container for GUIElements
-class GUIContainer : public InputListener
+class GUIContainer : public InputListener, public WindowListener
 {
 public:
 
@@ -34,6 +35,8 @@ public:
 	void mouseReleased(sf::Mouse::Button button);
 	void mouseMoved(sf::Vector2i pos);
 
+	void windowResize();
+
 private:
 
 	bool isCursorOver(sf::Vector2i cursorPos);
@@ -44,6 +47,7 @@ private:
 	bool visible;
 
 	sf::Vector2f pos;
+	sf::Vector2f rawPos;
 	sf::Vector2f size;
 
 	std::set<GUIElement*> elements;
