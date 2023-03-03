@@ -35,44 +35,7 @@ void MosaicTool::buttonPressed(GUIElement* button, int status)
     {
         return;
     }
-    
-if (button == selectButton) {
 
-        newWindow = new sf::RenderWindow(sf::VideoMode(500,500), "Test");
-
-        //sf::Texture* texture = new sf::Texture();
-
-        //texture->loadFromFile("../assets/Samples/Sample_Image1.JPG");
-
-        //toolManager = new ToolManager(newWindow);
-
-        //toolManager->addTool(new ImageButton(texture, texture, texture));
-
-        //addInputListener(toolManager);
-
-        //sf::Sprite sprite;
-        //sprite.setTexture(texture);
-
-
-        while (newWindow->isOpen())
-        {
-            sf::Event event;
-            while (newWindow->pollEvent(event))
-            {
-                switch (event.type) {
-                case sf::Event::Closed:
-                    newWindow->close();
-                    break;
-                }
-            }
-            // clear the window with black color
-            newWindow->clear(sf::Color::Black);
-
-            //layerManager->update();
-            //toolManager->update();
-
-            // end the current frame
-            newWindow->display();
-        }
+    if (button == selectButton) {
     }
 }
