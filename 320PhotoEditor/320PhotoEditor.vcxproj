@@ -190,6 +190,7 @@
     <ClInclude Include="WindowListener.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\assets\testcompute.comp" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -161,5 +161,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="..\assets\testcompute.comp" />
   </ItemGroup>
 </Project>

@@ -3,7 +3,7 @@
 PaintTool::PaintTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : Tool(up, down, over)
 {
 	this->up = up;
-	test = new ComputeShader("../assets/testcompute.cms");
+	test = new ComputeShader("../assets/testcompute.comp");
 	test->use();
 	test->setFloat("t", 1);
 	
