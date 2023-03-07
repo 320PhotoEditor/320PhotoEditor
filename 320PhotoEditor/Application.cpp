@@ -19,7 +19,7 @@ bool Application::init(std::string windowName)
   
     ComputeShader test("../assets/testcompute.cms");
     test.use();
-    test.printComputeStats();
+    ComputeShader::printComputeStats();
 
     if (!window->isOpen())
     {
