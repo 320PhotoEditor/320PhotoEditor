@@ -15,6 +15,14 @@ void ComputeShader::use()
 	use(ID);
 }
 
+void ComputeShader::compute(unsigned int sizeX, unsigned int sizeY, unsigned int sizeZ)
+{
+	glDispatchCompute(sizeX, sizeY, sizeZ);
+
+	//wait til the shader is finished writing
+	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+}
+
 void ComputeShader::use(unsigned int ID)
 {
 	glUseProgram(ID);
@@ -41,8 +49,33 @@ void ComputeShader::printComputeStats()
 	std::cout << "max work group Z " << max_compute_work_group_size[2] << std::endl;
 
 	std::cout << "max invocations in a single local work group that may be dispatched to a compute shader " << max_compute_work_group_invocations << std::endl;
-
 }
+
+void ComputeShader::setBool(const std::string& name, bool value) const
+{
+	glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+}
+
+void ComputeShader::setInt(const std::string& name, int value) const
+{
+	glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+}
+
+void ComputeShader::setFloat(const std::string& name, float value) const
+{
+	glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+}
+
+void ComputeShader::setVec2(const std::string& name, const sf::Vector2f& value) const
+{
+	glUniform2f(glGetUniformLocation(ID, name.c_str()), value.x, value.y);
+}
+
+void ComputeShader::setVec2(const std::string& name, float x, float y) const
+{
+	glUniform2f(glGetUniformLocation(ID, name.c_str()), x, y);
+}
+
 
 void ComputeShader::compile(const char* path)
 {
