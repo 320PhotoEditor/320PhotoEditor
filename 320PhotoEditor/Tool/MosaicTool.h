@@ -5,7 +5,8 @@
 //#include "../Layer/LayerManager.h"
 #include "../InputListener.h"
 #include "../GUI/ButtonElement.h"
-#include "../GUI/ImageButton.h"
+#include <string.h>
+#include <iostream>
 
 class MosaicTool : public Tool
 {
@@ -26,9 +27,9 @@ private:
 	ToolManager* toolManager;
 	//LayerManager* layerManager;
 	ButtonElement* selectButton;
-	//ButtonElement* imageButton;
 	Layer* layer;
 	sf::RenderWindow* newWindow;
 	std::set<InputListener*> inputListeners;
+	std::string openFileDialog(sf::RenderWindow* parentWindow);
 };
 
