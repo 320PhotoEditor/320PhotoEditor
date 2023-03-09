@@ -8,6 +8,8 @@
 #include <string.h>
 #include <iostream>
 
+
+
 class MosaicTool : public Tool
 {
 public:
@@ -16,7 +18,7 @@ public:
 	void init();
 	void start(Layer* layer);
 	void stop() {};
-	void run() {};
+	void run();
 
 	//void keyPressed(sf::Keyboard::Key key);
 
@@ -30,6 +32,6 @@ private:
 	Layer* layer;
 	sf::RenderWindow* newWindow;
 	std::set<InputListener*> inputListeners;
-	std::string openFileDialog(sf::RenderWindow* parentWindow);
+	std::string openFileDialog(/*sf::RenderWindow* parentWindow*/);
 };
 
