@@ -13,8 +13,6 @@ Application::~Application()
 bool Application::init(std::string windowName)
 {
     window = new sf::RenderWindow(sf::VideoMode(1280, 720), windowName);
-    
-    glewInit();
 
     if (!window->isOpen())
     {

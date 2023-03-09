@@ -2,6 +2,7 @@
 
 ComputeShader::ComputeShader(const char* path)
 {
+	glewInit();
 	compile(path);
 }
 
@@ -111,7 +112,7 @@ void ComputeShader::compile(const char* path)
 
 void ComputeShader::checkCompileErrors(unsigned int shader)
 {
-	GLint success;
+	int success;
 	char infoLog[1024];
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 	if (!success)

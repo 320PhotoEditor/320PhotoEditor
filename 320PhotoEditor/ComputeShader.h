@@ -19,25 +19,24 @@
 
 void glDispatchCompute(unsigned int x, unsigned int y, unsigned int z) {}
 void glMemoryBarrier(unsigned int a) {}
-void glUseProgram(unsigned int id) {}
-void glGetIntegeri_v(unsigned int a, unsigned int idx, &max_compute_work_group_count[idx]);
-void glGetIntegeri_v(unsigned int a, unsigned int idx, &max_compute_work_group_size[idx]);
-void glGetIntegerv(unsigned int a, &max_compute_work_group_invocations);
-
-glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
-glUniform2f
-void glCreateShader(unsigned int a) {}
-void glShaderSource(unsigned int id, unsigned int a, &shaderCode, NULL) {}
+void glGetIntegeri_v(unsigned int a, unsigned int idx, int* b) {}
+void glGetIntegerv(unsigned int a, int* b) {}
+int glGetUniformLocation(int a, const char* b) { return 0; }
+void glUniform1i(int a, int b) {}
+void glUniform1f(int a, float b) {}
+void glUniform2f(int a, float b, float c) {}
+unsigned int glCreateShader(unsigned int a) { return 0; }
+void glShaderSource(unsigned int id, unsigned int a, const char** b, int* c) {}
 void glCompileShader(unsigned int id) {}
-
 unsigned int glCreateProgram() { return 0; }
 void glUseProgram(unsigned int id) {}
 void glAttachShader(unsigned int id, unsigned int d) {}
 void glLinkProgram(unsigned int id) {}
 void glDeleteShader(unsigned int id) {}
-void glGetShaderiv(unsigned int id, unsigned int a, &success);
+void glGetShaderiv(unsigned int id, unsigned int a, int* c) {}
+void glGetShaderInfoLog(unsigned int a, int b, int*, char* d) {}
 
-glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+int glewInit() { return 0; }
 
 #endif
 
