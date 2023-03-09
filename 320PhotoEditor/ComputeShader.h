@@ -6,12 +6,40 @@
 
 #ifdef _WIN32
 #include <Windows.h>
-#else
-
-#endif
-
 #include <GL/glew.h>
 #include <GL/GL.h>
+#else
+
+#define GL_SHADER_IMAGE_ACCESS_BARRIER_BIT 0
+#define GL_MAX_COMPUTE_WORK_GROUP_COUNT 0
+#define GL_MAX_COMPUTE_WORK_GROUP_SIZE 0
+#define GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS 0
+#define GL_COMPUTE_SHADER 0
+#define GL_COMPILE_STATUS 0
+
+void glDispatchCompute(unsigned int x, unsigned int y, unsigned int z) {}
+void glMemoryBarrier(unsigned int a) {}
+void glUseProgram(unsigned int id) {}
+void glGetIntegeri_v(unsigned int a, unsigned int idx, &max_compute_work_group_count[idx]);
+void glGetIntegeri_v(unsigned int a, unsigned int idx, &max_compute_work_group_size[idx]);
+void glGetIntegerv(unsigned int a, &max_compute_work_group_invocations);
+
+glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+glUniform2f
+void glCreateShader(unsigned int a) {}
+void glShaderSource(unsigned int id, unsigned int a, &shaderCode, NULL) {}
+void glCompileShader(unsigned int id) {}
+
+unsigned int glCreateProgram() { return 0; }
+void glUseProgram(unsigned int id) {}
+void glAttachShader(unsigned int id, unsigned int d) {}
+void glLinkProgram(unsigned int id) {}
+void glDeleteShader(unsigned int id) {}
+void glGetShaderiv(unsigned int id, unsigned int a, &success);
+
+glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+
+#endif
 
 class ComputeShader
 {
