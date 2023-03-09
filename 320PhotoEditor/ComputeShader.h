@@ -61,9 +61,9 @@ public:
 	void setVec2(const std::string& name, const sf::Vector2f& value) const;
 	void setVec2(const std::string& name, float x, float y) const;
 
-private:
-
 	unsigned int ID;
+
+private:
 
 	void compile(const char* path);
 
