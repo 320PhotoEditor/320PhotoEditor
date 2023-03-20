@@ -3,6 +3,7 @@
 #include "Tool.h"
 #include "../GUI/ButtonElement.h"
 #include "../AssetManager.h"
+#include "../ComputeShader.h"
 
 class PaintTool : public Tool
 {
@@ -13,7 +14,7 @@ public:
 	void init();
 	void start(Layer* layer);
 	void stop() {};
-	void run() {};
+	void run() { test->use(); sf::Texture::bind(layer->getSprite()->getTexture()); test->compute(800, 600, 1); };
 
 	void mousePressed(sf::Mouse::Button button);
 	void mouseReleased(sf::Mouse::Button button);
@@ -24,6 +25,8 @@ public:
 private:
 
 	void paint();
+
+	sf::Texture* up;
 
 	ButtonElement* incrSizeButton;
 	ButtonElement* decrSizeButton;
@@ -38,5 +41,7 @@ private:
 	sf::Vector2i lastCursorPos;
 
 	Layer* layer;
+
+	ComputeShader* test;
 };
 

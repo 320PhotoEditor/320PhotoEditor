@@ -153,4 +153,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\assets\testcompute.comp" />
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

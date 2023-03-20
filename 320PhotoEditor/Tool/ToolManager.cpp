@@ -68,7 +68,7 @@ void ToolManager::setApplicationMenu(ApplicationMenu* applicationMenu)
 ToolManager::~ToolManager()
 {
 	//cleanup buttons
-	for (auto tool : tools)
+	for (std::pair<ButtonElement*, Tool*> tool : tools)
 	{
 		delete tool.second->getContainer(); //cleanup the tool guicontainers that were created
 		delete tool.first;
