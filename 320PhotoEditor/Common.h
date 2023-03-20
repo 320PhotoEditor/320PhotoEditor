@@ -29,4 +29,4 @@ float hue2rgb(float p, float q, float t);
 //h s l range [0,1]
 sf::Color hsl2rgb(float h, float s, float l);
 
-std::string openFileDialog(sf::RenderWindow* parentWindow);
+std::string openFileDialog(sf::RenderWindow* parentWindow, bool selectMultiple = false);
