@@ -35,6 +35,7 @@ void glLinkProgram(unsigned int id) {}
 void glDeleteShader(unsigned int id) {}
 void glGetShaderiv(unsigned int id, unsigned int a, int* c) {}
 void glGetShaderInfoLog(unsigned int a, int b, int*, char* d) {}
+void glBindImageTexture(unsigned int a, unsigned int b, unsigned int c, bool d, unsigned int e, unsigned int f, unsigned int g) {}
 
 int glewInit() { return 0; }
 
@@ -52,6 +53,8 @@ public:
 	void compute(unsigned int sizeX, unsigned int sizeY, unsigned int sizeZ);
 
 	static void use(unsigned int ID);
+
+	static void bindTexture(unsigned int texture);
 
 	static void printComputeStats();
 

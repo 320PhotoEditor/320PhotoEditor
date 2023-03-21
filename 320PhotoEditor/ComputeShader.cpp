@@ -29,6 +29,11 @@ void ComputeShader::use(unsigned int ID)
 	glUseProgram(ID);
 }
 
+void ComputeShader::bindTexture(unsigned int texture)
+{
+	glBindImageTexture(0, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+}
+
 void ComputeShader::printComputeStats()
 {
 	int max_compute_work_group_count[3];

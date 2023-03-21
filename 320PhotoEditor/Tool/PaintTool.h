@@ -14,7 +14,7 @@ public:
 	void init();
 	void start(Layer* layer);
 	void stop() {};
-	void run() { test->use(); sf::Texture::bind(layer->getSprite()->getTexture()); test->compute(800, 600, 1); };
+	void run() { ComputeShader::bindTexture(layer->getSprite()->getTexture()->getNativeHandle()); test->use(); test->setFloat("t", 100); test->compute(800 / 10, 600 / 10, 1); };
 
 	void mousePressed(sf::Mouse::Button button);
 	void mouseReleased(sf::Mouse::Button button);

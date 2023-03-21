@@ -5,7 +5,7 @@
 #include "../320PhotoEditor/Common.h"
 #include "../320PhotoEditor/AssetManager.h"
 
-BOOST_AUTO_TEST_CASE(my_boost_test)
+BOOST_AUTO_TEST_CASE(TestAssetManager)
 {
     AssetManager am = AssetManager::getInstance();
 
