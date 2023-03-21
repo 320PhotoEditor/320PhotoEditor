@@ -81,9 +81,6 @@
     <ClCompile Include="..\320PhotoEditor\GUI\GUIElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\320PhotoEditor\GUI\ImageButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\320PhotoEditor\GUI\PanelElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

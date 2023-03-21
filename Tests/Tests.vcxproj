@@ -152,7 +152,6 @@
     <ClCompile Include="..\320PhotoEditor\GUI\ColorPickerElement.cpp" />
     <ClCompile Include="..\320PhotoEditor\GUI\GUIContainer.cpp" />
     <ClCompile Include="..\320PhotoEditor\GUI\GUIElement.cpp" />
-    <ClCompile Include="..\320PhotoEditor\GUI\ImageButton.cpp" />
     <ClCompile Include="..\320PhotoEditor\GUI\PanelElement.cpp" />
     <ClCompile Include="..\320PhotoEditor\InputListener.cpp" />
     <ClCompile Include="..\320PhotoEditor\Layer\Layer.cpp" />
