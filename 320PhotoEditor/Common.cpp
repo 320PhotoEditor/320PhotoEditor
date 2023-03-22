@@ -92,7 +92,7 @@ sf::Color hsl2rgb(float h, float s, float l)
 	#include <Windows.h>
 	#include <tchar.h>
 	#include <atlstr.h>
-	std::string openFileDialog(sf::RenderWindow* parentWindow)
+	std::string openFileDialog(sf::RenderWindow* parentWindow, bool selectMultiple)
 	{
 		OPENFILENAME ofn;
 		TCHAR szFile[260] = { 0 };
@@ -107,7 +107,7 @@ sf::Color hsl2rgb(float h, float s, float l)
 		ofn.lpstrFileTitle = NULL;
 		ofn.nMaxFileTitle = 0;
 		ofn.lpstrInitialDir = NULL;
-		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_EXPLORER | (selectMultiple ? OFN_ALLOWMULTISELECT : 0);
 
 		if (GetOpenFileName(&ofn) == TRUE)
 		{
@@ -119,14 +119,14 @@ sf::Color hsl2rgb(float h, float s, float l)
 		return "";
 	}
 #elif __APPLE__
-	std::string openFileDialog()
+	std::string openFileDialog(sf::RenderWindow* parentWindow, bool selectMultiple)
 	{
 		std::string path;
 		std::cin >> path;
 		return path;
 	}
 #else
-	std::string openFileDialog()
+	std::string openFileDialog(sf::RenderWindow* parentWindow, bool selectMultiple)
 	{
 		std::cerr << "Error: Unkown OS, unable to create open file dialog"
 		return "";

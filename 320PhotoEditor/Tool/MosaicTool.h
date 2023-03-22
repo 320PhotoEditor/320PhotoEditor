@@ -5,7 +5,6 @@
 //#include "../Layer/LayerManager.h"
 #include "../InputListener.h"
 #include "../GUI/ButtonElement.h"
-#include "../GUI/ImageButton.h"
 
 class MosaicTool : public Tool
 {
