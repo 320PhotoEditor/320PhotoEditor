@@ -7,7 +7,7 @@ PaintTool::PaintTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : To
 	
 	paintColor = sf::Color::Black;
 	lastCursorPos = { 0, 0 };
-	paintSize = 1;
+	paintSize = 5;
 }
 
 void PaintTool::init()
@@ -71,7 +71,7 @@ void PaintTool::buttonPressed(GUIElement* button, int status)
 
 	if (button == incrSizeButton)
 	{
-		paintSize = std::min(++paintSize, 25);
+		paintSize = std::min(++paintSize, 1000);
 		std::cout << paintSize << std::endl;
 	}
 	else if (button == decrSizeButton)
@@ -85,6 +85,7 @@ void PaintTool::paint()
 {
 	if (isPainting)
 	{
+		//TODO: make compute shader respect the layer mask
 		paintColor = applicationMenu->getForegroundColor();
 
 		ComputeShader::bindTexture(layer->getSprite()->getTexture()->getNativeHandle());
