@@ -82,6 +82,10 @@ void ComputeShader::setVec2(const std::string& name, float x, float y) const
 	glUniform2f(glGetUniformLocation(ID, name.c_str()), x, y);
 }
 
+void ComputeShader::setVec3(const std::string& name, float x, float y, float z) const
+{
+	glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
+}
 
 void ComputeShader::compile(const char* path)
 {

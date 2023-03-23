@@ -73,6 +73,12 @@ void Layer::reload()
 	texture.loadFromImage(*image);
 }
 
+void Layer::loadImageFromTexture()
+{
+	sf::Image img = texture.copyToImage();
+	image->copy(img, 0, 0);
+}
+
 Layer::~Layer()
 {
 	delete sprite;

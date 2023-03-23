@@ -3,9 +3,7 @@
 PaintTool::PaintTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : Tool(up, down, over)
 {
 	this->up = up;
-	test = new ComputeShader("../assets/testcompute.comp");
-	test->use();
-	test->setFloat("t", 1);
+	paintCompute = new ComputeShader("../assets/paint_compute.comp");
 	
 	paintColor = sf::Color::Black;
 	lastCursorPos = { 0, 0 };
@@ -34,6 +32,11 @@ void PaintTool::init()
 void PaintTool::start(Layer* layer)
 {
 	this->layer = layer;
+}
+
+void PaintTool::stop()
+{
+	layer->loadImageFromTexture();
 }
 
 void PaintTool::mousePressed(sf::Mouse::Button button)
@@ -80,34 +83,22 @@ void PaintTool::buttonPressed(GUIElement* button, int status)
 
 void PaintTool::paint()
 {
-	if (isPainting && layer->isCursorOver(cursorPos))
+	if (isPainting)
 	{
 		paintColor = applicationMenu->getForegroundColor();
 
+		ComputeShader::bindTexture(layer->getSprite()->getTexture()->getNativeHandle());
+		paintCompute->use();
 		sf::Vector2i paintPos = layer->cursorToPixel(cursorPos);
-		sf::Vector2i lastPaintPos = layer->isCursorOver(lastCursorPos) ? layer->cursorToPixel(lastCursorPos) : paintPos;
+		sf::Vector2i lastpaintPos = layer->cursorToPixel(lastCursorPos);
+		paintCompute->setVec2("firstPos", (float)paintPos.x, (float)paintPos.y);
+		paintCompute->setVec2("secondPos", (float)lastpaintPos.x, (float)lastpaintPos.y);
 
-		for (float f = 0; f < 1; f += 0.1)
-		{
-			sf::Vector2i pos = lastPaintPos + (paintPos - lastPaintPos) * f;
-			if (layer->getMask()->getPixel(pos.x, pos.y) == sf::Color::White)
-			{
-				//TODO: this slows down alot when painting with the radius being large, maybe time to implement compute shaders or use some other method of finding what pixel is in the circle
-				//or multhithread might work
-				
-				//loop through the bounding box of the circle and find the pixels that are withing the circle by distance
-				for (int x = pos.x - paintSize; x != pos.x + paintSize; x++)
-				{
-					for (int y = pos.y - paintSize; y != pos.y + paintSize; y++)
-					{
-						int distance = sqrt(pow(pos.x - x, 2) + pow(pos.y - y, 2));
-						if (distance <= paintSize)
-							layer->getImage()->setPixel(x, y, paintColor);
-					}
-				}
-			}
-		}
+		paintCompute->setFloat("paintSize", paintSize);
+		paintCompute->setVec3("color", paintColor.r / 255.0f, paintColor.g / 255.0f, paintColor.b / 255.0f);
 
-		layer->reload();
+		sf::Vector2u layerSize = layer->getImage()->getSize();
+
+		paintCompute->compute(layerSize.x / 10.0f, layerSize.y / 10.0f, 1);
 	}
 }

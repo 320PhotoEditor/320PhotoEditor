@@ -25,6 +25,9 @@ public:
 	//reloads the image to render
 	void reload();
 
+	//reloads the image from the texture on gpu
+	void loadImageFromTexture();
+
 	~Layer();
 
 private:
