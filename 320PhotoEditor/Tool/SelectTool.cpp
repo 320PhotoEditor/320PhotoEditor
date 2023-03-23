@@ -3,6 +3,8 @@
 SelectTool::SelectTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : Tool(up, down, over)
 {
 	selectMode = BOX;
+
+	selectCompute = new ComputeShader("../assets/select_compute.comp");
 }
 
 void SelectTool::init()
@@ -56,22 +58,9 @@ void SelectTool::mouseReleased(sf::Mouse::Button button)
 	{
 		selectPos2 = layer->cursorToPixel(cursorPos);
 
-		sf::Image* mask = layer->getMask();
+		select();
 
-		switch (selectMode)
-		{
-		case BOX:
-			boxSelect();
-			break;
-		case CIRCLE:
-			circleSelect();
-			break;
-		case FREEFORM:
-			freeformSelect();
-			break;
-		}
-
-		layer->reloadMask();
+		layer->loadMaskFromTexture();
 
 		isSelecting = false;
 	}
@@ -103,59 +92,23 @@ void SelectTool::buttonPressed(GUIElement* button, int status)
 	}
 	else if (button == allSelectButton)
 	{
-		setMaskColor(sf::Color::White);
+		ComputeShader::bindTexture(layer->getMaskTexture()->getNativeHandle(), 0);
+		selectCompute->use();
+		selectCompute->setInt("selectMode", 3);
+		sf::Vector2u layerSize = layer->getImage()->getSize();
+
+		selectCompute->compute(layerSize.x / 10.0f, layerSize.y / 10.0f, 1);
 	}
 }
 
-void SelectTool::boxSelect()
+void SelectTool::select()
 {
-	//clear the mask
-	setMaskColor(sf::Color::Black);
+	ComputeShader::bindTexture(layer->getMaskTexture()->getNativeHandle(), 0);
+	selectCompute->use();
+	selectCompute->setVec2("firstPos", (float)selectPos1.x, (float)selectPos1.y);
+	selectCompute->setVec2("secondPos", (float)selectPos2.x, (float)selectPos2.y);
+	selectCompute->setInt("selectMode", (int)selectMode);
+	sf::Vector2u layerSize = layer->getImage()->getSize();
 
-	sf::Image* mask = layer->getMask();
-
-	//set the selection to white(selected)
-	for (int x = selectPos1.x; x != selectPos2.x; x += sign(selectPos2.x - selectPos1.x))
-	{
-		for (int y = selectPos1.y; y != selectPos2.y; y += sign(selectPos2.y - selectPos1.y))
-		{
-			mask->setPixel(x, y, sf::Color::White);
-		}
-	}
-}
-
-void SelectTool::circleSelect()
-{
-	setMaskColor(sf::Color::Black);
-
-	sf::Image* mask = layer->getMask();
-
-	int radius = sqrt(pow(selectPos1.x - selectPos2.x, 2) + pow(selectPos1.y - selectPos2.y, 2));
-
-	//loop through the bounding box of the circle and find the pixels that are withing the circle by distance
-	for (int x = selectPos1.x - radius; x != selectPos1.x + radius; x += sign(selectPos2.x - selectPos1.x))
-	{
-		for (int y = selectPos1.y - radius; y != selectPos1.y + radius; y += sign(selectPos2.y - selectPos1.y))
-		{
-			int distance = sqrt(pow(selectPos1.x - x, 2) + pow(selectPos1.y - y, 2));
-			if(distance <= radius)
-				mask->setPixel(x, y, sf::Color::White);
-		}
-	}
-}
-
-void SelectTool::freeformSelect()
-{
-	setMaskColor(sf::Color::Black);
-	//TODO: add freeform
-}
-
-void SelectTool::setMaskColor(sf::Color color)
-{
-	sf::Image* mask = layer->getMask();
-	//fast way of setting all the pixels in the image
-	//just casting away the const when getting the pixel pointer
-	auto px = reinterpret_cast<sf::Color*>(const_cast<sf::Uint8*>(mask->getPixelsPtr()));
-	//fill the entire image with the color
-	std::fill(px, px + mask->getSize().x * mask->getSize().y, color);
+	selectCompute->compute(layerSize.x / 10.0f, layerSize.y / 10.0f, 1);
 }

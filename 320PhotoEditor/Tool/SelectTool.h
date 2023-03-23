@@ -3,6 +3,7 @@
 #include "Tool.h"
 #include "../GUI/ButtonElement.h"
 #include "../AssetManager.h"
+#include "../ComputeShader.h"
 
 class SelectTool : public Tool
 {
@@ -23,10 +24,7 @@ public:
 
 private:
 
-	void boxSelect();
-	void circleSelect();
-	void freeformSelect();
-	void setMaskColor(sf::Color color);
+	void select();
 
 	int sign(int x)
 	{
@@ -54,4 +52,6 @@ private:
 	sf::Vector2i cursorPos;
 
 	Layer* layer;
+
+	ComputeShader* selectCompute;
 };
