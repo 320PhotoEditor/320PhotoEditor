@@ -16,6 +16,8 @@ public:
 	//a mask that can be used for selections
 	//white used for selected and black for not selected
 	sf::Image* getMask();
+	
+	sf::Texture* getMaskTexture();
 
 	sf::Sprite* getSprite();
 
@@ -25,8 +27,12 @@ public:
 	//reloads the image to render
 	void reload();
 
+	void reloadMask();
+
 	//reloads the image from the texture on gpu
 	void loadImageFromTexture();
+
+	void loadMaskFromTexture();
 
 	~Layer();
 
@@ -37,6 +43,7 @@ private:
 	sf::RenderWindow* renderWindow;
 
 	sf::Texture texture;
+	sf::Texture maskTexture;
 	sf::Sprite* sprite;
 
 	sf::Image* image;

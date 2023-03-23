@@ -22,6 +22,7 @@ void Layer::createLayer(sf::Image* image, sf::RenderWindow* renderWindow)
 
 	mask = new sf::Image();
 	mask->create(image->getSize().x, image->getSize().y, sf::Color::White);
+	maskTexture.loadFromImage(*mask);
 
 	texture = sf::Texture();
 	texture.loadFromImage(*image);
@@ -41,6 +42,11 @@ sf::Image* Layer::getImage()
 sf::Image* Layer::getMask()
 {
 	return mask;
+}
+
+sf::Texture* Layer::getMaskTexture()
+{
+	return &maskTexture;
 }
 
 sf::Sprite* Layer::getSprite()
@@ -73,10 +79,21 @@ void Layer::reload()
 	texture.loadFromImage(*image);
 }
 
+void Layer::reloadMask()
+{
+	maskTexture.loadFromImage(*mask);
+}
+
 void Layer::loadImageFromTexture()
 {
 	sf::Image img = texture.copyToImage();
 	image->copy(img, 0, 0);
+}
+
+void Layer::loadMaskFromTexture()
+{
+	sf::Image img = maskTexture.copyToImage();
+	mask->copy(img, 0, 0);
 }
 
 Layer::~Layer()

@@ -29,9 +29,9 @@ void ComputeShader::use(unsigned int ID)
 	glUseProgram(ID);
 }
 
-void ComputeShader::bindTexture(unsigned int texture)
+void ComputeShader::bindTexture(unsigned int texture, unsigned int binding)
 {
-	glBindImageTexture(0, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA8);
+	glBindImageTexture(binding, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA8);
 }
 
 void ComputeShader::printComputeStats()

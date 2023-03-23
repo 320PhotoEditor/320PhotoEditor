@@ -85,10 +85,10 @@ void PaintTool::paint()
 {
 	if (isPainting)
 	{
-		//TODO: make compute shader respect the layer mask
 		paintColor = applicationMenu->getForegroundColor();
 
-		ComputeShader::bindTexture(layer->getSprite()->getTexture()->getNativeHandle());
+		ComputeShader::bindTexture(layer->getSprite()->getTexture()->getNativeHandle(), 0);
+		ComputeShader::bindTexture(layer->getMaskTexture()->getNativeHandle(), 1);
 		paintCompute->use();
 		sf::Vector2i paintPos = layer->cursorToPixel(cursorPos);
 		sf::Vector2i lastpaintPos = layer->cursorToPixel(lastCursorPos);

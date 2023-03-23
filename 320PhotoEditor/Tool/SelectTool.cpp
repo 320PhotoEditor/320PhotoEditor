@@ -71,6 +71,8 @@ void SelectTool::mouseReleased(sf::Mouse::Button button)
 			break;
 		}
 
+		layer->reloadMask();
+
 		isSelecting = false;
 	}
 }

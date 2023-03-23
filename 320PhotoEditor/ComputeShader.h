@@ -54,7 +54,7 @@ public:
 
 	static void use(unsigned int ID);
 
-	static void bindTexture(unsigned int texture);
+	static void bindTexture(unsigned int texture, unsigned int binding);
 
 	static void printComputeStats();
 
