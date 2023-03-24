@@ -7,7 +7,8 @@
 #include "../320PhotoEditor/ComputeShader.h"
 #include "../320PhotoEditor/Common.h"
 
-BOOST_AUTO_TEST_CASE(AssetManager_Load_From_Mem)
+//acceptance test
+BOOST_AUTO_TEST_CASE(AssetManager_Texture_Load_From_Mem)
 {
     AssetManager am = AssetManager::getInstance();
 
@@ -17,7 +18,8 @@ BOOST_AUTO_TEST_CASE(AssetManager_Load_From_Mem)
     BOOST_CHECK_EQUAL(initalload, noload);
 }
 
-BOOST_AUTO_TEST_CASE(AssetManager_Load_Different)
+//acceptance test
+BOOST_AUTO_TEST_CASE(AssetManager_Texture_Load_Different)
 {
     AssetManager am = AssetManager::getInstance();
 
@@ -27,6 +29,29 @@ BOOST_AUTO_TEST_CASE(AssetManager_Load_Different)
     BOOST_CHECK_NE(initalload, difload);
 }
 
+//acceptance test
+BOOST_AUTO_TEST_CASE(AssetManager_Shader_Load_From_Mem)
+{
+    AssetManager am = AssetManager::getInstance();
+
+    ComputeShader* initalload = am.getComputeShader("../assets/paint_compute.comp");
+    ComputeShader* noload = am.getComputeShader("../assets/paint_compute.comp");
+
+    BOOST_CHECK_EQUAL(initalload, noload);
+}
+
+//acceptance test
+BOOST_AUTO_TEST_CASE(AssetManager_Shader_Load_Different)
+{
+    AssetManager am = AssetManager::getInstance();
+
+    ComputeShader* initalload = am.getComputeShader("../assets/paint_compute.comp");
+    ComputeShader* difload = am.getComputeShader("../assets/select_compute.comp");
+
+    BOOST_CHECK_NE(initalload, difload);
+}
+
+//acceptance test
 BOOST_AUTO_TEST_CASE(ComputeShader_Load)
 {
     //create the render window to init opengl context so compute shaders will run
@@ -36,6 +61,7 @@ BOOST_AUTO_TEST_CASE(ComputeShader_Load)
     BOOST_CHECK_NE(cs.ID, 0);
 }
 
+//acceptance test
 BOOST_AUTO_TEST_CASE(PaintCompute_Paint)
 {
     sf::RenderWindow* rw = new sf::RenderWindow(sf::VideoMode(1280, 720), "window");
@@ -78,6 +104,7 @@ BOOST_AUTO_TEST_CASE(PaintCompute_Paint)
     BOOST_CHECK_NE(texi.getPixel(75, 75).b, sf::Color::Black.b);
 }
 
+//acceptance test
 BOOST_AUTO_TEST_CASE(RGB_To_HSL)
 {
     float* h = rgb2hsl(sf::Color::Green);
@@ -86,6 +113,7 @@ BOOST_AUTO_TEST_CASE(RGB_To_HSL)
     BOOST_CHECK_CLOSE(h[2], 0.5, 0.01);
 }
 
+//acceptance test
 BOOST_AUTO_TEST_CASE(HSL_To_RGB)
 {
     sf::Color rgb = hsl2rgb(100 / 360, 0.5, 0.5);
@@ -93,4 +121,11 @@ BOOST_AUTO_TEST_CASE(HSL_To_RGB)
     BOOST_CHECK_CLOSE((float)(rgb.r), 106.0f, 0.01);
     BOOST_CHECK_CLOSE((float)(rgb.g), 191.0f, 0.01);
     BOOST_CHECK_CLOSE((float)(rgb.b), 64.0f, 0.01);
+}
+
+//integration test, bottom-up
+//tests between Layer and LayerManager
+BOOST_AUTO_TEST_CASE(HSL_To_RGB)
+{
+
 }
