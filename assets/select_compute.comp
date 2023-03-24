@@ -26,10 +26,10 @@ void main() {
 	}
 	else if(selectMode == 1)
 	{				
-		float distance = distance(firstPos, texelCoord);
+		float distanceCenter = distance(firstPos, texelCoord);
 		float size = distance(firstPos, secondPos);
 		
-		if(distance <= size)
+		if(distanceCenter <= size)
 		{
 			imageStore(mask, texelCoord, vec4(1.0, 1.0, 1.0, 1.0));
 			return;
