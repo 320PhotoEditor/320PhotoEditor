@@ -119,7 +119,7 @@ void GUIContainer::setPosition(sf::Vector2f pos)
 
 BOOST_AUTO_TEST_CASE(Container_element_set_pos)
 {
-	sf::Vector2f con_pos = { 0, 0 };
+	sf::Vector2f con_pos = { 1, 1 };
 	sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode(100, 100), "TestWindow");
 	GUIContainer* container = new GUIContainer(con_pos, { 0.5, 0.5 }, window, false);
 
@@ -175,7 +175,7 @@ BOOST_AUTO_TEST_CASE(button_element_reset_pos)
 	ButtonElement* button = new ButtonElement(upTexture, downTexture, overTexture);
 	container->addElement(button);
 	button->setSize({ 0.1, 0.1 });
-	button->setPosition({ 0, 0 });
+	button->setPosition({ 1, 1 });
 	button->setPosition({ 5, 5 });
 
 	sf::Vector2f pos = button->getPosition();
@@ -195,12 +195,12 @@ BOOST_AUTO_TEST_CASE(button_element_set_pos)
 	ButtonElement* button = new ButtonElement(upTexture, downTexture, overTexture);
 	container->addElement(button);
 	button->setSize({ 0.1, 0.1 });
-	button->setPosition({ 0, 0 });
+	button->setPosition({ 1, 1 });
 
 	sf::Vector2f pos = button->getPosition();
 
-	BOOST_CHECK_EQUAL( pos.y, 0);
-	BOOST_CHECK_EQUAL( pos.x, 0);
+	BOOST_CHECK_EQUAL( pos.y, 1);
+	BOOST_CHECK_EQUAL( pos.x, 1);
 }
 
 BOOST_AUTO_TEST_CASE(button_element_default_set_pos)
@@ -243,9 +243,108 @@ BOOST_AUTO_TEST_CASE(button_element_default_pos_no_overlap)
 	BOOST_CHECK_NE(pos1.x, pos2.x);
 }
 
-BOOST_AUTO_TEST_CASE(button_element_is_cursor_over)
-{
 
+/*
+	ButtonElement mousePressed() whitebox test with branch coverage.
+
+void ButtonElement::mousePressed(sf::Mouse::Button button)
+{
+	if (isCursorOver(cursorPos))
+	{
+		if (toggle)
+		{
+			if (buttonState == DOWN)
+			{
+				sprite->setTexture(*up);
+				buttonState = UP; //PRIVATE
+				updateFunc(this, UP);
+			}
+			else
+			{
+				sprite->setTexture(*down);
+				buttonState = DOWN;  //PRIVATE
+				updateFunc(this, DOWN);
+			}
+		}
+		else
+		{
+			sprite->setTexture(*down);
+			buttonState = DOWN; //PRIVATE
+
+			updateFunc(this, DOWN);
+		}
+	}
+}
+*/
+
+BOOST_AUTO_TEST_CASE(button_element_mouse_pressed_TTT_TTF)
+{
+	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
+	sf::Texture* downTexture = AssetManager::getInstance().getTexture("../assets/button_down.png");
+	sf::Texture* overTexture = AssetManager::getInstance().getTexture("../assets/button_over.png");
+	
+	bool* test = new bool(false);
+
+	sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode(100, 100), "TestWindow");
+	GUIContainer* container = new GUIContainer({ 0, 0 }, { 1, 1 }, window, false);
+	ButtonElement* button = new ButtonElement(upTexture, downTexture, overTexture, true);
+	container->addElement(button);
+	button->setSize({ 0.1,0.1 });
+	button->setPosition({ 0,0 });
+	button->setUpdateFunction([test](GUIElement* element, int status) { *test = !(*test); });
+	container->mouseMoved({ 5, 5 });
+	
+	button->mousePressed(sf::Mouse::Left);
+
+	BOOST_CHECK_EQUAL(*test, true);
+
+	button->mousePressed(sf::Mouse::Left);
+
+	BOOST_CHECK_EQUAL(*test, false);
+}
+
+BOOST_AUTO_TEST_CASE(button_element_mouse_pressed_TF)
+{
+	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
+	sf::Texture* downTexture = AssetManager::getInstance().getTexture("../assets/button_down.png");
+	sf::Texture* overTexture = AssetManager::getInstance().getTexture("../assets/button_over.png");
+	
+	bool* test = new bool(false);
+
+	sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode(100, 100), "TestWindow");
+	GUIContainer* container = new GUIContainer({ 0, 0 }, { 1, 1 }, window, false);
+	ButtonElement* button = new ButtonElement(upTexture, downTexture, overTexture);
+	container->addElement(button);
+	button->setSize({ 0.1,0.1 });
+	button->setPosition({ 0,0 });
+	button->setUpdateFunction([test](GUIElement* element, int status) { *test = !(*test); });
+	container->mouseMoved({ 5, 5 });
+	
+	button->mousePressed(sf::Mouse::Left);
+
+	BOOST_CHECK_EQUAL(*test, true);
+}
+
+BOOST_AUTO_TEST_CASE(button_element_mouse_pressed_F)
+{
+	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
+	sf::Texture* downTexture = AssetManager::getInstance().getTexture("../assets/button_down.png");
+	sf::Texture* overTexture = AssetManager::getInstance().getTexture("../assets/button_over.png");
+
+	bool* test = new bool(false);
+
+	sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode(100, 100), "TestWindow");
+	GUIContainer* container = new GUIContainer({ 0, 0 }, { 1, 1 }, window, false);
+	ButtonElement* button = new ButtonElement(upTexture, downTexture, overTexture);
+	container->addElement(button);
+	button->setSize({ 0.1,0.1 });
+	button->setPosition({ 0,0 });
+	button->setUpdateFunction([test](GUIElement* element, int status) { *test = !(*test); });
+	container->mouseMoved({ 50, 50 });
+
+	button->mousePressed(sf::Mouse::Left);
+
+	BOOST_CHECK_EQUAL(*test, false);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
