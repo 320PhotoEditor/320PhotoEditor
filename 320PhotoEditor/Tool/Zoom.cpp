@@ -102,5 +102,8 @@ void Zoom::zoom()
     zoomSprite->setScale(zoomFactor, zoomFactor);
 }
 
-
+sf::RenderWindow * Zoom::getRenderWindow()
+{
+    return renderWindow;
+}
 

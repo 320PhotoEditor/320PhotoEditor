@@ -20,6 +20,7 @@ public:
 
     void mousePressed(sf::Mouse::Button button);
     void buttonPressed(GUIElement* button, int status);
+    sf::RenderWindow * getRenderWindow();
 
     //reloads the image to render
 //    int update();
