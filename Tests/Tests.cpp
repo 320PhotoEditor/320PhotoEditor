@@ -6,6 +6,10 @@
 #include "../320PhotoEditor/AssetManager.h"
 #include "../320PhotoEditor/ComputeShader.h"
 #include "../320PhotoEditor/Common.h"
+#include "../320PhotoEditor/Layer/Layer.h"
+#include "../320PhotoEditor/Layer/LayerManager.h"
+#include "../320PhotoEditor/Tool/PaintTool.h"
+#include "../320PhotoEditor/Tool/ToolManager.h"
 
 //acceptance test
 BOOST_AUTO_TEST_CASE(AssetManager_Texture_Load_From_Mem)
@@ -34,6 +38,9 @@ BOOST_AUTO_TEST_CASE(AssetManager_Shader_Load_From_Mem)
 {
     AssetManager am = AssetManager::getInstance();
 
+    //create the render window to init opengl context so compute shaders will run
+    sf::RenderWindow* rw = new sf::RenderWindow(sf::VideoMode(1280, 720), "window");
+
     ComputeShader* initalload = am.getComputeShader("../assets/paint_compute.comp");
     ComputeShader* noload = am.getComputeShader("../assets/paint_compute.comp");
 
@@ -44,6 +51,9 @@ BOOST_AUTO_TEST_CASE(AssetManager_Shader_Load_From_Mem)
 BOOST_AUTO_TEST_CASE(AssetManager_Shader_Load_Different)
 {
     AssetManager am = AssetManager::getInstance();
+
+    //create the render window to init opengl context so compute shaders will run
+    sf::RenderWindow* rw = new sf::RenderWindow(sf::VideoMode(1280, 720), "window");
 
     ComputeShader* initalload = am.getComputeShader("../assets/paint_compute.comp");
     ComputeShader* difload = am.getComputeShader("../assets/select_compute.comp");
@@ -124,8 +134,30 @@ BOOST_AUTO_TEST_CASE(HSL_To_RGB)
 }
 
 //integration test, bottom-up
-//tests between Layer and LayerManager
-BOOST_AUTO_TEST_CASE(HSL_To_RGB)
+//tests between a Tool and ToolManager and Layer
+BOOST_AUTO_TEST_CASE(Tool_ToolManager_Integration)
 {
+    sf::RenderWindow* rw = new sf::RenderWindow(sf::VideoMode(1000, 1000), "window");
 
+    sf::Image im = sf::Image();
+    im.create(100, 100, sf::Color::White);
+    sf::Texture* texture = new sf::Texture();
+    texture->loadFromImage(im);
+
+    PaintTool* paintTool = new PaintTool(texture, texture, texture);
+
+    ToolManager* toolManager = new ToolManager(rw);
+    
+    Layer* layer = new Layer({100, 100}, sf::Color::White, rw);
+    toolManager->setSelectedLayer(layer);
+
+    //add the tool to the manager and select it
+    toolManager->addTool(paintTool);
+    toolManager->mouseMoved({ 1, 26 });
+    toolManager->mousePressed(sf::Mouse::Button::Left);
+
+    //checks if the container was set by the tool manager
+    BOOST_CHECK_NE(paintTool->getContainer(), nullptr);
+    //shouldn't crash if the toolManager properly initalized
+    BOOST_CHECK_NO_THROW(paintTool->stop());
 }
