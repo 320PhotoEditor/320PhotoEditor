@@ -9,6 +9,7 @@
 #include "../320PhotoEditor/Layer/Layer.h"
 #include "../320PhotoEditor/Layer/LayerManager.h"
 #include "../320PhotoEditor/Tool/PaintTool.h"
+#include "../320PhotoEditor/Tool/WarpTool.h"
 #include "../320PhotoEditor/Tool/ToolManager.h"
 
 //acceptance test
@@ -68,6 +69,7 @@ BOOST_AUTO_TEST_CASE(ComputeShader_Load)
     sf::RenderWindow* rw = new sf::RenderWindow(sf::VideoMode(1280, 720), "window");
 
     ComputeShader cs = ComputeShader("../assets/testcompute.comp");
+    //checks if the compute shader properly loaded and the id was set to a valid number
     BOOST_CHECK_NE(cs.ID, 0);
 }
 
@@ -133,6 +135,53 @@ BOOST_AUTO_TEST_CASE(HSL_To_RGB)
     BOOST_CHECK_CLOSE((float)(rgb.b), 64.0f, 0.01);
 }
 
+//white box test
+BOOST_AUTO_TEST_CASE(WarpTool_SelectPoint_Inside)
+{
+    sf::RenderWindow* rw = new sf::RenderWindow(sf::VideoMode(1000, 1000), "window");
+
+    sf::Image im = sf::Image();
+    im.create(100, 100, sf::Color::White);
+    sf::Texture* texture = new sf::Texture();
+    texture->loadFromImage(im);
+
+    WarpTool* paintTool = new WarpTool(texture, texture, texture);
+    paintTool->init();
+    Layer* layer = new Layer({ 100, 100 }, sf::Color::White, rw);
+    paintTool->start(layer);
+    
+    //check directly on the point
+    sf::Vector2i point = paintTool->selectControlPoint({ 50, 50 });
+    BOOST_CHECK_EQUAL(point.x, 1);
+    BOOST_CHECK_EQUAL(point.y, 1);
+
+    //check sligtly off
+    point = paintTool->selectControlPoint({ 53, 53 });
+    BOOST_CHECK_EQUAL(point.x, 1);
+    BOOST_CHECK_EQUAL(point.y, 1);
+}
+
+//white box test
+BOOST_AUTO_TEST_CASE(WarpTool_SelectPoint_Outside)
+{
+    sf::RenderWindow* rw = new sf::RenderWindow(sf::VideoMode(1000, 1000), "window");
+
+    sf::Image im = sf::Image();
+    im.create(100, 100, sf::Color::White);
+    sf::Texture* texture = new sf::Texture();
+    texture->loadFromImage(im);
+
+    WarpTool* paintTool = new WarpTool(texture, texture, texture);
+    paintTool->init();
+    Layer* layer = new Layer({ 100, 100 }, sf::Color::White, rw);
+    paintTool->start(layer);
+
+    //between points 1,1 and 2,2
+    sf::Vector2i point = paintTool->selectControlPoint({ 75, 75 });
+    BOOST_CHECK_EQUAL(point.x, -1);
+    BOOST_CHECK_EQUAL(point.y, -1);
+}
+
 //integration test, bottom-up
 //tests between a Tool and ToolManager and Layer
 BOOST_AUTO_TEST_CASE(Tool_ToolManager_Integration)
@@ -160,4 +209,34 @@ BOOST_AUTO_TEST_CASE(Tool_ToolManager_Integration)
     BOOST_CHECK_NE(paintTool->getContainer(), nullptr);
     //shouldn't crash if the toolManager properly initalized
     BOOST_CHECK_NO_THROW(paintTool->stop());
+}
+
+//white box test
+BOOST_AUTO_TEST_CASE(Layer_cursorToPixel)
+{
+    sf::RenderWindow* rw = new sf::RenderWindow(sf::VideoMode(1000, 1000), "window");
+    
+    //full window size
+    Layer* layer = new Layer({ 1000, 1000 }, sf::Color::White, rw);
+
+    sf::Vector2i p = layer->cursorToPixel({ 50, 50 });
+    BOOST_CHECK_EQUAL(p.x, 50);
+    BOOST_CHECK_EQUAL(p.y, 50);
+
+    p = layer->cursorToPixel({ -50, -50 });
+    BOOST_CHECK_EQUAL(p.x, -50);
+    BOOST_CHECK_EQUAL(p.y, -50);
+
+    delete layer;
+
+    //half size the window
+    layer = new Layer({ 500, 500 }, sf::Color::White, rw);
+
+    p = layer->cursorToPixel({ 50, 50 });
+    BOOST_CHECK_EQUAL(p.x, 50);
+    BOOST_CHECK_EQUAL(p.y, 50);
+
+    p = layer->cursorToPixel({ -50, -50 });
+    BOOST_CHECK_EQUAL(p.x, -50);
+    BOOST_CHECK_EQUAL(p.y, -50);
 }

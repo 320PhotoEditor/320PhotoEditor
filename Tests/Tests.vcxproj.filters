@@ -84,6 +84,9 @@
     <ClCompile Include="..\320PhotoEditor\GUI\PanelElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\320PhotoEditor\Tool\WarpTool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

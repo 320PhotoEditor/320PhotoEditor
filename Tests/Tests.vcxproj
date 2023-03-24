@@ -166,6 +166,7 @@
     <ClCompile Include="..\320PhotoEditor\Tool\TestTool.cpp" />
     <ClCompile Include="..\320PhotoEditor\Tool\Tool.cpp" />
     <ClCompile Include="..\320PhotoEditor\Tool\ToolManager.cpp" />
+    <ClCompile Include="..\320PhotoEditor\Tool\WarpTool.cpp" />
     <ClCompile Include="..\320PhotoEditor\Tool\Zoom.cpp" />
     <ClCompile Include="..\320PhotoEditor\WindowListener.cpp" />
     <ClCompile Include="Tests.cpp" />
