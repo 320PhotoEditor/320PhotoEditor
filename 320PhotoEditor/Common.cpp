@@ -88,6 +88,16 @@ sf::Color hsl2rgb(float h, float s, float l)
 	return rgb;
 }
 
+//TODO:
+float* rgb2hsl(sf::Color rgb)
+{
+	float* h = new float[3];
+	h[0] = 0;
+	h[1] = 0;
+	h[2] = 0;
+	return h;
+}
+
 #ifdef _WIN32
 	#include <Windows.h>
 	#include <tchar.h>

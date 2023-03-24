@@ -5,6 +5,7 @@
 #include "../320PhotoEditor/Common.h"
 #include "../320PhotoEditor/AssetManager.h"
 #include "../320PhotoEditor/ComputeShader.h"
+#include "../320PhotoEditor/Common.h"
 
 BOOST_AUTO_TEST_CASE(AssetManager_Load_From_Mem)
 {
@@ -75,4 +76,21 @@ BOOST_AUTO_TEST_CASE(PaintCompute_Paint)
     BOOST_CHECK_NE(texi.getPixel(75, 75).r, sf::Color::Black.r);
     BOOST_CHECK_NE(texi.getPixel(75, 75).g, sf::Color::Black.g);
     BOOST_CHECK_NE(texi.getPixel(75, 75).b, sf::Color::Black.b);
+}
+
+BOOST_AUTO_TEST_CASE(RGB_To_HSL)
+{
+    float* h = rgb2hsl(sf::Color::Green);
+    BOOST_CHECK_CLOSE(h[0], 120 / 360, 0.01);
+    BOOST_CHECK_CLOSE(h[1], 1, 0.01);
+    BOOST_CHECK_CLOSE(h[2], 0.5, 0.01);
+}
+
+BOOST_AUTO_TEST_CASE(HSL_To_RGB)
+{
+    sf::Color rgb = hsl2rgb(100 / 360, 0.5, 0.5);
+
+    BOOST_CHECK_CLOSE((float)(rgb.r), 106.0f, 0.01);
+    BOOST_CHECK_CLOSE((float)(rgb.g), 191.0f, 0.01);
+    BOOST_CHECK_CLOSE((float)(rgb.b), 64.0f, 0.01);
 }
