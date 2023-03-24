@@ -62,6 +62,12 @@ void PaintTool::mouseMoved(sf::Vector2i pos)
 	lastCursorPos = pos;
 }
 
+void PaintTool::mouseScrolled(int delta)
+{
+	paintSize = std::max(paintSize + delta, 1);
+	std::cout << paintSize << std::endl;
+}
+
 void PaintTool::buttonPressed(GUIElement* button, int status)
 {
 	if (status != ButtonElement::ButtonState::DOWN)
@@ -71,7 +77,7 @@ void PaintTool::buttonPressed(GUIElement* button, int status)
 
 	if (button == incrSizeButton)
 	{
-		paintSize = std::min(++paintSize, 1000);
+		++paintSize;
 		std::cout << paintSize << std::endl;
 	}
 	else if (button == decrSizeButton)

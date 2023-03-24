@@ -19,6 +19,7 @@ public:
 	void mousePressed(sf::Mouse::Button button);
 	void mouseReleased(sf::Mouse::Button button);
 	void mouseMoved(sf::Vector2i pos);
+	void mouseScrolled(int delta);
 
 	void buttonPressed(GUIElement* button, int status);
 

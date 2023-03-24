@@ -145,7 +145,7 @@ void Application::updateInputListeners(sf::Event event)
     case sf::Event::MouseWheelScrolled:
         for (const auto& listener : inputListeners)
         {
-            listener->mouseScrolled(event.mouseWheel.delta);
+            listener->mouseScrolled(event.mouseWheel.x > 0 ? 1 : -1);
         }
         break;
     case sf::Event::MouseMoved:
