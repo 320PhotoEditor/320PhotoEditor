@@ -114,6 +114,11 @@ void ButtonElement::setPosition(sf::Vector2f pos)
 	this->pos = pos;
 }
 
+sf::Vector2f ButtonElement::getPosition()
+{
+	return pos;
+}
+
 ButtonElement::~ButtonElement()
 {
 	delete sprite;
