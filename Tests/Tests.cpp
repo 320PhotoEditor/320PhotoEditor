@@ -82,9 +82,42 @@ BOOST_AUTO_TEST_CASE(cursor_edge_GUI_element)
 	BOOST_CHECK_EQUAL(true, isover);
 }
 
+BOOST_AUTO_TEST_SUITE_END()
 
+BOOST_AUTO_TEST_SUITE(GUIContainerTestSuite)
 
-BOOST_AUTO_TEST_CASE(Container_element_pos)
+/*
+GUIContainer::GUIContainer(sf::Vector2f pos, sf::Vector2f size, sf::RenderWindow* renderWindow, bool rightAnchor)
+{
+	this->size = size;
+	this->renderWindow = renderWindow;
+	this->rightAnchor = rightAnchor;
+	setPosition(pos);
+	visible = true;
+	cursorPos = sf::Vector2i(0, 0);
+}
+
+sf::Vector2f GUIContainer::getPosition()
+{
+	return pos;
+}
+
+void GUIContainer::setPosition(sf::Vector2f pos)
+{
+	rawPos = pos;
+	if (rightAnchor)
+	{
+		float aspect = (float)renderWindow->getSize().x / (float)renderWindow->getSize().y;
+		this->pos = { aspect - pos.x - size.x, pos.y };
+	}
+	else
+	{
+		this->pos = pos;
+	}
+}
+*/
+
+BOOST_AUTO_TEST_CASE(Container_element_set_pos)
 {
 	sf::Vector2f con_pos = { 0, 0 };
 	sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode(100, 100), "TestWindow");
@@ -94,6 +127,20 @@ BOOST_AUTO_TEST_CASE(Container_element_pos)
 
 	BOOST_CHECK_EQUAL(pos.y, con_pos.y);
 	BOOST_CHECK_EQUAL(pos.x, con_pos.x);
+}
+
+BOOST_AUTO_TEST_CASE(Container_element_reset_pos)
+{
+	sf::Vector2f init_con_pos = { 0, 0 };
+	sf::Vector2f reset_con_pos = { 10, 10 };
+	sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode(100, 100), "TestWindow");
+	GUIContainer* container = new GUIContainer(init_con_pos, { 0.5, 0.5 }, window, false);
+
+	container->setPosition(reset_con_pos);
+	sf::Vector2f pos = container->getPosition();
+
+	BOOST_CHECK_EQUAL(pos.y, reset_con_pos.y);
+	BOOST_CHECK_EQUAL(pos.x, reset_con_pos.x);
 }
 
 BOOST_AUTO_TEST_CASE(Container_element_pos_actual)
@@ -108,6 +155,14 @@ BOOST_AUTO_TEST_CASE(Container_element_pos_actual)
 	BOOST_CHECK_EQUAL(pos.y, con_expected_pos.y);
 	BOOST_CHECK_EQUAL(pos.x, con_expected_pos.x);
 }
+
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE(ButtonElementTestSuite)
+
+/*
+
+*/
 
 BOOST_AUTO_TEST_CASE(button_element_reset_pos)
 {
@@ -148,7 +203,7 @@ BOOST_AUTO_TEST_CASE(button_element_set_pos)
 	BOOST_CHECK_EQUAL( pos.x, 0);
 }
 
-BOOST_AUTO_TEST_CASE(button_element_no_set_pos)
+BOOST_AUTO_TEST_CASE(button_element_default_set_pos)
 {
 	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
 	sf::Texture* downTexture = AssetManager::getInstance().getTexture("../assets/button_down.png");
@@ -164,6 +219,33 @@ BOOST_AUTO_TEST_CASE(button_element_no_set_pos)
 
 	BOOST_CHECK_EQUAL(pos.y, 0);
 	BOOST_CHECK_EQUAL(pos.x, 0);
+}
+
+BOOST_AUTO_TEST_CASE(button_element_default_pos_no_overlap)
+{
+	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
+	sf::Texture* downTexture = AssetManager::getInstance().getTexture("../assets/button_down.png");
+	sf::Texture* overTexture = AssetManager::getInstance().getTexture("../assets/button_over.png");
+
+	sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode(100, 100), "TestWindow");
+	GUIContainer* container = new GUIContainer({ 0, 0 }, { 1, 1 }, window, false);
+	ButtonElement* button1 = new ButtonElement(upTexture, downTexture, overTexture);
+	ButtonElement* button2 = new ButtonElement(upTexture, downTexture, overTexture);
+	container->addElement(button1);
+	button1->setSize({ 0.1, 0.1 });
+	container->addElement(button2);
+	button2->setSize({ 0.1, 0.1 });
+
+	sf::Vector2f pos1 = button1->getPosition();
+	sf::Vector2f pos2 = button2->getPosition();
+
+	BOOST_CHECK_EQUAL(pos1.y, pos2.y);
+	BOOST_CHECK_NE(pos1.x, pos2.x);
+}
+
+BOOST_AUTO_TEST_CASE(button_element_is_cursor_over)
+{
+
 }
 
 BOOST_AUTO_TEST_SUITE_END()
