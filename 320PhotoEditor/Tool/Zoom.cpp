@@ -107,3 +107,14 @@ sf::RenderWindow * Zoom::getRenderWindow()
     return renderWindow;
 }
 
+int Zoom::getZoomFactor()
+{
+    return zoomFactor;
+}
+
+sf::Vector2i Zoom::getCursorPos()
+{
+    return cursorPos;
+}
+
+

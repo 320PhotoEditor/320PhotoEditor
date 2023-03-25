@@ -21,6 +21,8 @@ public:
     void mousePressed(sf::Mouse::Button button);
     void buttonPressed(GUIElement* button, int status);
     sf::RenderWindow * getRenderWindow();
+    sf::Vector2i getCursorPos();
+    int getZoomFactor();
 
     //reloads the image to render
 //    int update();

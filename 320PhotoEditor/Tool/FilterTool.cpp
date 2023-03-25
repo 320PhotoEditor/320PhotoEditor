@@ -60,7 +60,6 @@ void FilterTool::buttonPressed(GUIElement* button, int status)
                 layer->getImage()->setPixel(a, b, sf::Color(grayscale, grayscale, grayscale, 255));
             }
         }
-
         layer->reload();
     }
 
