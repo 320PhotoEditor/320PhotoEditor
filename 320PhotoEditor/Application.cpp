@@ -19,7 +19,6 @@ bool Application::init(std::string windowName)
         return false;
     }
 
-    //TODO: clean this up, maybe have some sort of asset manager
     window->setKeyRepeatEnabled(false);
 
     sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
