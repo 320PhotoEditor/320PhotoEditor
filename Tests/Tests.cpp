@@ -10,24 +10,8 @@
 
 
 BOOST_AUTO_TEST_SUITE(GUIElementTestSuite)
-/*
-bool GUIElement::isCursorOver(sf::Vector2i cursorPos)
-{
-	sf::Vector2f containerPos = container->getPosition();
-	sf::Vector2f containerSize = container->getSize();
-	float windowSize = container->getRenderWindow()->getSize().y;
 
-	sf::Vector2f cPos = cursorPos / windowSize;
-
-	float left = (pos.x * containerSize.x) + containerPos.x;
-	float right = ((pos.x + size.x) * containerSize.x) + containerPos.x;
-	float top = (pos.y * containerSize.y) + containerPos.y;
-	float bottom = ((pos.y + size.y) * containerSize.y) + containerPos.y;
-
-	return cPos.x >= left && cPos.x <= right && cPos.y >= top && cPos.y <= bottom;
-}
-*/
-
+// Big bang integration test
 BOOST_AUTO_TEST_CASE(cursor_within_GUI_element)
 {
 	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
@@ -46,6 +30,7 @@ BOOST_AUTO_TEST_CASE(cursor_within_GUI_element)
 	BOOST_CHECK_EQUAL(true, isover);
 }
 
+// Big bang integration test
 BOOST_AUTO_TEST_CASE(cursor_outside_GUI_element)
 {
 	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
@@ -64,6 +49,7 @@ BOOST_AUTO_TEST_CASE(cursor_outside_GUI_element)
 	BOOST_CHECK_EQUAL(false, isover);
 }
 
+// Big bang integration test
 BOOST_AUTO_TEST_CASE(cursor_edge_GUI_element)
 {
 	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
@@ -86,37 +72,7 @@ BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(GUIContainerTestSuite)
 
-/*
-GUIContainer::GUIContainer(sf::Vector2f pos, sf::Vector2f size, sf::RenderWindow* renderWindow, bool rightAnchor)
-{
-	this->size = size;
-	this->renderWindow = renderWindow;
-	this->rightAnchor = rightAnchor;
-	setPosition(pos);
-	visible = true;
-	cursorPos = sf::Vector2i(0, 0);
-}
-
-sf::Vector2f GUIContainer::getPosition()
-{
-	return pos;
-}
-
-void GUIContainer::setPosition(sf::Vector2f pos)
-{
-	rawPos = pos;
-	if (rightAnchor)
-	{
-		float aspect = (float)renderWindow->getSize().x / (float)renderWindow->getSize().y;
-		this->pos = { aspect - pos.x - size.x, pos.y };
-	}
-	else
-	{
-		this->pos = pos;
-	}
-}
-*/
-
+// Acceptance test
 BOOST_AUTO_TEST_CASE(Container_element_set_pos)
 {
 	sf::Vector2f con_pos = { 1, 1 };
@@ -129,6 +85,7 @@ BOOST_AUTO_TEST_CASE(Container_element_set_pos)
 	BOOST_CHECK_EQUAL(pos.x, con_pos.x);
 }
 
+// Acceptance test
 BOOST_AUTO_TEST_CASE(Container_element_reset_pos)
 {
 	sf::Vector2f init_con_pos = { 0, 0 };
@@ -143,6 +100,7 @@ BOOST_AUTO_TEST_CASE(Container_element_reset_pos)
 	BOOST_CHECK_EQUAL(pos.x, reset_con_pos.x);
 }
 
+// Acceptance test
 BOOST_AUTO_TEST_CASE(Container_element_pos_actual)
 {
 	sf::Vector2f con_assigned_pos = { 100, 100 };
@@ -160,10 +118,7 @@ BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(ButtonElementTestSuite)
 
-/*
-
-*/
-
+// Big bang integration test
 BOOST_AUTO_TEST_CASE(button_element_reset_pos)
 {
 	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
@@ -184,6 +139,7 @@ BOOST_AUTO_TEST_CASE(button_element_reset_pos)
 	BOOST_CHECK_EQUAL(pos.x, 5);
 }
 
+// Big bang integration test
 BOOST_AUTO_TEST_CASE(button_element_set_pos)
 {
 	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
@@ -203,6 +159,7 @@ BOOST_AUTO_TEST_CASE(button_element_set_pos)
 	BOOST_CHECK_EQUAL( pos.x, 1);
 }
 
+// Big bang integration test
 BOOST_AUTO_TEST_CASE(button_element_default_set_pos)
 {
 	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
@@ -221,6 +178,7 @@ BOOST_AUTO_TEST_CASE(button_element_default_set_pos)
 	BOOST_CHECK_EQUAL(pos.x, 0);
 }
 
+// Big bang integration test
 BOOST_AUTO_TEST_CASE(button_element_default_pos_no_overlap)
 {
 	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
@@ -245,7 +203,8 @@ BOOST_AUTO_TEST_CASE(button_element_default_pos_no_overlap)
 
 
 /*
-	ButtonElement mousePressed() whitebox test with branch coverage.
+	ButtonElement mousePressed() whitebox test with 100% branch coverage over the
+	next three tests.
 
 void ButtonElement::mousePressed(sf::Mouse::Button button)
 {
@@ -255,22 +214,21 @@ void ButtonElement::mousePressed(sf::Mouse::Button button)
 		{
 			if (buttonState == DOWN)
 			{
-				sprite->setTexture(*up);
+				sprite->setTexture(*up); //PRIVATE
 				buttonState = UP; //PRIVATE
 				updateFunc(this, UP);
 			}
 			else
 			{
-				sprite->setTexture(*down);
+				sprite->setTexture(*down); //PRIVATE
 				buttonState = DOWN;  //PRIVATE
 				updateFunc(this, DOWN);
 			}
 		}
 		else
 		{
-			sprite->setTexture(*down);
+			sprite->setTexture(*down); //PRIVATE
 			buttonState = DOWN; //PRIVATE
-
 			updateFunc(this, DOWN);
 		}
 	}
