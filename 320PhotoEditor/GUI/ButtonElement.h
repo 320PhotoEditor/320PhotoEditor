@@ -24,7 +24,7 @@ public:
 
 	void setSize(sf::Vector2f size);
 	void setPosition(sf::Vector2f pos);
-	sf::Vector2f getPosition();
+	//sf::Vector2f getPosition();
 
 	~ButtonElement();
 
