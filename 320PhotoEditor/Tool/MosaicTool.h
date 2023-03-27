@@ -5,10 +5,6 @@
 //#include "../Layer/LayerManager.h"
 #include "../InputListener.h"
 #include "../GUI/ButtonElement.h"
-#include <string.h>
-#include <iostream>
-
-
 
 class MosaicTool : public Tool
 {
@@ -18,7 +14,7 @@ public:
 	void init();
 	void start(Layer* layer);
 	void stop() {};
-	void run();
+	void run() {};
 
 	//void keyPressed(sf::Keyboard::Key key);
 
@@ -29,9 +25,9 @@ private:
 	ToolManager* toolManager;
 	//LayerManager* layerManager;
 	ButtonElement* selectButton;
+	//ButtonElement* imageButton;
 	Layer* layer;
 	sf::RenderWindow* newWindow;
 	std::set<InputListener*> inputListeners;
-	std::string openFileDialog(/*sf::RenderWindow* parentWindow*/);
 };
 
