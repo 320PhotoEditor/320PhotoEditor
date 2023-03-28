@@ -19,7 +19,6 @@ bool Application::init(std::string windowName)
         return false;
     }
 
-    //TODO: clean this up, maybe have some sort of asset manager
     window->setKeyRepeatEnabled(false);
 
     sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
@@ -145,7 +144,7 @@ void Application::updateInputListeners(sf::Event event)
     case sf::Event::MouseWheelScrolled:
         for (const auto& listener : inputListeners)
         {
-            listener->mouseScrolled(event.mouseWheel.delta);
+            listener->mouseScrolled(event.mouseWheel.x > 0 ? 1 : -1);
         }
         break;
     case sf::Event::MouseMoved:

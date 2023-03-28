@@ -1,0 +1,45 @@
+#version 430 core
+
+layout (local_size_x = 10, local_size_y = 10, local_size_z = 1) in;
+
+layout(rgba8, binding = 0) uniform image2D mask;
+
+layout (location = 0) uniform vec2 firstPos;
+layout (location = 1) uniform vec2 secondPos;
+//0 box, 1 circle, 3 clear
+layout (location = 2) uniform int selectMode;
+
+void main() {
+	vec4 value = vec4(0.0, 0.0, 0.0, 1.0);
+	ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
+
+	if(selectMode == 0)
+	{
+		vec2 minCorner = vec2(min(firstPos.x, secondPos.x), min(firstPos.y, secondPos.y));
+		vec2 maxCorner = vec2(max(firstPos.x, secondPos.x), max(firstPos.y, secondPos.y));
+		
+		if(all(greaterThanEqual(texelCoord, minCorner)) && all(lessThanEqual(texelCoord, maxCorner)))
+		{
+			imageStore(mask, texelCoord, vec4(1.0, 1.0, 1.0, 1.0));
+			return;
+		}
+	}
+	else if(selectMode == 1)
+	{				
+		float distanceCenter = distance(firstPos, texelCoord);
+		float size = distance(firstPos, secondPos);
+		
+		if(distanceCenter <= size)
+		{
+			imageStore(mask, texelCoord, vec4(1.0, 1.0, 1.0, 1.0));
+			return;
+		}	
+	}
+	else if(selectMode == 3)
+	{
+		imageStore(mask, texelCoord, vec4(1.0, 1.0, 1.0, 1.0));
+		return;
+	}
+	
+	imageStore(mask, texelCoord, vec4(0.0, 0.0, 0.0, 1.0));	
+}

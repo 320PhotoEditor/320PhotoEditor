@@ -161,6 +161,7 @@
     <ClCompile Include="Tool\ToolManager.cpp" />
     <ClCompile Include="Tool\Tool.cpp" />
     <ClCompile Include="Tool\Zoom.cpp" />
+    <ClCompile Include="Tool\WarpTool.cpp" />
     <ClCompile Include="WindowListener.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +186,7 @@
     <ClInclude Include="Tool\ToolManager.h" />
     <ClInclude Include="Tool\Tool.h" />
     <ClInclude Include="Tool\Zoom.h" />
+    <ClInclude Include="Tool\WarpTool.h" />
     <ClInclude Include="WindowListener.h" />
   </ItemGroup>
   <ItemGroup>

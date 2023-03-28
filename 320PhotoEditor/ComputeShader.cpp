@@ -29,9 +29,9 @@ void ComputeShader::use(unsigned int ID)
 	glUseProgram(ID);
 }
 
-void ComputeShader::bindTexture(unsigned int texture)
+void ComputeShader::bindTexture(unsigned int texture, unsigned int binding)
 {
-	glBindImageTexture(0, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA8);
+	glBindImageTexture(binding, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA8);
 }
 
 void ComputeShader::printComputeStats()
@@ -82,6 +82,10 @@ void ComputeShader::setVec2(const std::string& name, float x, float y) const
 	glUniform2f(glGetUniformLocation(ID, name.c_str()), x, y);
 }
 
+void ComputeShader::setVec3(const std::string& name, float x, float y, float z) const
+{
+	glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
+}
 
 void ComputeShader::compile(const char* path)
 {
