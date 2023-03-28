@@ -66,9 +66,6 @@
     <ClCompile Include="ApplicationMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tool\MosaicTool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Tool\Zoom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -135,9 +132,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ApplicationMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tool\MosaicTool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tool\Zoom.h">
