@@ -5,7 +5,9 @@ ColorPickerElement::ColorPickerElement()
 	img = sf::Texture();
 	img.loadFromFile("../assets/color_picker.png");
 	sprite = new sf::Sprite(img);
-	lightness = 0.5;
+	lightness = 0.0;
+
+	savedPos = { 0, 1 };
 
 	setDrawable(sprite);
 	setVisible(true);
@@ -31,7 +33,11 @@ void ColorPickerElement::mouseMoved(sf::Vector2i pos)
 
 	if (isCursorOver(pos) && dragging)
 	{
-		savedPos = pos;
+		sf::Vector2f scale = sprite->getScale() * sprite->getTexture()->getSize();
+		sf::Vector2f pos = sprite->getPosition();
+
+		sf::Vector2f shift = cursorPos - pos;
+		savedPos = { shift.x / scale.x, 1 - (shift.y / scale.y) };
 		calcColor();
 	}
 }
@@ -83,12 +89,7 @@ float ColorPickerElement::getLightness()
 
 void ColorPickerElement::calcColor()
 {
-	sf::Vector2f scale = sprite->getScale() * sprite->getTexture()->getSize();
-	sf::Vector2f pos = sprite->getPosition();
-
-	sf::Vector2f onPos = savedPos - pos;
-
-	pickedColor = hsl2rgb(onPos.x / scale.x, 1 - (onPos.y / scale.y), lightness);
+	pickedColor = hsl2rgb(savedPos.x, savedPos.y, lightness);
 
 	updateFunc(this, 0);
 }
