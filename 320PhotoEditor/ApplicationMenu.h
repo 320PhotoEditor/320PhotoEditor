@@ -37,6 +37,8 @@ private:
 	GUIContainer* menuContainer;
 	GUIContainer* colorContainer;
 	ButtonElement* fileMenuButton;
+	ButtonElement* newBlankButton;
+	ButtonElement* newTransparentButton;
 	ButtonElement* incrLightness;
 	ButtonElement* decrLightness;
 	ColorPickerElement* colorPicker;

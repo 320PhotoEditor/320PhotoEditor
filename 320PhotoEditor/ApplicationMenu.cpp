@@ -20,6 +20,18 @@ ApplicationMenu::ApplicationMenu(sf::RenderWindow* renderWindow, LayerManager* l
 	fileMenuButton->setSize({ 0.05, 1 });
 	fileMenuButton->setPosition({ 0, 0 });
 
+	newBlankButton = new ButtonElement(upTexture, downTexture, overTexture);
+	newBlankButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	menuContainer->addElement(newBlankButton);
+	newBlankButton->setSize({ 0.05, 1 });
+	newBlankButton->setPosition({ 0.05, 0 });
+
+	newTransparentButton = new ButtonElement(upTexture, downTexture, overTexture);
+	newTransparentButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	menuContainer->addElement(newTransparentButton);
+	newTransparentButton->setSize({ 0.05, 1 });
+	newTransparentButton->setPosition({ 0.1, 0 });
+
 	incrLightness = new ButtonElement(upTexture, downTexture, overTexture);
 	incrLightness->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
 	colorContainer->addElement(incrLightness);
@@ -92,6 +104,18 @@ void ApplicationMenu::buttonPressed(GUIElement* button, int status)
 
 		//layerManager->removeSelectedLayer();
 		layerManager->createLayerFromFile(filename);
+		toolManager->setSelectedLayer(layerManager->getSelectedLayer());
+		toolManager->restartTool();
+	}
+	else if (button == newBlankButton)
+	{
+		layerManager->createLayer(sf::Color::White);
+		toolManager->setSelectedLayer(layerManager->getSelectedLayer());
+		toolManager->restartTool();
+	}
+	else if (button == newTransparentButton)
+	{
+		layerManager->createLayer(sf::Color(255, 255, 255, 0));
 		toolManager->setSelectedLayer(layerManager->getSelectedLayer());
 		toolManager->restartTool();
 	}
