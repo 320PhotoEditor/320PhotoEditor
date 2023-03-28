@@ -83,7 +83,7 @@ void Application::run()
             updateWindowListeners(event);
             updateInputListeners(event);
         }
-        window->clear();
+        window->clear(sf::Color(50, 50, 50, 255));
 
         applicationMenu->update();
         layerManager->update();
