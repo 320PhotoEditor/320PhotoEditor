@@ -41,6 +41,17 @@ private:
 	ButtonElement* newTransparentButton;
 	ButtonElement* incrLightness;
 	ButtonElement* decrLightness;
+	ButtonElement* foregroundColor;
+	ButtonElement* backgroundColor;
+
+	sf::Texture* foreColorTexture;
+	sf::Texture* backColorTexture;
+
+	sf::Color foreColor;
+	sf::Color backColor;
+
+	bool foreSelect = true;
+
 	ColorPickerElement* colorPicker;
 
 };

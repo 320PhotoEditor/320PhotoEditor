@@ -26,6 +26,7 @@ private:
 	void calcColor();
 
 	sf::Vector2i cursorPos;
+	sf::Vector2i savedPos;
 
 	float lightness;
 

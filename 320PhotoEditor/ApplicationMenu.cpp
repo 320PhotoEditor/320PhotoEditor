@@ -44,7 +44,30 @@ ApplicationMenu::ApplicationMenu(sf::RenderWindow* renderWindow, LayerManager* l
 	decrLightness->setSize({ 0.25, 0.125 });
 	decrLightness->setPosition({ 0, 0.5 });
 
+	sf::Image whiteImage;
+	whiteImage.create(1, 1, sf::Color::White);
+
+	foreColorTexture = new sf::Texture();
+	foreColorTexture->loadFromImage(whiteImage);
+	backColorTexture = new sf::Texture();
+	backColorTexture->loadFromImage(whiteImage);
+
+	foregroundColor = new ButtonElement(foreColorTexture, foreColorTexture, foreColorTexture);
+	foregroundColor->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	colorContainer->addElement(foregroundColor);
+	foregroundColor->setSize({ 0.25, 0.125 });
+	foregroundColor->setPosition({ 0.25, 0.5 });
+	foregroundColor->setColor(getForegroundColor());
+
+	backgroundColor = new ButtonElement(backColorTexture, backColorTexture, backColorTexture);
+	backgroundColor->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	colorContainer->addElement(backgroundColor);
+	backgroundColor->setSize({ 0.25, 0.125 });
+	backgroundColor->setPosition({ 0.5, 0.5 });
+	backgroundColor->setColor(getBackgroundColor());
+
 	colorPicker = new ColorPickerElement();
+	colorPicker->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
 	colorContainer->addElement(colorPicker);
 	colorPicker->setSize({ 1, 0.5 });
 	colorPicker->setPosition({ 0, 0 });
@@ -60,16 +83,14 @@ void ApplicationMenu::update()
 	colorContainer->render();
 }
 
-//TODO: add way to change color for foreground and background specifically
-//probably with buttons that change color
 sf::Color ApplicationMenu::getForegroundColor()
 {
-	return colorPicker->getPickedColor();
+	return foreColor;
 }
 
 sf::Color ApplicationMenu::getBackgroundColor()
 {
-	return colorPicker->getPickedColor();
+	return backColor;
 }
 
 GUIContainer* ApplicationMenu::getMenuContainer()
@@ -84,6 +105,22 @@ GUIContainer* ApplicationMenu::getColorContainer()
 
 void ApplicationMenu::buttonPressed(GUIElement* button, int status)
 {
+
+	if (button == colorPicker)
+	{
+		if (foreSelect)
+		{
+			foreColor = colorPicker->getPickedColor();
+			foregroundColor->setColor(foreColor);
+		}
+		else
+		{
+			backColor = colorPicker->getPickedColor();
+			backgroundColor->setColor(backColor);
+		}
+		return;
+	}
+
 	if (status != ButtonElement::ButtonState::DOWN)
 	{
 		return;
@@ -122,11 +159,17 @@ void ApplicationMenu::buttonPressed(GUIElement* button, int status)
 	else if (button == incrLightness)
 	{
 		colorPicker->setLightness(std::min(colorPicker->getLightness() + 0.05, 1.0));
-		std::cout << colorPicker->getLightness() << std::endl;
 	}
 	else if (button == decrLightness)
 	{
 		colorPicker->setLightness(std::max(colorPicker->getLightness() - 0.05, 0.0));
-		std::cout << colorPicker->getLightness() << std::endl;
+	}
+	else if (button == foregroundColor)
+	{
+		foreSelect = true;
+	}
+	else if (button == backgroundColor)
+	{
+		foreSelect = false;
 	}
 }

@@ -31,6 +31,7 @@ void ColorPickerElement::mouseMoved(sf::Vector2i pos)
 
 	if (isCursorOver(pos) && dragging)
 	{
+		savedPos = pos;
 		calcColor();
 	}
 }
@@ -72,6 +73,7 @@ void ColorPickerElement::setPickedColor(sf::Color color)
 void ColorPickerElement::setLightness(float lightness)
 {
 	this->lightness = lightness;
+	calcColor();
 }
 
 float ColorPickerElement::getLightness()
@@ -84,7 +86,9 @@ void ColorPickerElement::calcColor()
 	sf::Vector2f scale = sprite->getScale() * sprite->getTexture()->getSize();
 	sf::Vector2f pos = sprite->getPosition();
 
-	sf::Vector2f onPos = cursorPos - pos;
+	sf::Vector2f onPos = savedPos - pos;
 
 	pickedColor = hsl2rgb(onPos.x / scale.x, 1 - (onPos.y / scale.y), lightness);
+
+	updateFunc(this, 0);
 }
