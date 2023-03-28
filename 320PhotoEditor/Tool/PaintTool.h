@@ -13,12 +13,13 @@ public:
 
 	void init();
 	void start(Layer* layer);
-	void stop() {};
-	void run() { ComputeShader::bindTexture(layer->getSprite()->getTexture()->getNativeHandle()); test->use(); test->setFloat("t", 100); test->compute(800 / 10, 600 / 10, 1); };
+	void stop();
+	void run() {};
 
 	void mousePressed(sf::Mouse::Button button);
 	void mouseReleased(sf::Mouse::Button button);
 	void mouseMoved(sf::Vector2i pos);
+	void mouseScrolled(int delta);
 
 	void buttonPressed(GUIElement* button, int status);
 
@@ -42,6 +43,6 @@ private:
 
 	Layer* layer;
 
-	ComputeShader* test;
+	ComputeShader* paintCompute;
 };
 

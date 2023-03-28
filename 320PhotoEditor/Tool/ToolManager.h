@@ -30,16 +30,16 @@ public:
 
 	void setApplicationMenu(ApplicationMenu* applicationMenu);
 
-	~ToolManager();
-
-private:
-
 	void keyPressed(sf::Keyboard::Key key);
 	void keyReleased(sf::Keyboard::Key key);
 	void mousePressed(sf::Mouse::Button button);
 	void mouseReleased(sf::Mouse::Button button);
 	void mouseScrolled(int delta);
 	void mouseMoved(sf::Vector2i pos);
+
+	~ToolManager();
+
+private:
 
 	void windowResize();
 
