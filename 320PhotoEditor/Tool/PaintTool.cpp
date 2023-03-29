@@ -64,8 +64,21 @@ void PaintTool::mouseMoved(sf::Vector2i pos)
 
 void PaintTool::mouseScrolled(int delta)
 {
-	paintSize = std::max(paintSize + delta, 1);
-	std::cout << paintSize << std::endl;
+	if (scrollZoom)
+	{
+		paintSize = std::max(paintSize + delta, 1);
+		std::cout << paintSize << std::endl;
+	}
+}
+
+void PaintTool::keyPressed(sf::Keyboard::Key key)
+{
+	if (key == sf::Keyboard::LAlt) scrollZoom = true;
+}
+
+void PaintTool::keyReleased(sf::Keyboard::Key key)
+{
+	if (key == sf::Keyboard::LAlt) scrollZoom = false;
 }
 
 void PaintTool::buttonPressed(GUIElement* button, int status)
