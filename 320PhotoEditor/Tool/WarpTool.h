@@ -2,6 +2,7 @@
 
 #include "Tool.h"
 #include "../GUI/ButtonElement.h"
+#include "../ComputeShader.h"
 
 class WarpTool : public Tool
 {
@@ -13,6 +14,10 @@ public:
 	void start(Layer* layer);
 	void stop() {};
 	void run() {};
+	
+	void mousePressed(sf::Mouse::Button button);
+	void mouseReleased(sf::Mouse::Button button);
+	void mouseMoved(sf::Vector2i pos);
 
 	//returns the indexes for the control point over the cursor
 	//-1, -1 being no control point selected
@@ -20,7 +25,19 @@ public:
 
 private:
 
-	std::vector<std::vector<sf::Vector2f>> controlPoints;
+	bool down = false;
+	sf::Vector2i cursorPos;
+	sf::Vector2i selectedPoint;
+
+	const int size = 5;
+
+	std::vector<std::vector<sf::Vector2i>> controlPoints;
 
 	Layer* layer;
+
+	//stores a copy of the layer to sample from
+	sf::Texture layerCopy;
+
+	ComputeShader* warpCompute;
+	unsigned int pointsBuf;
 };

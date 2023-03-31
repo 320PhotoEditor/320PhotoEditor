@@ -21,7 +21,7 @@ void ComputeShader::compute(unsigned int sizeX, unsigned int sizeY, unsigned int
 	glDispatchCompute(sizeX, sizeY, sizeZ);
 
 	//wait til the shader is finished writing
-	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+	glMemoryBarrier(GL_ALL_BARRIER_BITS);
 }
 
 void ComputeShader::use(unsigned int ID)
@@ -32,6 +32,26 @@ void ComputeShader::use(unsigned int ID)
 void ComputeShader::bindTexture(unsigned int texture, unsigned int binding)
 {
 	glBindImageTexture(binding, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA8);
+}
+
+int ComputeShader::genBuffer()
+{
+	unsigned int buf;
+	glGenBuffers(1, &buf);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, buf);
+	return buf;
+}
+
+void ComputeShader::bindBuffer(unsigned int buf, unsigned int index)
+{
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, index, buf);
+}
+
+void ComputeShader::setBuffer(unsigned int buf, size_t size, void* data)
+{
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, buf);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, size, data, GL_DYNAMIC_READ);
 }
 
 void ComputeShader::printComputeStats()

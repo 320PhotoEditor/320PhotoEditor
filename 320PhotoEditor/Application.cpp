@@ -29,6 +29,10 @@ bool Application::init(std::string windowName)
     sf::Texture* paintdownTexture = AssetManager::getInstance().getTexture("../assets/paint_button_down.png");
     sf::Texture* paintoverTexture = AssetManager::getInstance().getTexture("../assets/paint_button_over.png");
 
+    sf::Texture* warpupTexture = AssetManager::getInstance().getTexture("../assets/warp_button_up.png");
+    sf::Texture* warpdownTexture = AssetManager::getInstance().getTexture("../assets/warp_button_down.png");
+    sf::Texture* warpoverTexture = AssetManager::getInstance().getTexture("../assets/warp_button_over.png");
+
     sf::Texture* mosUpTexture = AssetManager::getInstance().getTexture("../assets/mos_button_up.png");
     sf::Texture* mosDownTexture = AssetManager::getInstance().getTexture("../assets/mos_button_down.png");
     sf::Texture* mosOverTexture = AssetManager::getInstance().getTexture("../assets/mos_button_over.png");
@@ -46,6 +50,7 @@ bool Application::init(std::string windowName)
 
     toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
     toolManager->addTool(new PaintTool(paintupTexture, paintdownTexture, paintoverTexture));
+    toolManager->addTool(new WarpTool(warpupTexture, warpdownTexture, warpoverTexture));
     toolManager->addTool(new SelectTool(upTexture, downTexture, overTexture));
     toolManager->addTool(new MosaicTool(mosUpTexture, mosDownTexture, mosOverTexture));
     toolManager->addTool(new FilterTool(upTexture, downTexture, overTexture));

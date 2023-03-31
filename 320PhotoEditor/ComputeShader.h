@@ -56,6 +56,10 @@ public:
 
 	static void bindTexture(unsigned int texture, unsigned int binding);
 
+	static int genBuffer();
+	static void bindBuffer(unsigned int buf, unsigned int index);
+	static void setBuffer(unsigned int buf, size_t size, void* data);
+
 	static void printComputeStats();
 
 	void setBool(const std::string& name, bool value) const;
