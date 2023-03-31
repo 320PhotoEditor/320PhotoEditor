@@ -108,3 +108,8 @@ sf::Vector2i WarpTool::selectControlPoint(sf::Vector2i cursorPos)
 
 	return sf::Vector2i(-1, -1);
 }
+
+int* WarpTool::calculateTransformMatrx(std::vector<std::vector<sf::Vector2i>> controlPoints)
+{
+	return nullptr;
+}

@@ -23,6 +23,8 @@ public:
 	//-1, -1 being no control point selected
 	sf::Vector2i selectControlPoint(sf::Vector2i cursorPos);
 
+	int* calculateTransformMatrx(std::vector<std::vector<sf::Vector2i>> controlPoints);
+
 private:
 
 	bool down = false;
