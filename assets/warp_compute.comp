@@ -9,7 +9,6 @@ layout(std430, binding = 2) buffer Points
 	int p[];
 };
 
-layout (location = 0) uniform bool copyMode;
 layout (location = 1) uniform int py;
 layout (location = 2) uniform int px;
 
@@ -29,11 +28,5 @@ void main()
 			}	
 		}
 		
-	}
-
-	if(copyMode)
-	{
-		imageStore(samplerImage, texelCoord, imageLoad(image, texelCoord));
-		return;
 	}
 }

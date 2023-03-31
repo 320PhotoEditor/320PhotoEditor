@@ -23,10 +23,7 @@ void WarpTool::start(Layer* layer)
 		for (int y = 0; y < size; y++)
 		{
 			point.push_back({ section.x * x, section.y * y });
-
-			layer->getImage()->setPixel(section.x * x, section.y * y, sf::Color::Black);
 		}
-		controlPoints.push_back(point);
 	}
 
 	layer->reload();
@@ -58,7 +55,6 @@ void WarpTool::mouseMoved(sf::Vector2i pos)
 	if (down && selectedPoint.x != -1)
 	{
 		controlPoints.at(selectedPoint.x).at(selectedPoint.y) = layer->cursorToPixel(cursorPos);
-		std::cout << "grabbing" << std::endl;
 		int* pointsBuffer = new int[size * size * 2];
 
 		int index = 0;
