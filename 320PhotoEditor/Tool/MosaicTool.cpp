@@ -14,8 +14,31 @@ void MosaicTool::init()
 
 void MosaicTool::start(Layer* layer)
 {
-    
-    this->layer = layer;
+    sf::RenderWindow window(sf::VideoMode(1280, 800), "PixelEater", sf::Style::Titlebar | sf::Style::Close);
+    sf::Event listener;
+
+    //Game loop
+    while (window.isOpen())
+    {
+        //Event polling
+        while (window.pollEvent(listener))
+        {
+            switch (listener.type)
+            {
+            case sf::Event::Closed:
+                window.close();
+                break;
+            }
+        }
+
+        //update
+
+        //render
+        window.clear();
+
+        //draw
+        window.display();
+    }
 }
 
 void MosaicTool::run()
@@ -32,5 +55,6 @@ void MosaicTool::buttonPressed(GUIElement* button, int status)
 
     if (button == selectButton)
     {
+        std::cout << "Mosaic button \n";
     }
 }
