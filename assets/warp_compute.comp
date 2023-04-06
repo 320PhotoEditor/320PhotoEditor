@@ -6,15 +6,45 @@ layout(rgba8, binding = 0) uniform image2D samplerImage;
 layout(rgba8, binding = 1) uniform image2D image;
 layout(std430, binding = 2) buffer Points
 {
-	int p[];
+	int ps[];
 };
 
 layout (location = 1) uniform int py;
 layout (location = 2) uniform int px;
 
+void drawLine(int x1, int y1, int x2, int y2) {
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+    int sx = x1 < x2 ? 1 : -1;
+    int sy = y1 < y2 ? 1 : -1;
+    int err = dx - dy;
+
+    while (true) {
+        imageStore(image, ivec2(x1, y1), vec4(255, 0, 0, 255));
+
+        if (x1 == x2 && y1 == y2) {
+            break;
+        }
+
+        int e2 = 2 * err;
+
+        if (e2 > -dy) {
+            err -= dy;
+            x1 += sx;
+        }
+
+        if (e2 < dx) {
+            err += dx;
+            y1 += sy;
+        }
+    }
+}
+
 void main() 
 {
 	ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
+
+	imageStore(image, texelCoord, vec4(255, 255, 255, 255));
 
 	if(texelCoord.x == 0 && texelCoord.y == 0)
 	{
@@ -23,8 +53,24 @@ void main()
 			for(int y = 0; y < py; y++)
 			{
 				int index = (x * py + y) * 2;
-				ivec2 p = ivec2(p[index], p[index+1]);
-				imageStore(image, p, vec4(255, 0, 0, 255));
+				ivec2 p = ivec2(ps[index], ps[index+1]);
+						
+
+				if(y != py-1)
+				{
+					int indexy = (x * py + (y+1)) * 2;
+					ivec2 pyy = ivec2(ps[indexy], ps[indexy+1]);
+					
+					drawLine(p.x, p.y, pyy.x, pyy.y);
+				}
+				
+				if(x != px-1)
+				{
+					int indexx = ((x+1) * py + y) * 2;
+					ivec2 pxx = ivec2(ps[indexx], ps[indexx+1]);
+
+					drawLine(p.x, p.y, pxx.x, pxx.y);
+				}
 			}	
 		}
 		

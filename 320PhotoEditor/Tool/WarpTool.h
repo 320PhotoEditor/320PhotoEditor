@@ -25,13 +25,17 @@ public:
 
 	int* calculateTransformMatrx(std::vector<std::vector<sf::Vector2i>> controlPoints);
 
+	void initControlPoints();
+
+	void buttonPressed(GUIElement* button, int status);
+
 private:
 
 	bool down = false;
 	sf::Vector2i cursorPos;
 	sf::Vector2i selectedPoint;
 
-	const int size = 5;
+	const int defaultSize = 5;
 
 	std::vector<std::vector<sf::Vector2i>> controlPoints;
 
@@ -39,6 +43,12 @@ private:
 
 	//stores a copy of the layer to sample from
 	sf::Texture layerCopy;
+
+	ButtonElement* increaseControlPointsX;
+	ButtonElement* decreaseControlPointsX;
+	ButtonElement* increaseControlPointsY;
+	ButtonElement* decreaseControlPointsY;
+	ButtonElement* startWarp;
 
 	ComputeShader* warpCompute;
 	unsigned int pointsBuf;

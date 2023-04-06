@@ -13,6 +13,12 @@ ApplicationMenu::ApplicationMenu(sf::RenderWindow* renderWindow, LayerManager* l
 	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
 	sf::Texture* downTexture = AssetManager::getInstance().getTexture("../assets/button_down.png");
 	sf::Texture* overTexture = AssetManager::getInstance().getTexture("../assets/button_over.png");
+	sf::Texture* incrupTexture = AssetManager::getInstance().getTexture("../assets/incr_button_up.png");
+	sf::Texture* incrdownTexture = AssetManager::getInstance().getTexture("../assets/incr_button_down.png");
+	sf::Texture* incroverTexture = AssetManager::getInstance().getTexture("../assets/incr_button_over.png");
+	sf::Texture* decrupTexture = AssetManager::getInstance().getTexture("../assets/decr_button_up.png");
+	sf::Texture* decrdownTexture = AssetManager::getInstance().getTexture("../assets/decr_button_down.png");
+	sf::Texture* decroverTexture = AssetManager::getInstance().getTexture("../assets/decr_button_over.png");
 
 	fileMenuButton = new ButtonElement(upTexture, downTexture, overTexture);
 	fileMenuButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
@@ -32,13 +38,13 @@ ApplicationMenu::ApplicationMenu(sf::RenderWindow* renderWindow, LayerManager* l
 	newTransparentButton->setSize({ 0.05, 1 });
 	newTransparentButton->setPosition({ 0.1, 0 });
 
-	incrLightness = new ButtonElement(upTexture, downTexture, overTexture);
+	incrLightness = new ButtonElement(incrupTexture, incrdownTexture, incroverTexture);
 	incrLightness->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
 	colorContainer->addElement(incrLightness);
 	incrLightness->setSize({ 0.25, 0.125 });
 	incrLightness->setPosition({ 0.75, 0.5 });
 
-	decrLightness = new ButtonElement(upTexture, downTexture, overTexture);
+	decrLightness = new ButtonElement(decrupTexture, decrdownTexture, decroverTexture);
 	decrLightness->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
 	colorContainer->addElement(decrLightness);
 	decrLightness->setSize({ 0.25, 0.125 });

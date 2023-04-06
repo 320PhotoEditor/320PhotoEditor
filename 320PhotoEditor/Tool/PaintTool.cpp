@@ -12,21 +12,24 @@ PaintTool::PaintTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : To
 
 void PaintTool::init()
 {
-	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
-	sf::Texture* downTexture = AssetManager::getInstance().getTexture("../assets/button_down.png");
-	sf::Texture* overTexture = AssetManager::getInstance().getTexture("../assets/button_over.png");
+	sf::Texture* incrupTexture = AssetManager::getInstance().getTexture("../assets/incr_button_up.png");
+	sf::Texture* incrdownTexture = AssetManager::getInstance().getTexture("../assets/incr_button_down.png");
+	sf::Texture* incroverTexture = AssetManager::getInstance().getTexture("../assets/incr_button_over.png");
+	sf::Texture* decrupTexture = AssetManager::getInstance().getTexture("../assets/decr_button_up.png");
+	sf::Texture* decrdownTexture = AssetManager::getInstance().getTexture("../assets/decr_button_down.png");
+	sf::Texture* decroverTexture = AssetManager::getInstance().getTexture("../assets/decr_button_over.png");
 
-	incrSizeButton = new ButtonElement(upTexture, downTexture, overTexture);
+	incrSizeButton = new ButtonElement(incrupTexture, incrdownTexture, incroverTexture);
 	incrSizeButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
 	container->addElement(incrSizeButton);
 	incrSizeButton->setSize({ .25, .25 });
-	incrSizeButton->setPosition({ 0, 0 });
+	incrSizeButton->setPosition({ 0.25, 0 });
 
-	decrSizeButton = new ButtonElement(upTexture, downTexture, overTexture);
+	decrSizeButton = new ButtonElement(decrupTexture, decrdownTexture, decroverTexture);
 	decrSizeButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
 	container->addElement(decrSizeButton);
 	decrSizeButton->setSize({ .25, .25 });
-	decrSizeButton->setPosition({ 0.25, 0 });
+	decrSizeButton->setPosition({ 0, 0 });
 }
 
 void PaintTool::start(Layer* layer)
