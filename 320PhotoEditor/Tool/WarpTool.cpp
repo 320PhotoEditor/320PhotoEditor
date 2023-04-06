@@ -52,38 +52,40 @@ void WarpTool::mouseMoved(sf::Vector2i pos)
 {
 	cursorPos = pos;
 
-	if (down && selectedPoint.x != -1)
+	if (!down || selectedPoint.x == -1)
 	{
-		controlPoints.at(selectedPoint.x).at(selectedPoint.y) = layer->cursorToPixel(cursorPos);
-		int* pointsBuffer = new int[size * size * 2];
-
-		int index = 0;
-		for (int x = 0; x < size; x++)
-		{
-			for (int y = 0; y < size; y++)
-			{
-				pointsBuffer[index] = controlPoints.at(x).at(y).x;
-				index++;
-				pointsBuffer[index] = controlPoints.at(x).at(y).y;
-				index++;
-			}
-		}
-		warpCompute->use();
-		
-		ComputeShader::setBuffer(pointsBuf, sizeof(int) * size * size * 2, pointsBuffer);
-		delete[] pointsBuffer;
-		ComputeShader::bindBuffer(pointsBuf, 2);
-
-
-		warpCompute->bindTexture(layerCopy.getNativeHandle(), 0);
-		warpCompute->bindTexture(layer->getSprite()->getTexture()->getNativeHandle(), 1);
-		warpCompute->setBool("copyMode", false);
-		warpCompute->setInt("px", size);
-		warpCompute->setInt("py", size);
-		sf::Vector2u layerSize = layer->getImage()->getSize();
-
-		warpCompute->compute(layerSize.x / 10.0f, layerSize.y / 10.0f, 1);
+		return;
 	}
+
+	controlPoints.at(selectedPoint.x).at(selectedPoint.y) = layer->cursorToPixel(cursorPos);
+	int* pointsBuffer = new int[size * size * 2];
+
+	int index = 0;
+	for (int x = 0; x < size; x++)
+	{
+		for (int y = 0; y < size; y++)
+		{
+			pointsBuffer[index] = controlPoints.at(x).at(y).x;
+			index++;
+			pointsBuffer[index] = controlPoints.at(x).at(y).y;
+			index++;
+		}
+	}
+	warpCompute->use();
+		
+	ComputeShader::setBuffer(pointsBuf, sizeof(int) * size * size * 2, pointsBuffer);
+	delete[] pointsBuffer;
+	ComputeShader::bindBuffer(pointsBuf, 2);
+
+
+	warpCompute->bindTexture(layerCopy.getNativeHandle(), 0);
+	warpCompute->bindTexture(layer->getSprite()->getTexture()->getNativeHandle(), 1);
+	warpCompute->setBool("copyMode", false);
+	warpCompute->setInt("px", size);
+	warpCompute->setInt("py", size);
+	sf::Vector2u layerSize = layer->getImage()->getSize();
+
+	warpCompute->compute(layerSize.x / 10.0f, layerSize.y / 10.0f, 1);
 }
 
 //TODO:
