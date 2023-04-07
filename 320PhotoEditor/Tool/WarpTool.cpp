@@ -139,9 +139,9 @@ void WarpTool::initControlPoints()
 	sf::Vector2u layerSize = layer->getImage()->getSize();
 
 	controlPoints[0] = { 0, 0 };
-	controlPoints[1] = { (int)layerSize.x, 0 };
-	controlPoints[2] = { 0, (int)layerSize.y };
-	controlPoints[3] = { (int)layerSize.x, (int)layerSize.y };
+	controlPoints[1] = { (int)layerSize.x-1, 0 };
+	controlPoints[2] = { 0, (int)layerSize.y-1 };
+	controlPoints[3] = { (int)layerSize.x-1, (int)layerSize.y-1 };
 }
 
 void WarpTool::buttonPressed(GUIElement* button, int status)
