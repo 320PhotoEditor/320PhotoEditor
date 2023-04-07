@@ -8,6 +8,24 @@ WarpTool::WarpTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : Tool
 
 void WarpTool::init()
 {
+	Matrix3x3 transform;
+	calculateTransformMatrx({ 1,1 }, { 2,1 }, { 2,2 }, { 1,2 }, { 2,2 }, { 3,2 }, { 3,3 }, { 2,3 }, transform);
+
+	float x = 1.5, y = 1.5;
+	x = transform[0][0] * x + transform[0][1] * y + transform[0][2];
+	y = transform[1][0] * x + transform[1][1] * y + transform[1][2];
+
+	std::cout << "x: " << x << " y: " << y << std::endl;
+
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			std::cout << transform[i][j] << " ";
+		}
+		std::cout << std::endl;
+	}
+
 	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
 	sf::Texture* downTexture = AssetManager::getInstance().getTexture("../assets/button_down.png");
 	sf::Texture* overTexture = AssetManager::getInstance().getTexture("../assets/button_over.png");
@@ -148,9 +166,105 @@ sf::Vector2i WarpTool::selectControlPoint(sf::Vector2i cursorPos)
 	return sf::Vector2i(-1, -1);
 }
 
-int* WarpTool::calculateTransformMatrx(std::vector<std::vector<sf::Vector2i>> controlPoints)
+void WarpTool::calculateTransformMatrx(sf::Vector2i oa, sf::Vector2i ob, sf::Vector2i oc, sf::Vector2i od,
+									   sf::Vector2i na, sf::Vector2i nb, sf::Vector2i nc, sf::Vector2i nd,
+									   Matrix3x3& transform)
 {
-	return nullptr;
+	Matrix3x3 T1 = {
+		1,0,0,
+		0,1,0,
+		0,0,1
+	};
+
+	Matrix3x3 T2 = {
+		1,0,0,
+		0,1,0,
+		0,0,1
+	};
+
+	//compute affine transform
+	T1[0][0] = oa.x; T1[0][1] = ob.x; T1[0][2] = oc.x; T1[1][0] = oa.y; T1[1][1] = ob.y; T1[1][2] = oc.y;
+	T2[0][0] = na.x; T2[0][1] = nb.x; T2[0][2] = nc.x; T2[1][0] = na.y; T2[1][1] = nb.y; T2[1][2] = nc.y;
+
+	Matrix3x3 T;
+
+	//matrix multiply
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			T[i][j] = 0.0f;
+			for (int k = 0; k < 3; ++k)
+			{
+				T[i][j] += T1[i][k] * T2[k][j];
+			}
+		}
+	}
+
+	Matrix3x3 Tinverse;
+
+	float det = 0.0f;
+	det += T[0][0] * T[1][1] * T[2][2];
+	det += T[0][1] * T[1][2] * T[2][0];
+	det += T[0][2] * T[1][0] * T[2][1];
+	det -= T[0][2] * T[1][1] * T[2][0];
+	det -= T[0][0] * T[1][2] * T[2][1];
+	det -= T[0][1] * T[1][0] * T[2][2];
+
+	Tinverse[0][0] = (T[1][1] * T[2][2] - T[1][2] * T[2][1]) / det;
+	Tinverse[0][1] = (T[0][2] * T[2][1] - T[0][1] * T[2][2]) / det;
+	Tinverse[0][2] = (T[0][1] * T[1][2] - T[0][2] * T[1][1]) / det;
+	Tinverse[1][0] = (T[1][2] * T[2][0] - T[1][0] * T[2][2]) / det;
+	Tinverse[1][1] = (T[0][0] * T[2][2] - T[0][2] * T[2][0]) / det;
+	Tinverse[1][2] = (T[1][0] * T[0][2] - T[0][0] * T[1][2]) / det;
+	Tinverse[2][0] = (T[1][0] * T[2][1] - T[1][1] * T[2][0]) / det;
+	Tinverse[2][1] = (T[0][1] * T[2][0] - T[0][0] * T[2][1]) / det;
+	Tinverse[2][2] = (T[0][0] * T[1][1] - T[0][1] * T[1][0]) / det;
+
+	Matrix3x3 T3 = {
+		1,0,0,
+		0,1,0,
+		0,0,1
+	};
+	Matrix3x3 T4 = {
+		1,0,0,
+		0,1,0,
+		0,0,1
+	};
+	T3[0][0] = na.x - oa.x;
+	T3[0][1] = nb.x - ob.x;
+	T3[0][2] = nc.x - oc.x;
+	T3[1][0] = na.y - oa.y;
+	T3[1][1] = nb.y - ob.y;
+	T3[1][2] = nc.y - oc.y;
+	T4[0][2] = oa.x;
+	T4[1][2] = oa.y;
+
+	Matrix3x3 Tp;
+
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			Tp[i][j] = 0.0f;
+			for (int k = 0; k < 3; ++k)
+			{
+				Tp[i][j] += T3[i][k] * Tinverse[k][j];
+			}
+		}
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			transform[i][j] = 0.0f;
+			for (int k = 0; k < 3; ++k)
+			{
+				transform[i][j] += T4[i][k] * Tp[k][j];
+			}
+		}
+	}
 }
 
 void WarpTool::initControlPoints()
@@ -207,15 +321,4 @@ void WarpTool::buttonPressed(GUIElement* button, int status)
 	{
 
 	}
-
-	for (auto& y : controlPoints)
-	{
-		for (auto& x : y)
-		{
-			std::cout << x.x << ":" << x.y << " , ";
-		}
-		std::cout << std::endl;
-	}
-	std::cout << controlPoints[0].size() << " : " << controlPoints.size() << std::endl;
-	std::cout << std::endl;
 }

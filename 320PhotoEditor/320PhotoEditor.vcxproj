@@ -148,7 +148,6 @@
     <ClCompile Include="GUI\ButtonElement.cpp" />
     <ClCompile Include="GUI\GUIContainer.cpp" />
     <ClCompile Include="GUI\GUIElement.cpp" />
-    <ClCompile Include="InputListener.cpp" />
     <ClCompile Include="Layer\Layer.cpp" />
     <ClCompile Include="Layer\LayerManager.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -162,7 +161,6 @@
     <ClCompile Include="Tool\Tool.cpp" />
     <ClCompile Include="Tool\Zoom.cpp" />
     <ClCompile Include="Tool\WarpTool.cpp" />
-    <ClCompile Include="WindowListener.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />

@@ -19,8 +19,15 @@ void drawLine(int x1, int y1, int x2, int y2) {
     int sy = y1 < y2 ? 1 : -1;
     int err = dx - dy;
 
+	bool flip = true;
+	int counter = 0;
+	
+
     while (true) {
-        imageStore(image, ivec2(x1, y1), vec4(255, 0, 0, 255));
+		counter++;
+		if(counter % 5 == 0)
+			flip = !flip;
+        imageStore(image, ivec2(x1, y1), flip ? vec4(255, 255, 255, 255) : vec4(0, 0, 0, 255));
 
         if (x1 == x2 && y1 == y2) {
             break;
@@ -44,7 +51,7 @@ void main()
 {
 	ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
 
-	imageStore(image, texelCoord, vec4(255, 255, 255, 255));
+	imageStore(image, texelCoord, imageLoad(samplerImage, texelCoord));
 
 	if(texelCoord.x == 0 && texelCoord.y == 0)
 	{

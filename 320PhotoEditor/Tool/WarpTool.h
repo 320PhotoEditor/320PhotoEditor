@@ -23,7 +23,10 @@ public:
 	//-1, -1 being no control point selected
 	sf::Vector2i selectControlPoint(sf::Vector2i cursorPos);
 
-	int* calculateTransformMatrx(std::vector<std::vector<sf::Vector2i>> controlPoints);
+	//Matrix3x3
+	void calculateTransformMatrx(sf::Vector2i oa, sf::Vector2i bd, sf::Vector2i oc, sf::Vector2i od,
+								 sf::Vector2i na, sf::Vector2i nb, sf::Vector2i nc, sf::Vector2i nd,
+								 Matrix3x3& transform);
 
 	void initControlPoints();
 
