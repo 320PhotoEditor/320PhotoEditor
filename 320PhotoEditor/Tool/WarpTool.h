@@ -19,14 +19,11 @@ public:
 	void mouseReleased(sf::Mouse::Button button);
 	void mouseMoved(sf::Vector2i pos);
 
-	//returns the indexes for the control point over the cursor
-	//-1, -1 being no control point selected
-	sf::Vector2i selectControlPoint(sf::Vector2i cursorPos);
+	//returns the index for the control point over the cursor
+	//-1 being no control point selected
+	int selectControlPoint(sf::Vector2i cursorPos);
 
-	//Matrix3x3
-	void calculateTransformMatrx(sf::Vector2i oa, sf::Vector2i bd, sf::Vector2i oc, sf::Vector2i od,
-								 sf::Vector2i na, sf::Vector2i nb, sf::Vector2i nc, sf::Vector2i nd,
-								 Matrix3x3& transform);
+	void calculateTransformMatrx(sf::Vector2i originalControlPoints[4], sf::Vector2i controlPoints[4], Matrix3x3& transform);
 
 	void initControlPoints();
 
@@ -36,21 +33,15 @@ private:
 
 	bool down = false;
 	sf::Vector2i cursorPos;
-	sf::Vector2i selectedPoint;
+	int selectedPoint;
 
-	const int defaultSize = 5;
-
-	std::vector<std::vector<sf::Vector2i>> controlPoints;
+	sf::Vector2i originalControlPoints[4];
+	sf::Vector2i controlPoints[4];
 
 	Layer* layer;
 
 	//stores a copy of the layer to sample from
 	sf::Texture layerCopy;
-
-	ButtonElement* increaseControlPointsX;
-	ButtonElement* decreaseControlPointsX;
-	ButtonElement* increaseControlPointsY;
-	ButtonElement* decreaseControlPointsY;
 	ButtonElement* startWarp;
 
 	ComputeShader* warpCompute;
