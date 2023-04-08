@@ -11,6 +11,7 @@ private:
 
 	sf::VideoMode vm;
 	sf::RenderWindow* window;
+	sf::Event ev;
 	bool endGame;
 
 	//Initialize game variables
@@ -25,6 +26,8 @@ public:
 
 
 	//Functions
+	const bool running() const;
+	void pollEvents();
 	void update();
 	void render();
 

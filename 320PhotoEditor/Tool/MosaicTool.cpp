@@ -14,33 +14,17 @@ void MosaicTool::start(Layer* layer)
 {
     srand(static_cast<unsigned>(time(0)));
 
-    game game;
+    game pixelEater;
 
 
-    /*
+   
     //Game loop
-    while (window.isOpen())
+    while (pixelEater.running())
     {
-        //Event polling
-        while (window.pollEvent(listener))
-        {
-            switch (listener.type)
-            {
-            case sf::Event::Closed:
-                window.close();
-                break;
-            }
-        }
-
-        //update
-
-        //render
-        window.clear();
-
-        //draw
-        window.display();
+        pixelEater.update();
+        pixelEater.render();
     }
-    */
+ 
 }
 
 void MosaicTool::run()
