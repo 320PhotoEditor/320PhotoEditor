@@ -154,6 +154,7 @@
     <ClCompile Include="Layer\LayerManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="GUI\PanelElement.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Tool\FilterTool.cpp" />
     <ClCompile Include="Tool\MosaicTool.cpp" />
     <ClCompile Include="Tool\SelectTool.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Layer\Layer.h" />
     <ClInclude Include="GUI\PanelElement.h" />
     <ClInclude Include="Layer\LayerManager.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Tool\FilterTool.h" />
     <ClInclude Include="Tool\MosaicTool.h" />
     <ClInclude Include="Tool\SelectTool.h" />

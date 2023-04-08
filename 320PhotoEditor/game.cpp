@@ -4,21 +4,19 @@
 void game::initVar()
 {
 	this->endGame = false;
-
 }
 
 void game::initWin()
 {
 	this->vm = sf::VideoMode(1280, 800);
 	this->window = new sf::RenderWindow(this->vm, "Pixel Eater", sf::Style::Close | sf::Style::Titlebar);
-
+	this->window->setFramerateLimit(60);
 }
 
 game::game()
 {
 	this->initVar();
 	this->initWin();
-
 }
 
 game::~game()
@@ -54,11 +52,14 @@ void game::pollEvents()
 void game::update()
 {
 	this->pollEvents();
+	this->player.update();
 }
 
 void game::render()
 {
 	this->window->clear();
+
+	this->player.render(this->window);
 
 	this->window->display();
 }

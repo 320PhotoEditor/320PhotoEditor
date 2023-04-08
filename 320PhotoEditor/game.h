@@ -1,9 +1,6 @@
 #pragma once
 
-#include <ctype.h>
-#include "TOOL/MosaicTool.h"
-#include "GUI/GUIElement.h"
-#include <windows.h>
+#include "Player.h"
 
 class game
 {
@@ -13,6 +10,7 @@ private:
 	sf::RenderWindow* window;
 	sf::Event ev;
 	bool endGame;
+	Player player;
 
 	//Initialize game variables
 	void initVar();
