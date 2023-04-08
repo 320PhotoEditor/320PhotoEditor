@@ -33,6 +33,8 @@ add_executable(320PhotoEditor
         Layer/LayerManager.h
         Tool/FilterTool.cpp
         Tool/FilterTool.h
+        Tool/HistogramTool.cpp
+        Tool/HistogramTool.h
         Tool/MosaicTool.cpp
         Tool/MosaicTool.h
         Tool/PaintTool.cpp

@@ -18,10 +18,15 @@ public:
     void mousePressed(sf::Mouse::Button button);
     void buttonPressed(GUIElement* button, int status);
     void convertBW(sf::Image image);
+    float* normalCDF(float *value);
+    float* normalPDF(float *histData);
 
 private:
 
     Layer* layer;
     ButtonElement* bwButton;
+    ButtonElement* eqButton;
     sf::Image* histImage;
+    float arrays[256] = {};
 };
+

@@ -27,6 +27,8 @@ sf::Vector2i operator*(const sf::Vector2i a, const float& b);
 
 float hue2rgb(float p, float q, float t);
 
+float* rgb2hsl(sf::Color color);
+
 //h s l range [0,1]
 sf::Color hsl2rgb(float h, float s, float l);
 
