@@ -5,6 +5,7 @@
 #include "GUI/ColorPickerElement.h"
 #include "Layer/LayerManager.h"
 #include "AssetManager.h"
+#include "GUI/PanelElement.h"
 
 #include <fstream>
 
@@ -21,6 +22,7 @@ public:
 
 	sf::Color getForegroundColor();
 	sf::Color getBackgroundColor();
+    sf::Texture* histTexture;
 
 	GUIContainer* getMenuContainer();
 	GUIContainer* getColorContainer();
@@ -40,6 +42,7 @@ private:
 	ButtonElement* incrLightness;
 	ButtonElement* decrLightness;
 	ColorPickerElement* colorPicker;
+    PanelElement* histElement;
 
 };
 

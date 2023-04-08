@@ -51,6 +51,7 @@ bool Application::init(std::string windowName)
     toolManager->addTool(new MosaicTool(mosUpTexture, mosDownTexture, mosOverTexture));
     toolManager->addTool(new FilterTool(upTexture, downTexture, overTexture));
     toolManager->addTool(new Zoom(upTexture, downTexture, overTexture));
+    toolManager->addTool(new HistogramTool(upTexture, downTexture, overTexture));
 
     addInputListener(applicationMenu->getMenuContainer());
     addInputListener(applicationMenu->getColorContainer());

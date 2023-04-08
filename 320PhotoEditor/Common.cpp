@@ -121,9 +121,10 @@ sf::Color hsl2rgb(float h, float s, float l)
 #elif __APPLE__
 	std::string openFileDialog(sf::RenderWindow* parentWindow, bool selectMultiple)
 	{
-		std::string path;
-		std::cin >> path;
-		return path;
+        //std::string path;
+		//std::cin >> path;
+
+        return "/Users/davidoakes/CS320/Images/My project.jpg";
 	}
 #else
 	std::string openFileDialog(sf::RenderWindow* parentWindow, bool selectMultiple)

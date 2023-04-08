@@ -5,6 +5,7 @@
 #include <set>
 #include <iostream>
 #include <functional>
+#include <math.h>
 
 sf::Vector2f operator*(const sf::Vector2f& a, const sf::Vector2f& b);
 sf::Vector2f operator*=(const sf::Vector2f& a, const sf::Vector2f& b);
