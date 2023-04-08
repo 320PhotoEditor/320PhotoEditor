@@ -32,6 +32,7 @@ public:
 private:
 
 	bool down = false;
+	bool doWarp = false;
 	sf::Vector2i cursorPos;
 	int selectedPoint;
 

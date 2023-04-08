@@ -10,6 +10,7 @@ layout(std430, binding = 2) buffer Points
 };
 
 layout (location = 3) uniform mat3 warp;
+layout (location = 4) uniform bool doWarp;
 
 void drawLine(vec2 p1, vec2 p2) {
     bool steep = abs(p2.y - p1.y) > abs(p2.x - p1.x);
@@ -50,26 +51,32 @@ void drawLine(vec2 p1, vec2 p2) {
     }
 }
 
-ivec2 transformPoint(ivec2 p, mat3 transformM)
-{
-    float x = p.x * transformM[0][0] + p.y * transformM[1][0] + transformM[2][0];
-	float y = p.x * transformM[0][1] + p.y * transformM[1][1] + transformM[2][1];
-    return ivec2(int(x), int(y));
-}
-
 void main() 
 {
 	ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
+    
+    if(doWarp)
+    {
+        float in_x = warp[0][0] * texelCoord.x + warp[0][1] * texelCoord.y + warp[0][2];
+        float in_y = warp[1][0] * texelCoord.x + warp[1][1] * texelCoord.y + warp[1][2];
+        float in_z = warp[2][0] * texelCoord.x + warp[2][1] * texelCoord.y + warp[2][2];
 
-	imageStore(image, texelCoord, imageLoad(samplerImage, texelCoord));
+        int x_norm = int(in_x / in_z);
+        int y_norm = int(in_y / in_z);
 
-    imageStore(image, transformPoint(texelCoord, warp), imageLoad(samplerImage, texelCoord));
+        imageStore(image, texelCoord, vec4(255, 255, 255, 255));
+        imageStore(image, texelCoord, imageLoad(samplerImage, ivec2(x_norm, y_norm)));
+    }
+    else
+    {
+        imageStore(image, texelCoord, imageLoad(samplerImage, texelCoord));
+    }
 
 	if(texelCoord.x == 0 && texelCoord.y == 0)
 	{
         drawLine(vec2(ps[0], ps[1]), vec2(ps[2], ps[3]));
-        drawLine(vec2(ps[0], ps[1]), vec2(ps[4], ps[5]));
-        drawLine(vec2(ps[2], ps[3]), vec2(ps[6], ps[7]));
+        drawLine(vec2(ps[0], ps[1]), vec2(ps[6], ps[7]));
+        drawLine(vec2(ps[2], ps[3]), vec2(ps[4], ps[5]));
         drawLine(vec2(ps[4], ps[5]), vec2(ps[6], ps[7]));
 		
 	}

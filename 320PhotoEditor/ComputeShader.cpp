@@ -107,6 +107,11 @@ void ComputeShader::setVec3(const std::string& name, float x, float y, float z) 
 	glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
 }
 
+void ComputeShader::setMat3(const std::string& name, const Matrix3x3& m) const
+{
+	glUniformMatrix3fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &m[0][0]);
+}
+
 void ComputeShader::compile(const char* path)
 {
 	std::ifstream shaderFile;
