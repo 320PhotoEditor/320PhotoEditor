@@ -35,6 +35,7 @@ private:
 
 	bool down = false;
 	bool doWarp = false;
+	bool doFillTransparent = false;
 	sf::Vector2i cursorPos;
 	int selectedPoint;
 
@@ -45,7 +46,9 @@ private:
 
 	//stores a copy of the layer to sample from
 	sf::Texture layerCopy;
+
 	ButtonElement* startWarp;
+	ButtonElement* fillTransparent;
 
 	ComputeShader* warpCompute;
 	unsigned int pointsBuf;

@@ -12,6 +12,7 @@ layout(std430, binding = 2) buffer Points
 layout (location = 3) uniform mat3 warp;
 layout (location = 4) uniform bool doWarp;
 layout (location = 5) uniform bool doLines;
+layout (location = 6) uniform bool fillTransparent;
 
 void drawLine(vec2 p1, vec2 p2) {
     bool steep = abs(p2.y - p1.y) > abs(p2.x - p1.x);
@@ -52,6 +53,25 @@ void drawLine(vec2 p1, vec2 p2) {
     }
 }
 
+bool pointInQuad(vec2 point, vec2 A, vec2 B, vec2 C, vec2 D)
+{
+    float minX = min(min(A.x, B.x), min(C.x, D.x));
+    float maxX = max(max(A.x, B.x), max(C.x, D.x));
+    float minY = min(min(A.y, B.y), min(C.y, D.y));
+    float maxY = max(max(A.y, B.y), max(C.y, D.y));
+
+    if (point.x < minX || point.x > maxX || point.y < minY || point.y > maxY)
+    {
+        return false;
+    }
+
+    bool signAB = cross(vec3(point - A, 0), vec3(B - A, 0)).z >= 0;
+    bool signBC = cross(vec3(point - B, 0), vec3(C - B, 0)).z >= 0;
+    bool signCD = cross(vec3(point - C, 0), vec3(D - C, 0)).z >= 0;
+    bool signDA = cross(vec3(point - D, 0), vec3(A - D, 0)).z >= 0;
+    return (signAB == signBC) && (signBC == signCD) && (signCD == signDA);
+}
+
 void main() 
 {
 	ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
@@ -64,9 +84,15 @@ void main()
 
         int x_norm = int(in_x / in_z);
         int y_norm = int(in_y / in_z);
-
-        imageStore(image, texelCoord, vec4(255, 255, 255, 255));
-        imageStore(image, texelCoord, imageLoad(samplerImage, ivec2(x_norm, y_norm)));
+        
+        if(pointInQuad(texelCoord, vec2(ps[0], ps[1]), vec2(ps[2], ps[3]), vec2(ps[4], ps[5]), vec2(ps[6], ps[7])))
+        {
+            imageStore(image, texelCoord, imageLoad(samplerImage, ivec2(x_norm, y_norm)));
+        }
+        else
+        {
+            imageStore(image, texelCoord, fillTransparent ? vec4(255, 255, 255, 0) : imageLoad(samplerImage, texelCoord));
+        }
     }
     else
     {

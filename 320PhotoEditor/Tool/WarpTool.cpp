@@ -16,7 +16,13 @@ void WarpTool::init()
 	startWarp->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
 	container->addElement(startWarp);
 	startWarp->setSize({ .25, .25 });
-	startWarp->setPosition({ 0.5, 0.125 });
+	startWarp->setPosition({ 0, 0 });
+
+	fillTransparent = new ButtonElement(upTexture, downTexture, overTexture, true);
+	fillTransparent->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	container->addElement(fillTransparent);
+	fillTransparent->setSize({ .25, .25 });
+	fillTransparent->setPosition({ 0.5, 0 });
 }
 
 void WarpTool::start(Layer* layer)
@@ -187,6 +193,12 @@ void WarpTool::initControlPoints()
 
 void WarpTool::buttonPressed(GUIElement* button, int status)
 {
+	if (button == fillTransparent && status != ButtonElement::ButtonState::OVER)
+	{
+		doFillTransparent = !doFillTransparent;
+		compute();
+	}
+
 	if (status != ButtonElement::ButtonState::DOWN)
 	{
 		return;
@@ -230,6 +242,7 @@ void WarpTool::compute()
 	warpCompute->bindTexture(layerCopy.getNativeHandle(), 0);
 	warpCompute->bindTexture(layer->getSprite()->getTexture()->getNativeHandle(), 1);
 	warpCompute->setBool("doLines", true);
+	warpCompute->setBool("fillTransparent", doFillTransparent);
 	sf::Vector2u layerSize = layer->getImage()->getSize();
 
 	warpCompute->compute(layerSize.x / 10.0f, layerSize.y / 10.0f, 1);
