@@ -88,14 +88,55 @@ sf::Color hsl2rgb(float h, float s, float l)
 	return rgb;
 }
 
-//TODO:
 float* rgb2hsl(sf::Color rgb)
 {
-	float* h = new float[3];
-	h[0] = 0;
-	h[1] = 0;
-	h[2] = 0;
-	return h;
+	float r = rgb.r / 255.0;
+	float g = rgb.g / 255.0;
+	float b = rgb.b / 255.0;
+
+	float cmax = fmax(r, fmax(g, b));
+	float cmin = fmin(r, fmin(g, b));
+	float delta = cmax - cmin;
+
+	float lightness = (cmax + cmin) / 2.0;
+
+	float hue, saturation;
+	if (delta == 0)
+	{
+		hue = 0;
+		saturation = 0;
+	}
+	else
+	{
+		if (lightness < 0.5)
+		{
+			saturation = delta / (cmax + cmin);
+		}
+		else
+		{
+			saturation = delta / (2.0 - cmax - cmin);
+		}
+		if (cmax == r)
+		{
+			hue = fmod((g - b) / delta, 6.0);
+		}
+		else if (cmax == g)
+		{
+			hue = ((b - r) / delta) + 2.0;
+		}
+		else
+		{
+			hue = ((r - g) / delta) + 4.0;
+		}
+		hue /= 6.0;
+	}
+
+	float* hsl = new float[3];
+	hsl[0] = hue;
+	hsl[1] = saturation;
+	hsl[2] = lightness;
+
+	return hsl;
 }
 
 #ifdef _WIN32

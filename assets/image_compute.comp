@@ -1,0 +1,29 @@
+#version 430 core
+
+layout (local_size_x = 10, local_size_y = 10, local_size_z = 1) in;
+
+layout(rgba8, binding = 0) uniform image2D inputImage;
+layout(rgba8, binding = 1) uniform image2D outputImage;
+
+layout (location = 0) uniform vec2 intSize;
+layout (location = 1) uniform vec2 outSize;
+
+void main()
+{
+    ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
+    if (texelCoord.x >= outSize.x || texelCoord.y >= outSize.y) {
+        return;
+    }
+
+    vec2 inputTexCoords = vec2(texelCoord) / outSize * intSize;
+
+    vec2 floorTexCoords = floor(inputTexCoords);
+    vec2 fracTexCoords = fract(inputTexCoords);
+
+    vec4 texel = mix(
+        mix(texture(inputImage, floorTexCoords / intSize), texture(inputImage, (floorTexCoords + vec2(1.0, 0.0)) / intSize), fracTexCoords.x),
+        mix(texture(inputImage, (floorTexCoords + vec2(0.0, 1.0)) / intSize), texture(inputImage, (floorTexCoords + vec2(1.0, 1.0)) / intSize), fracTexCoords.x),
+        fracTexCoords.y);
+
+    imageStore(outputImage, texelCoord, texel);
+}
