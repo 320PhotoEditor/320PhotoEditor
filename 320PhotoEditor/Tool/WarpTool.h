@@ -12,7 +12,7 @@ public:
 
 	void init();
 	void start(Layer* layer);
-	void stop() {};
+	void stop();
 	void run() {};
 	
 	void mousePressed(sf::Mouse::Button button);
@@ -30,6 +30,8 @@ public:
 	void buttonPressed(GUIElement* button, int status);
 
 private:
+
+	void compute();
 
 	bool down = false;
 	bool doWarp = false;

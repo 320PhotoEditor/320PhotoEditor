@@ -33,6 +33,19 @@ void WarpTool::start(Layer* layer)
 
 	layer->reload();
 	layerCopy.loadFromImage(*layer->getImage());
+
+	compute();
+}
+
+void WarpTool::stop()
+{
+	warpCompute->bindTexture(layerCopy.getNativeHandle(), 0);
+	warpCompute->bindTexture(layer->getSprite()->getTexture()->getNativeHandle(), 1);
+	warpCompute->setBool("doLines", false);
+	sf::Vector2u layerSize = layer->getImage()->getSize();
+
+	warpCompute->compute(layerSize.x / 10.0f, layerSize.y / 10.0f, 1);
+	layer->loadImageFromTexture();
 }
 
 void WarpTool::mousePressed(sf::Mouse::Button button)
@@ -62,35 +75,8 @@ void WarpTool::mouseMoved(sf::Vector2i pos)
 	}
 
 	controlPoints[selectedPoint] = layer->cursorToPixel(cursorPos);
-	int pointsBuffer[4 * 2];
 
-	int index = 0;
-	for (auto& c : controlPoints)
-	{
-		pointsBuffer[index] = c.x;
-		index++;
-		pointsBuffer[index] = c.y;
-		index++;
-	}
-	warpCompute->use();
-
-	ComputeShader::setBuffer(pointsBuf, sizeof(int) * 4 * 2, pointsBuffer);
-	ComputeShader::bindBuffer(pointsBuf, 2);
-
-	if (doWarp)
-	{
-		Matrix3x3 transform;
-		calculateTransformMatrx(controlPoints, originalControlPoints, transform);
-		warpCompute->setMat3("warp", transform);
-	}	
-	warpCompute->setBool("doWarp", doWarp);
-
-	warpCompute->bindTexture(layerCopy.getNativeHandle(), 0);
-	warpCompute->bindTexture(layer->getSprite()->getTexture()->getNativeHandle(), 1);
-	warpCompute->setBool("copyMode", false);
-	sf::Vector2u layerSize = layer->getImage()->getSize();
-
-	warpCompute->compute(layerSize.x / 10.0f, layerSize.y / 10.0f, 1);
+	compute();
 }
 
 
@@ -214,4 +200,37 @@ void WarpTool::buttonPressed(GUIElement* button, int status)
 		originalControlPoints[2] = controlPoints[2];
 		originalControlPoints[3] = controlPoints[3];
 	}
+}
+
+void WarpTool::compute()
+{
+	int pointsBuffer[4 * 2];
+
+	int index = 0;
+	for (auto& c : controlPoints)
+	{
+		pointsBuffer[index] = c.x;
+		index++;
+		pointsBuffer[index] = c.y;
+		index++;
+	}
+	warpCompute->use();
+
+	ComputeShader::setBuffer(pointsBuf, sizeof(int) * 4 * 2, pointsBuffer);
+	ComputeShader::bindBuffer(pointsBuf, 2);
+
+	if (doWarp)
+	{
+		Matrix3x3 transform;
+		calculateTransformMatrx(controlPoints, originalControlPoints, transform);
+		warpCompute->setMat3("warp", transform);
+	}
+	warpCompute->setBool("doWarp", doWarp);
+
+	warpCompute->bindTexture(layerCopy.getNativeHandle(), 0);
+	warpCompute->bindTexture(layer->getSprite()->getTexture()->getNativeHandle(), 1);
+	warpCompute->setBool("doLines", true);
+	sf::Vector2u layerSize = layer->getImage()->getSize();
+
+	warpCompute->compute(layerSize.x / 10.0f, layerSize.y / 10.0f, 1);
 }
