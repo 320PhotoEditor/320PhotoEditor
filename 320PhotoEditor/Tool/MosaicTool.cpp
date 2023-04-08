@@ -1,8 +1,6 @@
-#include "MosaicTool.h"
-#include "../GUI/GUIElement.h"
-#include <tchar.h>
-#include <atlstr.h>
-#include <windows.h>
+#pragma once
+
+#include "../game.h"
 
 MosaicTool::MosaicTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : Tool(up, down, over)
 {
@@ -14,9 +12,12 @@ void MosaicTool::init()
 
 void MosaicTool::start(Layer* layer)
 {
-    sf::RenderWindow window(sf::VideoMode(1280, 800), "PixelEater", sf::Style::Titlebar | sf::Style::Close);
-    sf::Event listener;
+    srand(static_cast<unsigned>(time(0)));
 
+    game game;
+
+
+    /*
     //Game loop
     while (window.isOpen())
     {
@@ -39,6 +40,7 @@ void MosaicTool::start(Layer* layer)
         //draw
         window.display();
     }
+    */
 }
 
 void MosaicTool::run()

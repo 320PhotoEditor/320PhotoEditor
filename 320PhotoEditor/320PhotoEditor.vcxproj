@@ -143,6 +143,7 @@
     <ClCompile Include="ApplicationMenu.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="GUI\ColorPickerElement.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="GUI\ButtonElement.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="ApplicationMenu.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="ComputeShader.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="GUI\ColorPickerElement.h" />
     <ClInclude Include="GUI\ButtonElement.h" />
     <ClInclude Include="Common.h" />
