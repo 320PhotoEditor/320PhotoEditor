@@ -1,16 +1,27 @@
-//
-// Created by David Oakes on 4/7/23.
-//
+#pragma once
 
-#ifndef INC_320PHOTOEDITOR_HISTOGRAMTOOL_H
-#define INC_320PHOTOEDITOR_HISTOGRAMTOOL_H
+#include "Tool.h"
+#include "../GUI/ButtonElement.h"
+#include "../Layer/LayerManager.h"
 
+class HistogramTool : public Tool
+{
+public:
+    HistogramTool(sf::Texture* up, sf::Texture* down, sf::Texture* over);
 
+    void init();
+    void start(Layer* layer);
+    void stop() {};
+    void run();
 
-class HistogramTool {
+//void keyPressed(sf::Keyboard::Key key);
+    void mousePressed(sf::Mouse::Button button);
+    void buttonPressed(GUIElement* button, int status);
+    void convertBW(sf::Image image);
 
+private:
+
+    Layer* layer;
+    ButtonElement* bwButton;
+    sf::Image* histImage;
 };
-
-
-
-#endif //INC_320PHOTOEDITOR_HISTOGRAMTOOL_H
