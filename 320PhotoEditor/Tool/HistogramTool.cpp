@@ -19,12 +19,16 @@ void HistogramTool::init()
     container->addElement(bwButton);
     bwButton->setSize({ .25, .25 });
     bwButton->setPosition({ 0.25, 0.5 });
+
+    histImage = new sf::Image();
+    histImage->create(256, 256, sf::Color(255, 255, 255, 0));
+    applicationMenu->histTexture->loadFromImage(*histImage);
 }
 
 void HistogramTool::start(Layer* layer)
 {
     this->layer = layer;
-    histImage = new sf::Image();
+
 }
 
 void HistogramTool::run()
@@ -51,7 +55,7 @@ void HistogramTool::buttonPressed(GUIElement* button, int status)
         float max_element = 0;
         float arrays[256] = {};
 
-        histImage->create(256, 256, sf::Color::Black);
+        histImage->create(256, 256, sf::Color(255, 255, 255, 0));
 
         for (a = 0; a < layer->getImage()->getSize().x; a++) {
             for (b = 0; b < layer->getImage()->getSize().y; b++) {
@@ -73,7 +77,7 @@ void HistogramTool::buttonPressed(GUIElement* button, int status)
             for (int j = 0; j < 256; j++)
             {
                 if ((arrays[i] * scale_factor) >= j) {
-                    histImage->setPixel(i, 256 - j, sf::Color::Red);
+                    histImage->setPixel(i, 255 - j, sf::Color::Red);
                 }
             }
         }
