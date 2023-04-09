@@ -21,7 +21,9 @@ public:
 	virtual ~Player();
 
 	void updateInput();
-	void update();
+
+	// target gives the player object access to some info about the window
+	void update(sf::RenderTarget* target);
 	void render(sf::RenderTarget* target);
 
 };

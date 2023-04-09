@@ -49,8 +49,28 @@ void Player::updateInput()
 	}
 }
 
-void Player::update()
+void Player::update(sf::RenderTarget* target)
 {
+	//Handle collision with window edge
+	//TO DO: figure out why player can escape at the corners
+	sf::FloatRect playerBounds = this->shape.getGlobalBounds();
+	if (playerBounds.left <= 0.f)
+	{
+		this->shape.setPosition(0.f, playerBounds.top);
+	}
+	if (playerBounds.left + playerBounds.width >= target->getSize().x)
+	{
+		this->shape.setPosition(target->getSize().x - playerBounds.width, playerBounds.top);
+	}
+	if (playerBounds.top <= 0)
+	{
+		this->shape.setPosition(playerBounds.left, 0.f);
+	}
+	if (playerBounds.top + playerBounds.height >= target->getSize().y)
+	{
+		this->shape.setPosition(playerBounds.left, target->getSize().y - playerBounds.height);
+	}
+
 	//Player movement
 	this->updateInput();
 }
