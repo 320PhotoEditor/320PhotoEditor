@@ -2,7 +2,10 @@
 
 void Player::initVar()
 {
-	this->moveSpeed = 8.f;
+	this->moveSpeed = 13.f;
+	this->accel = 1.f;
+	this->decel = 0.97f;
+	this->velocity = sf::Vector2f(0.f, 0.f);
 }
 
 void Player::initShape()
@@ -26,31 +29,52 @@ Player::~Player()
 }
 
 void Player::updateInput()
-{
-	//Move player left
+{	//Accelerate or decelerate left or right
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		this->shape.move(-this->moveSpeed, 0.f);
+		velocity.x -= accel;
 	}
-	//Move player right
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		this->shape.move(this->moveSpeed, 0.f);
+		velocity.x += accel;
 	}
-	//Move player up
+	else
+	{
+		velocity.x *= decel;
+	}
+	// Accelerate or decelerate up and down
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		this->shape.move(0.f, -this->moveSpeed);
+		velocity.y -= accel;
 	}
-	//Move player down
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		this->shape.move(0.f, this->moveSpeed);
+		velocity.y += accel;
 	}
+	else
+	{
+		velocity.y *= decel;
+	}
+
+	// Get actual velocity
+	this->currentSpeed = sqrtf((velocity.x * velocity.x) + (velocity.y * velocity.y));
+	
+	// Check that actual velocity is not to fast
+	if (this->currentSpeed > this->moveSpeed)
+	{
+		// Scale x and y speed
+		this->velocity *= (this->moveSpeed / this->currentSpeed);
+	}
+
+	this->shape.move(this->velocity.x, this->velocity.y);
+
 }
 
 void Player::update(sf::RenderTarget* target)
-{
+{	
+	//Player movement
+	this->updateInput();
+
 	//Handle collision with window edge
 	//TO DO: figure out why player can escape at the corners
 	sf::FloatRect playerBounds = this->shape.getGlobalBounds();
@@ -71,8 +95,7 @@ void Player::update(sf::RenderTarget* target)
 		this->shape.setPosition(playerBounds.left, target->getSize().y - playerBounds.height);
 	}
 
-	//Player movement
-	this->updateInput();
+
 }
 
 void Player::render(sf::RenderTarget* target)

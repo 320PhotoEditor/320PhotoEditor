@@ -11,6 +11,10 @@ private:
 
 	sf::RectangleShape shape;
 	float moveSpeed;
+	float accel;
+	float decel;
+	float currentSpeed;
+	sf::Vector2f velocity;
 
 	void initVar();
 	void initShape();
