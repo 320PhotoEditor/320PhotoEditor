@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Player.h"
+#include "Pixels.h"
+#include <vector>
 
 class game
 {
@@ -11,6 +13,11 @@ private:
 	sf::Event ev;
 	bool endGame;
 	Player player;
+	std::vector<Pixels> Pixel;
+
+	float spawnTimeMax;
+	float spawnTimer;
+	int maxPixels;
 
 	//Initialize game variables
 	void initVar();
@@ -28,6 +35,7 @@ public:
 	void pollEvents();
 	void update();
 	void render();
+	void spawnPixels();
 
 };
 

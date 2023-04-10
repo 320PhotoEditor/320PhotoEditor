@@ -4,6 +4,9 @@
 void game::initVar()
 {
 	this->endGame = false;
+	this->spawnTimeMax = 10.f;
+	this->spawnTimer = this->spawnTimeMax;
+	this->maxPixels = 10;
 }
 
 void game::initWin()
@@ -52,6 +55,7 @@ void game::pollEvents()
 void game::update()
 {
 	this->pollEvents();
+	this->spawnPixels();
 	this->player.update(this->window);
 }
 
@@ -61,5 +65,26 @@ void game::render()
 
 	this->player.render(this->window);
 
+	for (auto i : this->Pixel)
+	{
+		i.render(*this->window);
+	}
+
 	this->window->display();
+}
+
+void game::spawnPixels()
+{
+	if (this->spawnTimer < this->spawnTimeMax)
+	{
+		this->spawnTimer += 1.f;
+	}
+	else
+	{
+		if (this->Pixel.size() < this->maxPixels)
+		{
+			this->Pixel.push_back(Pixels());
+			this->spawnTimer = 0.f;
+		}
+	}
 }
