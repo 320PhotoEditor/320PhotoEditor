@@ -25,6 +25,7 @@ public:
 	virtual ~Player();
 
 	void updateInput();
+	void playerBounce(sf::Vector2f currentVel);
 
 	// target gives the player object access to some info about the window
 	void update(sf::RenderTarget* target);

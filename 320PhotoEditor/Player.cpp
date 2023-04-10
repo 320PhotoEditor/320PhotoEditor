@@ -3,7 +3,7 @@
 void Player::initVar()
 {
 	this->moveSpeed = 13.f;
-	this->accel = 1.f;
+	this->accel = .5f;
 	this->decel = 0.97f;
 	this->velocity = sf::Vector2f(0.f, 0.f);
 }
@@ -11,7 +11,7 @@ void Player::initVar()
 void Player::initShape()
 {
 	this->shape.setFillColor(sf::Color::Red);
-	this->shape.setSize(sf::Vector2f(25.f, 25.f));
+	this->shape.setSize(sf::Vector2f(20.f, 20.f));
 }
 
 Player::Player()
@@ -70,6 +70,12 @@ void Player::updateInput()
 
 }
 
+void Player::playerBounce(sf::Vector2f currentVel)
+{
+	this->velocity.x = -currentVel.x;
+	this->velocity.y = -currentVel.y;
+}
+
 void Player::update(sf::RenderTarget* target)
 {	
 	//Player movement
@@ -81,18 +87,22 @@ void Player::update(sf::RenderTarget* target)
 	if (playerBounds.left <= 0.f)
 	{
 		this->shape.setPosition(0.f, playerBounds.top);
+		this->playerBounce(sf::Vector2f(this->velocity.x, -this->velocity.y));
 	}
 	if (playerBounds.left + playerBounds.width >= target->getSize().x)
 	{
 		this->shape.setPosition(target->getSize().x - playerBounds.width, playerBounds.top);
+		this->playerBounce(sf::Vector2f(this->velocity.x, -this->velocity.y));
 	}
 	if (playerBounds.top <= 0)
 	{
 		this->shape.setPosition(playerBounds.left, 0.f);
+		this->playerBounce(sf::Vector2f(-this->velocity.x, this->velocity.y));
 	}
 	if (playerBounds.top + playerBounds.height >= target->getSize().y)
 	{
 		this->shape.setPosition(playerBounds.left, target->getSize().y - playerBounds.height);
+		this->playerBounce(sf::Vector2f(-this->velocity.x, this->velocity.y));
 	}
 
 
