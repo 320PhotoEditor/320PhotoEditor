@@ -39,7 +39,7 @@ bool Application::init(std::string windowName)
 
     toolManager = new ToolManager(window);
     
-    layerManager = new LayerManager(window, toolManager, { 800, 600 });
+    layerManager = new LayerManager(window, toolManager, { 1920, 1080 });
     layerManager->createLayer(sf::Color::White);
     
     toolManager->setSelectedLayer(layerManager->getSelectedLayer());
