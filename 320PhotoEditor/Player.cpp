@@ -38,6 +38,7 @@ void Player::updateInput()
 	{
 		velocity.x += accel;
 	}
+	// If A or D is not being pressed slow player down gradually on the x-axis
 	else
 	{
 		velocity.x *= decel;
@@ -51,22 +52,23 @@ void Player::updateInput()
 	{
 		velocity.y += accel;
 	}
+	// If W or S is not being pressed slow player gradually on the y-axis
 	else
 	{
 		velocity.y *= decel;
 	}
 
 	// Get actual velocity
-	this->currentSpeed = sqrtf((velocity.x * velocity.x) + (velocity.y * velocity.y));
+	currentSpeed = sqrtf((velocity.x * velocity.x) + (velocity.y * velocity.y));
 	
 	// Check that actual velocity is not to fast
-	if (this->currentSpeed > this->moveSpeed)
+	if (currentSpeed > moveSpeed)
 	{
 		// Scale x and y speed
-		this->velocity *= (this->moveSpeed / this->currentSpeed);
+		velocity *= (moveSpeed / currentSpeed);
 	}
 
-	this->shape.move(this->velocity.x, this->velocity.y);
+	this->shape.move(velocity.x, velocity.y);
 
 }
 
@@ -76,11 +78,14 @@ void Player::playerBounce(sf::Vector2f currentVel)
 	this->velocity.y = -currentVel.y;
 }
 
-void Player::update(sf::RenderTarget* target)
-{	
-	//Player movement
-	this->updateInput();
+// Used to get current bounds of player object for pixel collision detection
+sf::RectangleShape& Player::getCurrShape()
+{
+	return this->shape;
+}
 
+void Player::playerWindowColl(sf::RenderTarget* target)
+{
 	//Handle collision with window edge
 	//TO DO: figure out why player can escape at the corners
 	sf::FloatRect playerBounds = this->shape.getGlobalBounds();
@@ -104,8 +109,13 @@ void Player::update(sf::RenderTarget* target)
 		this->shape.setPosition(playerBounds.left, target->getSize().y - playerBounds.height);
 		this->playerBounce(sf::Vector2f(-this->velocity.x, this->velocity.y));
 	}
+}
 
-
+void Player::update(sf::RenderTarget* target)
+{	
+	//Player movement
+	this->updateInput();
+	this->playerWindowColl(target);
 }
 
 void Player::render(sf::RenderTarget* target)

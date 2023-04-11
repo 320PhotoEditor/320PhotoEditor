@@ -36,6 +36,7 @@ public:
 	void update();
 	void render();
 	void spawnPixels();
+	void playerPixelColl();
 
 };
 

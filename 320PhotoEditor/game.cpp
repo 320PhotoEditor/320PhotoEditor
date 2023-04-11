@@ -6,7 +6,7 @@ void game::initVar()
 	this->endGame = false;
 	this->spawnTimeMax = 10.f;
 	this->spawnTimer = this->spawnTimeMax;
-	this->maxPixels = 10;
+	this->maxPixels = 12;
 }
 
 void game::initWin()
@@ -25,7 +25,6 @@ game::game()
 game::~game()
 {
 	delete this->window;
-
 }
 
 const bool game::running() const
@@ -57,14 +56,24 @@ void game::update()
 	this->pollEvents();
 	this->spawnPixels();
 	this->player.update(this->window);
+	this->playerPixelColl();
+
+	// Checks each pixel for window collision and updates
+	for (auto& pixel : this->Pixel)
+	{
+		pixel.pixelWindowColl(this->window);
+		pixel.update();
+	}
 }
 
 void game::render()
 {
 	this->window->clear();
 
+	// Render the PC
 	this->player.render(this->window);
 
+	// Render each pixel in turn
 	for (auto i : this->Pixel)
 	{
 		i.render(*this->window);
@@ -73,6 +82,7 @@ void game::render()
 	this->window->display();
 }
 
+// Counts to spawn time max, at max checks to see if more pixels are needed
 void game::spawnPixels()
 {
 	if (this->spawnTimer < this->spawnTimeMax)
@@ -85,6 +95,20 @@ void game::spawnPixels()
 		{
 			this->Pixel.push_back(Pixels());
 			this->spawnTimer = 0.f;
+		}
+	}
+}
+
+void game::playerPixelColl()
+{
+	// For each pixel that exists
+	for (size_t i = 0; i < this->Pixel.size(); i++)
+	{
+		// CHeck if player is colliding with any of the pixels
+		if (this->player.getCurrShape().getGlobalBounds().intersects(this->Pixel[i].getCurrShape().getGlobalBounds()))
+		{
+			//If play hits a pixel block, pixel gets players velocity
+			this->Pixel[i].bounceOffPLayer(this->player.velocity);
 		}
 	}
 }
