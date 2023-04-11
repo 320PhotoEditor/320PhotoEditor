@@ -40,14 +40,8 @@ void drawLine(vec2 p1, vec2 p2) {
         if(int(x) % dashSize  == 0)
 			flip = !flip;
         
-        if (steep)
-		{
-			imageStore(image, ivec2(y, x), flip ? vec4(255, 255, 255, 255) : vec4(0, 0, 0, 255));
-		}
-		else
-        {
-			imageStore(image, ivec2(x, y), flip ? vec4(255, 255, 255, 255) : vec4(0, 0, 0, 255));
-		}
+		imageStore(image, steep ? ivec2(y, x) : ivec2(x, y), flip ? vec4(255, 255, 255, 255) : vec4(0, 0, 0, 255));			
+
 
         error -= abs(d.y);
         if (error < 0.0)
