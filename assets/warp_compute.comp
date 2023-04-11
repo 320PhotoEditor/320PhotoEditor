@@ -13,6 +13,7 @@ layout (location = 3) uniform mat3 warp;
 layout (location = 4) uniform bool doWarp;
 layout (location = 5) uniform bool doLines;
 layout (location = 6) uniform bool fillTransparent;
+layout (location = 7) uniform int dashSize;
 
 void drawLine(vec2 p1, vec2 p2) {
     bool steep = abs(p2.y - p1.y) > abs(p2.x - p1.x);
@@ -36,13 +37,17 @@ void drawLine(vec2 p1, vec2 p2) {
     
     for (float x = p1.x; x <= p2.x; x += 1.0)
     {
-        if(int(x) % 5 == 0)
+        if(int(x) % dashSize  == 0)
 			flip = !flip;
         
         if (steep)
-            imageStore(image, ivec2(y, x), flip ? vec4(255, 255, 255, 255) : vec4(0, 0, 0, 255));
-        else
-            imageStore(image, ivec2(x, y), flip ? vec4(255, 255, 255, 255) : vec4(0, 0, 0, 255));
+		{
+			imageStore(image, ivec2(y, x), flip ? vec4(255, 255, 255, 255) : vec4(0, 0, 0, 255));
+		}
+		else
+        {
+			imageStore(image, ivec2(x, y), flip ? vec4(255, 255, 255, 255) : vec4(0, 0, 0, 255));
+		}
 
         error -= abs(d.y);
         if (error < 0.0)
@@ -106,8 +111,7 @@ void main()
             drawLine(vec2(ps[0], ps[1]), vec2(ps[2], ps[3]));
             drawLine(vec2(ps[0], ps[1]), vec2(ps[6], ps[7]));
             drawLine(vec2(ps[2], ps[3]), vec2(ps[4], ps[5]));
-            drawLine(vec2(ps[4], ps[5]), vec2(ps[6], ps[7]));
-            
+            drawLine(vec2(ps[4], ps[5]), vec2(ps[6], ps[7]));         
         }
     }
 }

@@ -242,6 +242,7 @@ void WarpTool::compute()
 	warpCompute->bindTexture(layerCopy.getNativeHandle(), 0);
 	warpCompute->bindTexture(layer->getSprite()->getTexture()->getNativeHandle(), 1);
 	warpCompute->setBool("doLines", true);
+	warpCompute->setInt("dashSize", layer->getImage()->getSize().x / 150);
 	warpCompute->setBool("fillTransparent", doFillTransparent);
 	sf::Vector2u layerSize = layer->getImage()->getSize();
 
