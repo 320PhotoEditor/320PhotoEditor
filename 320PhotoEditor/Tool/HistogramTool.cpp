@@ -18,13 +18,13 @@ void HistogramTool::init()
     bwButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
     container->addElement(bwButton);
     bwButton->setSize({ .25, .25 });
-    bwButton->setPosition({ 0.25, 0.5 });
+    bwButton->setPosition({ 0.25, 0.25 });
 
     eqButton = new ButtonElement(upTexture, downTexture, overTexture);
     eqButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
     container->addElement(eqButton);
-    eqButton->setSize({ .25, .25 });
-    eqButton->setPosition({ 0.5, 0.5 });
+    eqButton->setSize({ 0.25, 0.25 });
+    eqButton->setPosition({ 0.50, 0.25 });
 
     histImage = new sf::Image();
     histImage->create(256, 256, sf::Color(255, 255, 255, 0));
@@ -71,11 +71,11 @@ void HistogramTool::buttonPressed(GUIElement* button, int status)
             for (b = 0; b < layer->getImage()->getSize().y; b++) {
                 sf::Color color2 = layer->getImage()->getPixel(a, b);
                 int grayscale = ((color2.r * 0.3) + (color2.g * 0.59) + (color2.b * 0.11));
-                arrays[grayscale - 1] += 1;
+                arrays[grayscale] += 1;
 
-                if (arrays[grayscale - 1] > max_element)
+                if (arrays[grayscale] > max_element)
                 {
-                    max_element = arrays[grayscale - 1];
+                    max_element = arrays[grayscale];
                 }
             }
         }
@@ -137,6 +137,12 @@ float *HistogramTool::normalCDF(float *value)
     {
         sum += value[i];
         value[i] = sum;
+    }
+
+    // normalizing
+    for (int i = 0; i < 256; i++)
+    {
+        value[i] = ((value[i] - value[0]) / (value[255] - value[0]));
     }
 
     return value;

@@ -48,14 +48,16 @@ void Zoom::buttonPressed(GUIElement* button, int status) {
     {
         zoomFactor++;
         std::cout << "zoom factor: " << zoomFactor << "\n";
-//        return;
     }
 
     if (button == subtractButton)
     {
         zoomFactor--;
+        if ( zoomFactor < 1)
+        {
+            zoomFactor = 1;
+        }
         std::cout << "zoom factor: " << zoomFactor << "\n";
-//        return;
     }
 }
 
@@ -116,5 +118,3 @@ sf::Vector2i Zoom::getCursorPos()
 {
     return cursorPos;
 }
-
-

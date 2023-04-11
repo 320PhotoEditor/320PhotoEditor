@@ -98,4 +98,3 @@ void FilterTool::buttonPressed(GUIElement* button, int status)
         layer->reload();
     }
 }
-

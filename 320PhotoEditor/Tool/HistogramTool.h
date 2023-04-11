@@ -29,4 +29,3 @@ private:
     sf::Image* histImage;
     float arrays[256] = {};
 };
-

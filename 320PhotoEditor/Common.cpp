@@ -74,7 +74,7 @@ sf::Color hsl2rgb(float h, float s, float l)
 
 	if (0 == s)
 	{
-		rgb.r = rgb.g = rgb.b = l;
+		rgb.r = rgb.g = rgb.b = l * 255;
 	}
 	else
 	{
@@ -175,7 +175,7 @@ float* rgb2hsl(sf::Color rgb)
         //std::string path;
 		//std::cin >> path;
 
-        return "/Users/davidoakes/CS320/Images/My project.jpg";
+        return "/Users/davidoakes/CS320/Images/test.jpg";
 	}
 #else
 	std::string openFileDialog(sf::RenderWindow* parentWindow, bool selectMultiple)
