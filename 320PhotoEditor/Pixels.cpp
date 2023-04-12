@@ -6,19 +6,6 @@ void Pixels::initVar()
 	// Want pixels to have a slower top speed than the player
 	this->moveSpeed = 9.f;
 	this->velocity = sf::Vector2f(0.f,0.f);
-}
-
-void Pixels::initShape()
-{
-	float size = static_cast <float> (rand() % 40 + 10);
-	this->shape.setFillColor(sf::Color::White);
-	this->shape.setSize(sf::Vector2f(size,size));
-}
-
-Pixels::Pixels()
-{	
-	this->initVar();
-	this->initShape();
 
 	// Set position based on window size and shape size, probably don't want to hardcode screen size in the future
 	float x = static_cast <float> (rand() % 1281 - this->shape.getGlobalBounds().width);
@@ -34,7 +21,34 @@ Pixels::Pixels()
 		y = 0.f;
 	}
 
-	this->shape.setPosition(sf::Vector2f(x,y));
+	this->shape.setPosition(sf::Vector2f(x, y));
+}
+
+void Pixels::initShape()
+{
+	float size = static_cast <float> (rand() % 40 + 10);
+	this->shape.setFillColor(sf::Color::White);
+	this->shape.setSize(sf::Vector2f(size,size));
+}
+
+Pixels::Pixels(sf::Vector2f position, sf::Vector2f velocity)
+{	
+
+	if (position.x > 0 || position.y > 0 && velocity.x > 0 || velocity.y > 0)
+	{	
+		this->shape.setFillColor(sf::Color::White);
+		this->shape.setSize(sf::Vector2f(8.f, 8.f));
+		this->velocity = sf::Vector2f(velocity.x, velocity.y);
+		this->shape.setPosition(position.x, position.y);
+	}
+	else
+	{	
+		// Get a randomly sized pixel object
+		this->initShape();
+		// Default velocity 0, random position
+		this->initVar();
+	}
+
 }
 
 Pixels::~Pixels()
@@ -53,7 +67,7 @@ void Pixels::bounceOffPLayer(sf::Vector2f pixelVel, sf::Vector2f impulse, sf::Ve
 {
 	// VB' = VB + J / massB
 	this->velocity = (pixelVel + impulse) / pixelSize.x;
-	
+	this->shape.setSize(sf::Vector2f(this->shape.getSize().x - 1, this->shape.getSize().y - 1));
 	
 	// OLD
 	//pixel will get player velocity +/- based on size ratio playerSize/pixelSize

@@ -11,7 +11,7 @@ void Player::initVar()
 void Player::initShape()
 {
 	this->shape.setFillColor(sf::Color::Red);
-	this->shape.setSize(sf::Vector2f(16.f, 16.f));
+	this->shape.setSize(sf::Vector2f(18.f, 18.f));
 }
 
 Player::Player()
@@ -86,6 +86,12 @@ void Player::bounceOffPixel(sf::Vector2f playerVel, sf::Vector2f impulse, sf::Ve
 	// OLD
 	//player will get +/- pixel velocity based on size ratio pixelSize/playerSize
 	//this->velocity += (pixelVel * (pixelSize.x/playerSize.x));
+}
+
+void Player::eatPixel()
+{
+	this->getCurrShape().setSize(sf::Vector2f(this->getCurrShape().getSize().x +2,
+		this->getCurrShape().getSize().y +2));
 }
 
 // Used to get current bounds of player object for pixel collision detection

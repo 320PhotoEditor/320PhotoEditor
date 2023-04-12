@@ -29,6 +29,7 @@ public:
 	void updateInput();
 	void playerBounce(sf::Vector2f currentVel);
 	void bounceOffPixel(sf::Vector2f playerVel, sf::Vector2f impulse, sf::Vector2f playerSize);
+	void eatPixel();
 
 	sf::RectangleShape& getCurrShape();
 

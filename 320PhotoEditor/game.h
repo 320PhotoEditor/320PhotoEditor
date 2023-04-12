@@ -15,6 +15,7 @@ private:
 	Player player;
 	std::vector<Pixels> Pixel;
 
+	float restitutionCo;
 	float spawnTimeMax;
 	float spawnTimer;
 	int maxPixels;

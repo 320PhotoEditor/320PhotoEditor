@@ -18,7 +18,7 @@ private:
 
 
 public:
-	Pixels();
+	Pixels(sf::Vector2f position, sf::Vector2f velocity);
 	virtual ~Pixels();
 
 	sf::RectangleShape& getCurrShape();
