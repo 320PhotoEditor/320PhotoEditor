@@ -55,8 +55,9 @@ void game::update()
 {
 	this->pollEvents();
 	this->spawnPixels();
-	this->player.update(this->window);
 	this->playerPixelColl();
+	this->player.update(this->window);
+	
 
 	// Checks each pixel for window collision and updates
 	for (auto& pixel : this->Pixel)
@@ -66,6 +67,7 @@ void game::update()
 	}
 }
 
+// Renders each element belonging to the window
 void game::render()
 {
 	this->window->clear();
@@ -104,11 +106,58 @@ void game::playerPixelColl()
 	// For each pixel that exists
 	for (size_t i = 0; i < this->Pixel.size(); i++)
 	{
-		// CHeck if player is colliding with any of the pixels
+		// Check if player is colliding with any of the pixels
+		// TO DO: Fix clipping issue
+		// TO DO: Fix odd angles of deflection (changed impulse based method of calculating deflection made a small improvement but the
+		// objects clipping into each other might be the orimary cause.)
 		if (this->player.getCurrShape().getGlobalBounds().intersects(this->Pixel[i].getCurrShape().getGlobalBounds()))
 		{
-			//If play hits a pixel block, pixel gets players velocity
-			this->Pixel[i].bounceOffPLayer(this->player.velocity);
+			float e = 0.25f;
+
+			//Player will be the A
+			sf::Vector2f playerPos = this->player.getCurrShape().getPosition();
+			// Pixel will be the B
+			sf::Vector2f pixelPos = this->Pixel[i].getCurrShape().getPosition();
+			// Probably doesn't make a difference, but wanted the centersVector to be based on the actual centers of the objects
+			sf::Vector2f playerActualCen = sf::Vector2f(playerPos.x + (this->player.getCurrShape().getGlobalBounds().width/2.f),
+				playerPos.y + (this->player.getCurrShape().getGlobalBounds().height/2.f));
+			sf::Vector2f pixelActualCen = sf::Vector2f(pixelPos.x + (this->Pixel[i].getCurrShape().getGlobalBounds().width / 2.f),
+				pixelPos.y + (this->Pixel[i].getCurrShape().getGlobalBounds().height/2.f));
+			sf::Vector2f interimCenter = (pixelActualCen - playerActualCen);
+			// centersVector is the n for the impulse equation
+			sf::Vector2f centersVector = interimCenter / sqrt(abs(interimCenter.x * interimCenter.x) 
+				+ abs(interimCenter.y + interimCenter.y));
+
+			//Impulse J = -(1 + e) * (VA · n - VB · n) / (1 / massA + 1 / massB)
+			sf::Vector2f impulse = -(1 + e) * ((this->player.velocity * centersVector) - (this->Pixel[i].velocity * centersVector))
+				/ ((1 / this->player.getCurrShape().getSize().x) + (1 / this->Pixel[i].getCurrShape().getSize().x));
+			
+			//If player hits a pixel block, pixel gets some fraction of players velocity
+			this->Pixel[i].bounceOffPLayer(
+				// VB' = VB + J / massB
+				this->Pixel[i].velocity,
+				impulse,
+				this->Pixel[i].getCurrShape().getSize()
+				
+				
+				// Part of the old method that wasn't working very well
+				//this->player.velocity,
+				//this->player.getCurrShape().getSize(),
+				//this->Pixel[i].getCurrShape().getSize()
+			);
+
+			this->player.bounceOffPixel(
+				// VA' = VA - J / massA
+				this->player.velocity,
+				impulse,
+				this->player.getCurrShape().getSize()
+				
+				
+				// OLD
+				//this->Pixel[i].velocity,
+				//this->player.getCurrShape().getSize(),
+				//this->Pixel[i].getCurrShape().getSize()
+			);
 		}
 	}
 }

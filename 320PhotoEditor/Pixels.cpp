@@ -4,7 +4,7 @@
 void Pixels::initVar()
 {
 	// Want pixels to have a slower top speed than the player
-	this->moveSpeed = 10.f;
+	this->moveSpeed = 9.f;
 	this->velocity = sf::Vector2f(0.f,0.f);
 }
 
@@ -49,9 +49,16 @@ sf::RectangleShape& Pixels::getCurrShape()
 }
 
 // Takes the players velocity and assigns it to pixel
-void Pixels::bounceOffPLayer(sf::Vector2f currentVel)
+void Pixels::bounceOffPLayer(sf::Vector2f pixelVel, sf::Vector2f impulse, sf::Vector2f pixelSize)
 {
-	this->velocity = currentVel;
+	// VB' = VB + J / massB
+	this->velocity = (pixelVel + impulse) / pixelSize.x;
+	
+	
+	// OLD
+	//pixel will get player velocity +/- based on size ratio playerSize/pixelSize
+	//this->velocity -= (playerVel * (playerSize.x / pixelSize.x));
+	//this->shape.setSize(sf::Vector2f(this->shape.getSize().x - 2, this->shape.getSize().y - 2));
 }
 
 // Helper function for bouncing off of window edge
@@ -99,8 +106,8 @@ void Pixels::update()
 	// Check that actual velocity is not to fast
 	if (currentSpeed > moveSpeed)
 	{
-		// Scale x and y speed
-		velocity *= (moveSpeed / currentSpeed);
+		// Since no input other than collisions allow pixel to move faster than max briefly
+		velocity *= 0.97f;
 	}
 
 	this->shape.move(velocity.x, velocity.y);

@@ -11,7 +11,7 @@ private:
 	sf::RectangleShape shape;
 	float moveSpeed;
 	float currentSpeed;
-	sf::Vector2f velocity;
+	
 
 	void initVar();
 	void initShape();
@@ -22,8 +22,8 @@ public:
 	virtual ~Pixels();
 
 	sf::RectangleShape& getCurrShape();
-
-	void bounceOffPLayer(sf::Vector2f currentVel);
+	sf::Vector2f velocity;
+	void bounceOffPLayer(sf::Vector2f pixelVel, sf::Vector2f impulse, sf::Vector2f pixelSize);
 	void bounceOffWindow(sf::Vector2f currentVel);
 	void pixelWindowColl(sf::RenderTarget* target);
 	void update();

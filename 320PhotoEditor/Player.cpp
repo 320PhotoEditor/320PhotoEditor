@@ -3,7 +3,7 @@
 void Player::initVar()
 {
 	this->moveSpeed = 13.f;
-	this->accel = .5f;
+	this->accel = .25f;
 	this->decel = 0.97f;
 	this->velocity = sf::Vector2f(0.f, 0.f);
 }
@@ -76,6 +76,16 @@ void Player::playerBounce(sf::Vector2f currentVel)
 {
 	this->velocity.x = -currentVel.x;
 	this->velocity.y = -currentVel.y;
+}
+
+void Player::bounceOffPixel(sf::Vector2f playerVel, sf::Vector2f impulse, sf::Vector2f playerSize)
+{
+	// VA' = VA - J / massA
+	this->velocity = (playerVel - impulse) / playerSize.x;
+
+	// OLD
+	//player will get +/- pixel velocity based on size ratio pixelSize/playerSize
+	//this->velocity += (pixelVel * (pixelSize.x/playerSize.x));
 }
 
 // Used to get current bounds of player object for pixel collision detection
