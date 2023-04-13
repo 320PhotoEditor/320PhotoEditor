@@ -26,6 +26,7 @@ public:
 	void bounceOffPLayer(sf::Vector2f pixelVel, sf::Vector2f impulse, sf::Vector2f pixelSize);
 	void bounceOffWindow(sf::Vector2f currentVel);
 	void pixelWindowColl(sf::RenderTarget* target);
+	void loseMass();
 	void update();
 	void render(sf::RenderTarget& target);
 };

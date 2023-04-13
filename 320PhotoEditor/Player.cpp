@@ -76,6 +76,9 @@ void Player::playerBounce(sf::Vector2f currentVel)
 {
 	this->velocity.x = -currentVel.x;
 	this->velocity.y = -currentVel.y;
+	// Player loses mass for hitting edge of window
+	this->getCurrShape().setSize(sf::Vector2f(this->getCurrShape().getSize().x - 4,
+		this->getCurrShape().getSize().y - 4));
 }
 
 void Player::bounceOffPixel(sf::Vector2f playerVel, sf::Vector2f impulse, sf::Vector2f playerSize)
@@ -90,8 +93,13 @@ void Player::bounceOffPixel(sf::Vector2f playerVel, sf::Vector2f impulse, sf::Ve
 
 void Player::eatPixel()
 {
-	this->getCurrShape().setSize(sf::Vector2f(this->getCurrShape().getSize().x +2,
-		this->getCurrShape().getSize().y +2));
+	this->getCurrShape().setSize(sf::Vector2f(this->getCurrShape().getSize().x + 1,
+		this->getCurrShape().getSize().y + 1));
+}
+
+void Player::loseMass()
+{
+	this->shape.setSize(sf::Vector2f(this->shape.getSize().x - 2, this->shape.getSize().y - 2));
 }
 
 // Used to get current bounds of player object for pixel collision detection
@@ -125,6 +133,7 @@ void Player::playerWindowColl(sf::RenderTarget* target)
 		this->shape.setPosition(playerBounds.left, target->getSize().y - playerBounds.height);
 		this->playerBounce(sf::Vector2f(-this->velocity.x, this->velocity.y));
 	}
+
 }
 
 void Player::update(sf::RenderTarget* target)

@@ -6,7 +6,7 @@ void game::initVar()
 	this->endGame = false;
 	this->spawnTimeMax = 10.f;
 	this->spawnTimer = this->spawnTimeMax;
-	this->maxPixels = 12;
+	this->maxPixels = 8;
 	this->restitutionCo = 0.25f;
 }
 
@@ -14,7 +14,7 @@ void game::initWin()
 {
 	this->vm = sf::VideoMode(1280, 800);
 	this->window = new sf::RenderWindow(this->vm, "Pixel Eater", sf::Style::Close | sf::Style::Titlebar);
-	this->window->setFramerateLimit(60);
+	this->window->setFramerateLimit(30);
 }
 
 game::game()
@@ -54,9 +54,9 @@ void game::pollEvents()
 
 void game::update()
 {
+	this->playerPixelColl();
 	this->pollEvents();
 	this->spawnPixels();
-	this->playerPixelColl();
 	this->player.update(this->window);
 	
 
@@ -108,12 +108,14 @@ void game::playerPixelColl()
 	// For each pixel that exists
 	for (size_t i = 0; i < this->Pixel.size(); i++)
 	{
+		// Variable can be used to check which side the collision is on, intersects will store the shape of the intersection between
+		// the objects in 'area'
+		sf::FloatRect area;
+
 		// Check if player is colliding with any of the pixels
 		// TO DO: Fix clipping issue
-		// TO DO: Fix odd angles of deflection (changed impulse based method of calculating deflection made a small improvement but the
-		// objects clipping into each other might be the orimary cause.)
-		sf::FloatRect area;
-		if (this->player.getCurrShape().getGlobalBounds().intersects(this->Pixel[i].getCurrShape().getGlobalBounds(), area))
+		// TO DO: Fix odd angles of deflection
+		if (this->Pixel[i].getCurrShape().getGlobalBounds().intersects(this->player.getCurrShape().getGlobalBounds(), area))
 		{
 
 			//Player will be the A
@@ -134,7 +136,8 @@ void game::playerPixelColl()
 			sf::Vector2f impulse = -(1 + this->restitutionCo) * ((this->player.velocity * centersVector) - (this->Pixel[i].velocity
 				* centersVector)) / ((1 / this->player.getCurrShape().getSize().x) + (1 / this->Pixel[i].getCurrShape().getSize().x));
 
-			if (this->Pixel[i].getCurrShape().getSize().x < (this->player.getCurrShape().getSize().x / 2))
+			// If pixel is less than half the size of player it gets eaten
+			if (this->Pixel[i].getCurrShape().getSize().x <= (this->player.getCurrShape().getSize().x / 2.f))
 			{
 				// Delete pixel object
 				this->Pixel.erase(this->Pixel.begin() + i);
@@ -144,15 +147,37 @@ void game::playerPixelColl()
 				break;
 			}
 
-			this->Pixel.push_back(Pixels(pixelActualCen, this->player.velocity));
-			
+			// If pixel is smaller than player, pixel loses mass, player does not
+			if (this->Pixel[i].getCurrShape().getSize().x < (this->player.getCurrShape().getSize().x))
+			{
+				// Spawns pixel off of pixel involved in collision
+				this->Pixel.push_back(Pixels(pixelActualCen, this->player.velocity));
+				this->Pixel[i].loseMass();
+			}
+
+			// If pixel is less than twice the size of the player both lose mass
+			if ((this->Pixel[i].getCurrShape().getSize().x < this->player.getCurrShape().getSize().x * 2.f) &&
+				(this->Pixel[i].getCurrShape().getSize().x >= this->player.getCurrShape().getSize().x))
+			{
+				this->Pixel.push_back(Pixels(pixelActualCen, this->player.velocity));
+				this->Pixel[i].loseMass();
+				this->Pixel.push_back(Pixels(playerActualCen, this->Pixel[i].velocity));
+				this->player.loseMass();
+			}
+
+			// If pixel is twice as large or larger than player player loses mass
+			if (this->Pixel[i].getCurrShape().getSize().x > (this->player.getCurrShape().getSize().x * 2.f))
+			{
+				this->Pixel.push_back(Pixels(playerActualCen, this->Pixel[i].velocity));
+				this->player.loseMass();
+			}
+
 			//If player hits a pixel block, pixel gets some fraction of players velocity
 			this->Pixel[i].bounceOffPLayer(
 				// VB' = VB + J / massB
 				this->Pixel[i].velocity,
 				impulse,
 				this->Pixel[i].getCurrShape().getSize()
-				
 				
 				// Part of the old method that wasn't working very well
 				//this->player.velocity,
@@ -165,7 +190,6 @@ void game::playerPixelColl()
 				this->player.velocity,
 				impulse,
 				this->player.getCurrShape().getSize()
-				
 				
 				// OLD
 				//this->Pixel[i].velocity,
