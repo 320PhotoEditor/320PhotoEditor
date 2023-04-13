@@ -4,28 +4,21 @@ layout (local_size_x = 10, local_size_y = 10, local_size_z = 1) in;
 
 layout(rgba8, binding = 0) uniform image2D image;
 layout(rgba8, binding = 1) uniform image2D mask;
-layout(rgba8, binding = 2) uniform image2D paintingTexture;
+layout(rgba8, binding = 2) uniform image2D referenceTexture;
 
 layout (location = 0) uniform vec2 firstPos;
 layout (location = 1) uniform vec2 secondPos;
 layout (location = 2) uniform float paintSize;
 layout (location = 3) uniform vec4 color;
-layout (location = 4) uniform bool applyPaint;
-layout (location = 5) uniform bool preparePT;
+layout (location = 5) uniform bool copyIR;
 
 void main() {
 	vec4 value = vec4(0.0, 0.0, 0.0, 1.0);
 	ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
 
-	if(preparePT)
+	if(copyIR)
 	{
-		imageStore(paintingTexture, texelCoord, vec4(0, 0, 0, 0));
-	}
-	else if(applyPaint)
-	{
-		vec4 pColor = imageLoad(paintingTexture, texelCoord);
-		
-		imageStore(image, texelCoord, mix(imageLoad(image, texelCoord), pColor, pColor.a));	
+		imageStore(referenceTexture, texelCoord, imageLoad(image, texelCoord));	
 	}
 	else if(imageLoad(mask, texelCoord).xyz != vec3(0, 0, 0))
 	{
@@ -37,7 +30,7 @@ void main() {
 			
 			if(distance <= paintSize)
 			{
-				imageStore(paintingTexture, texelCoord, color);	
+				imageStore(image, texelCoord, mix(imageLoad(referenceTexture, texelCoord), vec4(color.rgb, 1), color.a));	
 			}
 		}
 	}

@@ -42,8 +42,8 @@ private:
 
 	int paintSize;
 
-	//used to store a single paint stroke
-	sf::Texture paintingTexture;
+	//used to store the texture before painting so transparency doesnt overlap
+	sf::Texture referenceTexture;
 
 	sf::Vector2i cursorPos;
 	sf::Vector2i lastCursorPos;
