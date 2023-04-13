@@ -59,7 +59,7 @@ void PaintTool::mousePressed(sf::Mouse::Button button)
 		paint();
 	}
 }
-
+	
 void PaintTool::mouseReleased(sf::Mouse::Button button)
 {
 	if (button == sf::Mouse::Button::Left)
