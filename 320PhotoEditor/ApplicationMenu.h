@@ -41,6 +41,8 @@ private:
 	ButtonElement* newTransparentButton;
 	ButtonElement* incrLightness;
 	ButtonElement* decrLightness;
+	ButtonElement* incrTransparency;
+	ButtonElement* decrTransparency;
 	ButtonElement* foregroundColor;
 	ButtonElement* backgroundColor;
 

@@ -5,7 +5,8 @@ ColorPickerElement::ColorPickerElement()
 	img = sf::Texture();
 	img.loadFromFile("../assets/color_picker.png");
 	sprite = new sf::Sprite(img);
-	lightness = 0.0;
+	lightness = 0.5;
+	transparency = 1.0;
 
 	savedPos = { 0, 1 };
 
@@ -87,9 +88,21 @@ float ColorPickerElement::getLightness()
 	return lightness;
 }
 
+void ColorPickerElement::setTransparency(float transparency)
+{
+	this->transparency = transparency;
+	calcColor();
+}
+
+float ColorPickerElement::getTransparency()
+{
+	return transparency;
+}
+
 void ColorPickerElement::calcColor()
 {
 	pickedColor = hsl2rgb(savedPos.x, savedPos.y, lightness);
+	pickedColor.a = transparency * 255;
 
 	updateFunc(this, 0);
 }

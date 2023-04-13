@@ -118,7 +118,7 @@ void PaintTool::paint()
 		paintCompute->setVec2("secondPos", (float)lastpaintPos.x, (float)lastpaintPos.y);
 
 		paintCompute->setFloat("paintSize", paintSize);
-		paintCompute->setVec3("color", paintColor.r / 255.0f, paintColor.g / 255.0f, paintColor.b / 255.0f);
+		paintCompute->setVec4("color", paintColor.r / 255.0f, paintColor.g / 255.0f, paintColor.b / 255.0f, paintColor.a / 255.0f);
 
 		sf::Vector2u layerSize = layer->getImage()->getSize();
 

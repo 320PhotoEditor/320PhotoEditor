@@ -50,6 +50,18 @@ ApplicationMenu::ApplicationMenu(sf::RenderWindow* renderWindow, LayerManager* l
 	decrLightness->setSize({ 0.25, 0.125 });
 	decrLightness->setPosition({ 0, 0.5 });
 
+	incrTransparency = new ButtonElement(incrupTexture, incrdownTexture, incroverTexture);
+	incrTransparency->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	colorContainer->addElement(incrTransparency);
+	incrTransparency->setSize({ 0.25, 0.125 });
+	incrTransparency->setPosition({ 0.75, 0.625 });
+
+	decrTransparency = new ButtonElement(decrupTexture, decrdownTexture, decroverTexture);
+	decrTransparency->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
+	colorContainer->addElement(decrTransparency);
+	decrTransparency->setSize({ 0.25, 0.125 });
+	decrTransparency->setPosition({ 0, 0.625 });
+
 	sf::Image whiteImage;
 	whiteImage.create(1, 1, sf::Color::White);
 
@@ -77,6 +89,7 @@ ApplicationMenu::ApplicationMenu(sf::RenderWindow* renderWindow, LayerManager* l
 	colorContainer->addElement(colorPicker);
 	colorPicker->setSize({ 1, 0.5 });
 	colorPicker->setPosition({ 0, 0 });
+	colorPicker->calcColor();
 }
 
 ApplicationMenu::~ApplicationMenu()
@@ -169,6 +182,14 @@ void ApplicationMenu::buttonPressed(GUIElement* button, int status)
 	else if (button == decrLightness)
 	{
 		colorPicker->setLightness(std::max(colorPicker->getLightness() - 0.05, 0.0));
+	}
+	else if (button == incrTransparency)
+	{
+		colorPicker->setTransparency(std::min(colorPicker->getTransparency() + 0.05, 1.0));
+	}
+	else if (button == decrTransparency)
+	{
+		colorPicker->setTransparency(std::max(colorPicker->getTransparency() - 0.05, 0.0));
 	}
 	else if (button == foregroundColor)
 	{
