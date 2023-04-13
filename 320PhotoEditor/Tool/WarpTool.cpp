@@ -124,7 +124,7 @@ void WarpTool::calculateTransformMatrx(sf::Vector2i originalControlPoints[4], sf
 		B[i + 4] = controlPoints[i].y;
 	}
 
-
+	//partial pivot
 	for (int i = 0; i < 8; i++)
 	{
 		int maxRow = i;
@@ -159,7 +159,7 @@ void WarpTool::calculateTransformMatrx(sf::Vector2i originalControlPoints[4], sf
 			B[j] -= factor * B[i];
 		}
 	}
-
+	//back substitution
 	for (int i = 8 - 1; i >= 0; i--)
 	{
 		x[i] = B[i];

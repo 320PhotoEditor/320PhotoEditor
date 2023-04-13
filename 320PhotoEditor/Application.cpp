@@ -12,7 +12,7 @@ Application::~Application()
 
 bool Application::init(std::string windowName)
 {
-    window = new sf::RenderWindow(sf::VideoMode(1280, 720), windowName);
+    window = new sf::RenderWindow(sf::VideoMode(1920, 1060), windowName);
 
     if (!window->isOpen())
     {
