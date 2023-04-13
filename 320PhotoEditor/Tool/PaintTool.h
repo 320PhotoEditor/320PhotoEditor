@@ -42,6 +42,9 @@ private:
 
 	int paintSize;
 
+	//used to store a single paint stroke
+	sf::Texture paintingTexture;
+
 	sf::Vector2i cursorPos;
 	sf::Vector2i lastCursorPos;
 

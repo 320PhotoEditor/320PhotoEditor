@@ -18,7 +18,7 @@ void PaintTool::init()
 	sf::Texture* decrupTexture = AssetManager::getInstance().getTexture("../assets/decr_button_up.png");
 	sf::Texture* decrdownTexture = AssetManager::getInstance().getTexture("../assets/decr_button_down.png");
 	sf::Texture* decroverTexture = AssetManager::getInstance().getTexture("../assets/decr_button_over.png");
-
+	
 	incrSizeButton = new ButtonElement(incrupTexture, incrdownTexture, incroverTexture);
 	incrSizeButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
 	container->addElement(incrSizeButton);
@@ -35,6 +35,7 @@ void PaintTool::init()
 void PaintTool::start(Layer* layer)
 {
 	this->layer = layer;
+	paintingTexture.create(layer->getImage()->getSize().x, layer->getImage()->getSize().y);
 }
 
 void PaintTool::stop()
@@ -46,6 +47,14 @@ void PaintTool::mousePressed(sf::Mouse::Button button)
 {
 	if (button == sf::Mouse::Button::Left)
 	{
+		ComputeShader::bindTexture(layer->getSprite()->getTexture()->getNativeHandle(), 0);
+		ComputeShader::bindTexture(layer->getMaskTexture()->getNativeHandle(), 1);
+		ComputeShader::bindTexture(paintingTexture.getNativeHandle(), 2);
+		sf::Vector2u layerSize = layer->getImage()->getSize();
+		paintCompute->setBool("applyPaint", false);
+		paintCompute->setBool("preparePT", true);
+		paintCompute->compute(layerSize.x / 10.0f, layerSize.y / 10.0f, 1);
+
 		isPainting = true;
 		lastCursorPos = cursorPos;
 		paint();
@@ -55,7 +64,19 @@ void PaintTool::mousePressed(sf::Mouse::Button button)
 void PaintTool::mouseReleased(sf::Mouse::Button button)
 {
 	if (button == sf::Mouse::Button::Left)
-		isPainting = false;
+		if (isPainting)
+		{
+			ComputeShader::bindTexture(layer->getSprite()->getTexture()->getNativeHandle(), 0);
+			ComputeShader::bindTexture(layer->getMaskTexture()->getNativeHandle(), 1);
+			ComputeShader::bindTexture(paintingTexture.getNativeHandle(), 2);
+			paintCompute->use();
+			sf::Vector2u layerSize = layer->getImage()->getSize();
+			paintCompute->setBool("applyPaint", true);
+			paintCompute->setBool("preparePT", false);
+			paintCompute->compute(layerSize.x / 10.0f, layerSize.y / 10.0f, 1);
+
+			isPainting = false;
+		}
 }
 
 void PaintTool::mouseMoved(sf::Vector2i pos)
@@ -111,13 +132,15 @@ void PaintTool::paint()
 
 		ComputeShader::bindTexture(layer->getSprite()->getTexture()->getNativeHandle(), 0);
 		ComputeShader::bindTexture(layer->getMaskTexture()->getNativeHandle(), 1);
+		ComputeShader::bindTexture(paintingTexture.getNativeHandle(), 2);
 		paintCompute->use();
 		sf::Vector2i paintPos = layer->cursorToPixel(cursorPos);
 		sf::Vector2i lastpaintPos = layer->cursorToPixel(lastCursorPos);
 		paintCompute->setVec2("firstPos", (float)paintPos.x, (float)paintPos.y);
 		paintCompute->setVec2("secondPos", (float)lastpaintPos.x, (float)lastpaintPos.y);
-
 		paintCompute->setFloat("paintSize", paintSize);
+		paintCompute->setBool("applyPaint", false);
+		paintCompute->setBool("preparePT", false);
 		paintCompute->setVec4("color", paintColor.r / 255.0f, paintColor.g / 255.0f, paintColor.b / 255.0f, paintColor.a / 255.0f);
 
 		sf::Vector2u layerSize = layer->getImage()->getSize();
