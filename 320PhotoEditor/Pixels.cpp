@@ -6,9 +6,10 @@ void Pixels::initVar()
 	// Want pixels to have a slower top speed than the player
 	this->moveSpeed = 9.f;
 
-	float xvel = static_cast <float> (rand() % 19 + (-9));
-	float yvel = static_cast <float> (rand() % 19 + (-9));
+	float xvel = static_cast <float> (rand() % 3 + (-2));
+	float yvel = static_cast <float> (rand() % 3 + (-2));
 	this->velocity = sf::Vector2f(xvel,yvel);
+	//this->velocity = sf::Vector2f(0, 0);
 
 	// Set position based on window size and shape size, probably don't want to hardcode screen size in the future
 	float x = static_cast <float> (rand() % 1281 - this->shape.getGlobalBounds().width);

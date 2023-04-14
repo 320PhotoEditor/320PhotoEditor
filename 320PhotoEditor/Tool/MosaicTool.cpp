@@ -12,11 +12,7 @@ void MosaicTool::init()
 
 void MosaicTool::start(Layer* layer)
 {
-    srand(static_cast<unsigned>(time(0)));
-
     game pixelEater;
-
-
    
     //Game loop
     while (pixelEater.running())

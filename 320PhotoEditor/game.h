@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "Pixels.h"
 #include <vector>
+#include <limits>
+#include <numeric>
 
 class game
 {
