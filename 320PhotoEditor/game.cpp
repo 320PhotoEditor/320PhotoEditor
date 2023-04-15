@@ -108,106 +108,56 @@ void game::playerPixelColl()
 	// For each pixel that exists
 	for (size_t i = 0; i < this->Pixel.size(); i++)
 	{
+		////
+		// TO DO: Re-implement my broad phase sweeping, probably ought to check in the direction each object is moving
+		//		  so maybe offset AABBs positions with the velocity vector which should give an image of where the object
+		//		  will be in the next frame. This may lead to performance issues but I probably won't have tim to implement
+		//		  anything fancier like a quadtree.
+		////
+		/*
 		float playerSize = this->player.getCurrShape().getSize().x;
 		sf::Vector2f playerVel = this->player.velocity;
 		sf::Vector2f playerPos = this->player.getCurrShape().getPosition();
-		sf::RectangleShape playerAABB = sf::RectangleShape(sf::Vector2f(playerSize + abs(playerVel.x), playerSize + abs(playerVel.y)));
-		playerAABB.setPosition(sf::Vector2f(playerPos.x - abs(playerVel.x / 2), playerPos.y - abs(playerVel.y / 2)));
+		sf::RectangleShape playerAABB = sf::RectangleShape(sf::Vector2f(playerSize + abs(playerVel.x) + 10, playerSize + abs(playerVel.y) + 10));
+		playerAABB.setPosition(sf::Vector2f(playerPos.x - ((abs(playerVel.x) + 10) / 2), playerPos.y - ((abs(playerVel.y) + 10) / 2)));
 		
 		float pixelSize = this->Pixel[i].getCurrShape().getSize().x;
 		sf::Vector2f pixelVel = this->Pixel[i].velocity;
 		sf::Vector2f pixelPos = this->Pixel[i].getCurrShape().getPosition();
-		sf::RectangleShape pixelAABB = sf::RectangleShape(sf::Vector2f(pixelSize + abs(pixelVel.x), pixelSize + abs(pixelVel.y)));
-		pixelAABB.setPosition(sf::Vector2f(pixelPos.x - abs(pixelVel.x / 2), pixelPos.y - abs(pixelVel.y / 2)));
+		sf::RectangleShape pixelAABB = sf::RectangleShape(sf::Vector2f(pixelSize + abs(pixelVel.x) + 10, pixelSize + abs(pixelVel.y) +10 ));
+		pixelAABB.setPosition(sf::Vector2f(pixelPos.x - ((abs(pixelVel.x) + 10) / 2), pixelPos.y - ((abs(pixelVel.y) + 10) / 2)));
+		*/
 
+		//if (playerAABB.getGlobalBounds().intersects(pixelAABB.getGlobalBounds()))
+		//{
+			sf::FloatRect playerAABB = this->player.getCurrShape().getGlobalBounds();
+			sf::FloatRect pixelAABB = Pixel[i].getCurrShape().getGlobalBounds();
+			sf::FloatRect minkowskiAABB = sf::FloatRect(playerAABB.left - (pixelAABB.left + pixelAABB.width),
+				playerAABB.top - (pixelAABB.top + pixelAABB.height),
+				playerAABB.width + pixelAABB.width,
+				playerAABB.height + pixelAABB.height);
 
-		// Check if player is colliding with any of the pixels
-		// TO DO: Fix clipping issue
-		// TO DO: Fix odd angles of deflection
-		//if (this->player.getCurrShape().getGlobalBounds().intersects(this->Pixel[i].getCurrShape().getGlobalBounds()))
-		if (playerAABB.getGlobalBounds().intersects(pixelAABB.getGlobalBounds()))
-		{
-			std::cout << "broad sweep true\n";
-			float xEntry, yEntry;
-			float xExit, yExit;
-
-			// find the distance between the objects on the near and far sides for both x and y 
-			if (this->player.velocity.x - Pixel[i].velocity.x > 0.0f)
-			{
-				xEntry = Pixel[i].getCurrShape().getPosition().x - 
-					(this->player.getCurrShape().getSize().x + this->player.getCurrShape().getGlobalBounds().width);
-				xExit = (Pixel[i].getCurrShape().getPosition().x + Pixel[i].getCurrShape().getGlobalBounds().width) -
-					this->player.getCurrShape().getSize().x;
+			// If the minkowskiAABB contains the origin (0,0) then player is inside pixel.
+			if (minkowskiAABB.top <= 0 &&
+				minkowskiAABB.top + minkowskiAABB.height > 0 &&
+				minkowskiAABB.left <= 0 &&
+				minkowskiAABB.left + minkowskiAABB.width > 0)
+			{	// TO DO: if pixel and player ever intersect set new player position, and reduce both velocities to zero
+				this->player.velocity.x = this->player.velocity.x * -1;
+				this->player.velocity.y = this->player.velocity.y * -1;
 			}
 			else
 			{
-				xEntry = (Pixel[i].getCurrShape().getPosition().x + Pixel[i].getCurrShape().getGlobalBounds().width) -
-					this->player.getCurrShape().getSize().x;
-				xExit = Pixel[i].getCurrShape().getPosition().x -
-					(this->player.getCurrShape().getSize().x + this->player.getCurrShape().getGlobalBounds().width);
+				////
+				// TO DO: Create relative velocity vector player.v - pixel[i].v
+				//		  Check if vector intersects any of the four sides of the MinkowskiAABB.
+				//		  If more than one intersection use the first.
+				//		  Scale the player and pixel velocity with relative.v penetration/relative.v total length?
+				//		  Call bounce functions on player and pixel based on original velocities
+				////
 			}
 
-			if (this->player.velocity.y - Pixel[i].velocity.y > 0.0f)
-			{
-				yEntry = Pixel[i].getCurrShape().getPosition().y -
-					(this->player.getCurrShape().getSize().y + this->player.getCurrShape().getGlobalBounds().height);
-				yExit = (Pixel[i].getCurrShape().getPosition().y + Pixel[i].getCurrShape().getGlobalBounds().height) -
-					this->player.getCurrShape().getSize().y;
-			}
-			else
-			{
-				yEntry = (Pixel[i].getCurrShape().getPosition().y + Pixel[i].getCurrShape().getGlobalBounds().height) -
-					this->player.getCurrShape().getSize().y;
-				yExit = Pixel[i].getCurrShape().getPosition().y -
-					(this->player.getCurrShape().getSize().y + this->player.getCurrShape().getGlobalBounds().height);
-			}
-
-			//std::cout << this->player.getCurrShape().getPosition().x << "x," << this->player.getCurrShape().getPosition().y << "y\n";
-			//std::cout << xEntry << "," << yEntry << "\n";
-
-			// find time of collision and time of leaving for each axis (if statement is to prevent divide by zero) 
-			float xEntryTime, yEntryTime;
-			float xExitTime, yExitTime;
-
-			if (this->player.velocity.x - Pixel[i].velocity.x == 0.0f)
-			{
-				xEntryTime = -std::numeric_limits<float>::infinity();
-				xExitTime = std::numeric_limits<float>::infinity();
-			}
-			else
-			{
-				xEntryTime = xEntry / this->player.velocity.x - Pixel[i].velocity.x;
-				xExitTime = xExit / this->player.velocity.x - Pixel[i].velocity.x;
-			}
-
-			if (this->player.velocity.y - Pixel[i].velocity.y == 0.0f)
-			{
-				yEntryTime = -std::numeric_limits<float>::infinity();
-				yExitTime = std::numeric_limits<float>::infinity();
-			}
-			else
-			{
-				yEntryTime = yEntry / this->player.velocity.y - Pixel[i].velocity.y;
-				yExitTime = yExit / this->player.velocity.y - Pixel[i].velocity.y;
-			}
-
-			// find the earliest/latest times of collisionfloat 
-			float entryTime = std::max(xEntryTime, yEntryTime);
-			float exitTime = std::min(xExitTime, yExitTime);
-
-			//std::cout << entryTime << "," << exitTime << "\n";
-			
-			// if there was no collision
-			if (entryTime > exitTime || (xEntryTime < 0.0f && yEntryTime < 0.0f) || xEntryTime > 1.0f || yEntryTime > 1.0f)
-			{
-				std::cout << "no collision\n";
-				break;
-				//normalx = 0.0f;
-				//normaly = 0.0f;
-				//return 1.0f;
-			}
-			else //collision
-			{
+			/*
 				//Player will be the A
 				sf::Vector2f playerPos = this->player.getCurrShape().getPosition();
 				// Pixel will be the B
@@ -288,7 +238,7 @@ void game::playerPixelColl()
 					//this->player.getCurrShape().getSize(),
 					//this->Pixel[i].getCurrShape().getSize()
 				);
-			}
-		}
+				*/
+			//}
 	}
 }
