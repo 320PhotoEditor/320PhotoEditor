@@ -7,7 +7,7 @@ void game::initVar()
 	this->spawnTimeMax = 10.f;
 	this->spawnTimer = this->spawnTimeMax;
 	this->maxPixels = 8;
-	this->restitutionCo = 0.25f;
+	this->restitutionCo = 0.f;
 }
 
 void game::initWin()
@@ -118,14 +118,14 @@ void game::playerPixelColl()
 		float playerSize = this->player.getCurrShape().getSize().x;
 		sf::Vector2f playerVel = this->player.velocity;
 		sf::Vector2f playerPos = this->player.getCurrShape().getPosition();
-		sf::RectangleShape playerAABB = sf::RectangleShape(sf::Vector2f(playerSize + abs(playerVel.x) + 10, playerSize + abs(playerVel.y) + 10));
-		playerAABB.setPosition(sf::Vector2f(playerPos.x - ((abs(playerVel.x) + 10) / 2), playerPos.y - ((abs(playerVel.y) + 10) / 2)));
+		sf::RectangleShape playerAABB = sf::RectangleShape(sf::Vector2f(playerSize + 10, playerSize + 10 ));
+		playerAABB.setPosition(sf::Vector2f(playerPos.x + playerVel.x, playerPos.y + playerVel.y));
 
 		float pixelSize = this->Pixel[i].getCurrShape().getSize().x;
 		sf::Vector2f pixelVel = this->Pixel[i].velocity;
 		sf::Vector2f pixelPos = this->Pixel[i].getCurrShape().getPosition();
-		sf::RectangleShape pixelAABB = sf::RectangleShape(sf::Vector2f(pixelSize + abs(pixelVel.x) + 10, pixelSize + abs(pixelVel.y) + 10));
-		pixelAABB.setPosition(sf::Vector2f(pixelPos.x - ((abs(pixelVel.x) + 10) / 2), pixelPos.y - ((abs(pixelVel.y) + 10) / 2)));
+		sf::RectangleShape pixelAABB = sf::RectangleShape(sf::Vector2f(pixelSize + 10, pixelSize + 10 ));
+		pixelAABB.setPosition(sf::Vector2f(pixelPos.x + pixelVel.x, pixelPos.y + pixelVel.y ));
 
 
 		if (playerAABB.getGlobalBounds().intersects(pixelAABB.getGlobalBounds()))
@@ -179,13 +179,6 @@ void game::playerPixelColl()
 			}
 			else
 			{
-				////
-				// TO DO: Create relative velocity vector player.v - pixel[i].v
-				//		  Check if vector intersects any of the four sides of the MinkowskiAABB.
-				//		  If more than one intersection use the first.
-				//		  Scale the player and pixel velocity with relative.v penetration/relative.v total length?
-				//		  Call bounce functions on player and pixel based on original velocities
-				////
 
 				//sf::Vector2f relativeVel = this->player.velocity - Pixel[i].velocity;
 				sf::Vector2f relativeVel = Pixel[i].velocity - this->player.velocity;
@@ -228,8 +221,6 @@ void game::playerPixelColl()
 				}
 
 
-
-
 				sf::Vector2f side2 = sf::Vector2f(minkowskiAABB.left + minkowskiAABB.width, minkowskiAABB.top + minkowskiAABB.height) -
 					sf::Vector2f(minkowskiAABB.left, minkowskiAABB.top + minkowskiAABB.height);
 
@@ -269,9 +260,6 @@ void game::playerPixelColl()
 				}
 
 
-
-
-
 				sf::Vector2f side3 = sf::Vector2f(minkowskiAABB.left + minkowskiAABB.width, minkowskiAABB.top) -
 					sf::Vector2f(minkowskiAABB.left + minkowskiAABB.width, minkowskiAABB.top + minkowskiAABB.height);
 
@@ -304,7 +292,7 @@ void game::playerPixelColl()
 
 				if (t3 >= 0 && t3 <= 1 && u3 >= 0 && u3 <= 1)
 				{
-					// Let t2 stand
+					// Let t3 stand
 				}
 				else
 				{
@@ -358,32 +346,6 @@ void game::playerPixelColl()
 
 				if (t < INFINITY)
 				{
-					sf::Vector2f playerOrigVel = this->player.velocity;
-					sf::Vector2f pixelOrigVel = Pixel[i].velocity;
-
-
-					this->player.velocity = this->player.velocity * (t);
-					Pixel[i].velocity = Pixel[i].velocity * (t);
-
-					
-					//Player will be the A
-					sf::Vector2f playerPos = this->player.getCurrShape().getPosition();
-					// Pixel will be the B
-					sf::Vector2f pixelPos = this->Pixel[i].getCurrShape().getPosition();
-					// Probably doesn't make a difference, but wanted the centersVector to be based on the actual centers of the objects
-					sf::Vector2f playerActualCen = sf::Vector2f(playerPos.x + (this->player.getCurrShape().getGlobalBounds().width / 2.f),
-						playerPos.y + (this->player.getCurrShape().getGlobalBounds().height / 2.f));
-					sf::Vector2f pixelActualCen = sf::Vector2f(pixelPos.x + (this->Pixel[i].getCurrShape().getGlobalBounds().width / 2.f),
-						pixelPos.y + (this->Pixel[i].getCurrShape().getGlobalBounds().height / 2.f));
-					sf::Vector2f interimCenter = (pixelActualCen - playerActualCen);
-					// centersVector is the n for the impulse equation
-					sf::Vector2f centersVector = interimCenter / sqrt(abs(interimCenter.x * interimCenter.x)
-						+ abs(interimCenter.y + interimCenter.y));
-
-					//Impulse J = -(1 + e) * (VA · n - VB · n) / (1 / massA + 1 / massB)
-					sf::Vector2f impulse = -(1 + this->restitutionCo) * ((playerOrigVel * centersVector) - (pixelOrigVel
-						* centersVector)) / ((1 / this->player.getCurrShape().getSize().x) + (1 / this->Pixel[i].getCurrShape().getSize().x));
-
 					// If pixel is less than half the size of player it gets eaten
 					if (this->Pixel[i].getCurrShape().getSize().x <= (this->player.getCurrShape().getSize().x / 2.f))
 					{
@@ -394,6 +356,54 @@ void game::playerPixelColl()
 						// break
 						break;
 					}
+
+					sf::Vector2f playerOrigVel = this->player.velocity;
+					sf::Vector2f pixelOrigVel = Pixel[i].velocity;
+
+
+					this->player.velocity = this->player.velocity * (t);
+					Pixel[i].velocity = Pixel[i].velocity * (t);
+
+					
+					//Player will be the A
+					sf::Vector2f playerPos = this->player.getCurrShape().getPosition();
+
+					// Pixel will be the B
+					sf::Vector2f pixelPos = this->Pixel[i].getCurrShape().getPosition();
+
+					// Probably doesn't make a difference, but wanted the centersVector to be based on the actual centers of the objects
+					sf::Vector2f playerActualCen = sf::Vector2f(playerPos.x + (this->player.getCurrShape().getGlobalBounds().width / 2.f),
+						playerPos.y + (this->player.getCurrShape().getGlobalBounds().height / 2.f));
+
+					sf::Vector2f pixelActualCen = sf::Vector2f(pixelPos.x + (this->Pixel[i].getCurrShape().getGlobalBounds().width / 2.f),
+						pixelPos.y + (this->Pixel[i].getCurrShape().getGlobalBounds().height / 2.f));
+
+					sf::Vector2f interimCenter = (pixelActualCen - playerActualCen);
+
+					// centersVector is the n for the impulse equation
+					sf::Vector2f centersVector = interimCenter / sqrt(abs(interimCenter.x * interimCenter.x)
+						+ abs(interimCenter.y + interimCenter.y));
+
+
+					/*
+					//Impulse J = -(1 + e) * (VA · n - VB · n) / (1 / massA + 1 / massB)
+					sf::Vector2f impulse = -(1 + this->restitutionCo) * ((playerOrigVel * centersVector) - (pixelOrigVel
+						* centersVector)) / ((1 / this->player.getCurrShape().getSize().x) + (1 / this->Pixel[i].getCurrShape().getSize().x));
+					*/
+					
+
+					float playerNewxVel = (playerOrigVel.x * (playerSize - pixelSize) + (2 * pixelSize * pixelOrigVel.x))
+						/ (playerSize + pixelSize);
+					float playerNewyVel = (playerOrigVel.y * (playerSize - pixelSize) + (2 * pixelSize * pixelOrigVel.y))
+						/ (playerSize + pixelSize);
+					float pixelNewxVel = (pixelOrigVel.x * (pixelSize - playerSize) + (2 * playerSize * playerOrigVel.x))
+						/ (playerSize + pixelSize);
+					float pixelNewyVel = (pixelOrigVel.y * (pixelSize - playerSize) + (2 * playerSize * playerOrigVel.y))
+						/ (playerSize + pixelSize);
+					
+					this->player.velocity = sf::Vector2f(playerNewxVel, playerNewyVel);
+
+					Pixel[i].velocity = sf::Vector2f(pixelNewxVel, pixelNewyVel);
 
 					// If pixel is smaller than player, pixel loses mass, player does not
 					if (this->Pixel[i].getCurrShape().getSize().x < (this->player.getCurrShape().getSize().x))
@@ -422,6 +432,7 @@ void game::playerPixelColl()
 						//this->player.loseMass();
 					}
 
+					/*
 					//If player hits a pixel block, pixel gets some fraction of players velocity
 					this->Pixel[i].bounceOffPLayer(
 						// VB' = VB + J / massB
@@ -446,95 +457,9 @@ void game::playerPixelColl()
 						//this->player.getCurrShape().getSize(),
 						//this->Pixel[i].getCurrShape().getSize()
 					);
-					
+					*/
 				}
 			}
-
-
-
-			/*
-				//Player will be the A
-				sf::Vector2f playerPos = this->player.getCurrShape().getPosition();
-				// Pixel will be the B
-				sf::Vector2f pixelPos = this->Pixel[i].getCurrShape().getPosition();
-				// Probably doesn't make a difference, but wanted the centersVector to be based on the actual centers of the objects
-				sf::Vector2f playerActualCen = sf::Vector2f(playerPos.x + (this->player.getCurrShape().getGlobalBounds().width/2.f),
-					playerPos.y + (this->player.getCurrShape().getGlobalBounds().height/2.f));
-				sf::Vector2f pixelActualCen = sf::Vector2f(pixelPos.x + (this->Pixel[i].getCurrShape().getGlobalBounds().width / 2.f),
-					pixelPos.y + (this->Pixel[i].getCurrShape().getGlobalBounds().height/2.f));
-				sf::Vector2f interimCenter = (pixelActualCen - playerActualCen);
-				// centersVector is the n for the impulse equation
-				sf::Vector2f centersVector = interimCenter / sqrt(abs(interimCenter.x * interimCenter.x)
-					+ abs(interimCenter.y + interimCenter.y));
-
-				//Impulse J = -(1 + e) * (VA · n - VB · n) / (1 / massA + 1 / massB)
-				sf::Vector2f impulse = -(1 + this->restitutionCo) * ((this->player.velocity * centersVector) - (this->Pixel[i].velocity
-					* centersVector)) / ((1 / this->player.getCurrShape().getSize().x) + (1 / this->Pixel[i].getCurrShape().getSize().x));
-
-				// If pixel is less than half the size of player it gets eaten
-				if (this->Pixel[i].getCurrShape().getSize().x <= (this->player.getCurrShape().getSize().x / 2.f))
-				{
-					// Delete pixel object
-					this->Pixel.erase(this->Pixel.begin() + i);
-					// Make a call to eat
-					this->player.eatPixel();
-					// break
-					break;
-				}
-
-				// If pixel is smaller than player, pixel loses mass, player does not
-				if (this->Pixel[i].getCurrShape().getSize().x < (this->player.getCurrShape().getSize().x))
-				{
-					// Spawns pixel off of pixel involved in collision
-					this->Pixel.push_back(Pixels(pixelActualCen, this->player.velocity));
-					this->Pixel[i].loseMass();
-				}
-
-				// If pixel is less than twice the size of the player both lose mass
-				if ((this->Pixel[i].getCurrShape().getSize().x < this->player.getCurrShape().getSize().x * 2.f) &&
-					(this->Pixel[i].getCurrShape().getSize().x >= this->player.getCurrShape().getSize().x))
-				{
-					this->Pixel.push_back(Pixels(pixelActualCen, this->player.velocity));
-					this->Pixel[i].loseMass();
-					//Don't spawn pixel in player!
-					//this->Pixel.push_back(Pixels(playerActualCen, this->Pixel[i].velocity));
-					this->player.loseMass();
-				}
-
-				// If pixel is twice as large or larger than player loses mass
-				if (this->Pixel[i].getCurrShape().getSize().x > (this->player.getCurrShape().getSize().x * 2.f))
-				{
-					//Spawning a pixel inside the player is a bad idea
-					//this->Pixel.push_back(Pixels(playerActualCen, this->Pixel[i].velocity));
-					this->player.loseMass();
-				}
-
-				//If player hits a pixel block, pixel gets some fraction of players velocity
-				this->Pixel[i].bounceOffPLayer(
-					// VB' = VB + J / massB
-					this->Pixel[i].velocity,
-					impulse,
-					this->Pixel[i].getCurrShape().getSize()
-
-					// Part of the old method that wasn't working very well
-					//this->player.velocity,
-					//this->player.getCurrShape().getSize(),
-					//this->Pixel[i].getCurrShape().getSize()
-				);
-
-				this->player.bounceOffPixel(
-					// VA' = VA - J / massA
-					this->player.velocity,
-					impulse,
-					this->player.getCurrShape().getSize()
-
-					// OLD
-					//this->Pixel[i].velocity,
-					//this->player.getCurrShape().getSize(),
-					//this->Pixel[i].getCurrShape().getSize()
-				);
-				*/
-				//}
 		}
 	}
 }
