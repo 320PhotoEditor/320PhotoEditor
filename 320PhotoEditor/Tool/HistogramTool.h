@@ -26,6 +26,8 @@ private:
     Layer* layer;
     ButtonElement* bwButton;
     ButtonElement* eqButton;
+    ButtonElement* incButton;
+    ButtonElement* decButton;
     sf::Image* histImage;
     float arrays[256] = {};
 };

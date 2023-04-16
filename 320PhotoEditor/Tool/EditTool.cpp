@@ -114,11 +114,11 @@ void EditTool::buttonPressed(GUIElement* button, int status)
     }
 
     float hueNum = hslNum[0]*360.0f;
-    float hueMin = hueNum - 25.0f;
-    float hueMax = hueNum + 25.0f;
+    float hueMin = hueNum - 30.0f;
+    float hueMax = hueNum + 30.0f;
 
-    float remainderSmall = 25.0f - hueNum;
-    float remainderLarge = 25.0f - (360.0f - hueNum);
+    float remainderSmall = 20.0f - hueNum;
+    float remainderLarge = 20.0f - (360.0f - hueNum);
 
     if (remainderSmall > 0.0f)
     {
@@ -233,6 +233,7 @@ void EditTool::buttonPressed(GUIElement* button, int status)
             }
 
             layer->getImage()->setPixel(a, b, hsl2rgb(hue / 360.0f, sat / 100.0f, lum / 100.0f));
+            delete hsl;
         }
     }
 

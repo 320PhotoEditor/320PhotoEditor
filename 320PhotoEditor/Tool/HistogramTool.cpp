@@ -67,21 +67,26 @@ void HistogramTool::buttonPressed(GUIElement* button, int status)
             arrays[i] = 0;
         }
 
+        // iterate over the image and check each pixel
         for (a = 0; a < layer->getImage()->getSize().x; a++) {
             for (b = 0; b < layer->getImage()->getSize().y; b++) {
                 sf::Color color2 = layer->getImage()->getPixel(a, b);
-                int grayscale = ((color2.r * 0.3) + (color2.g * 0.59) + (color2.b * 0.11));
-                arrays[grayscale] += 1;
+                int intensity = (int)((color2.r * 0.2126) + (color2.g * 0.7152) + (color2.b * 0.0722));
 
-                if (arrays[grayscale] > max_element)
+                // keep track of how many times this "intensity" occurs
+                arrays[intensity] += 1;
+
+                // keep track of the biggest element
+                if (arrays[intensity] > max_element)
                 {
-                    max_element = arrays[grayscale];
+                    max_element = arrays[intensity];
                 }
             }
         }
 
         float scale_factor = 256 / max_element;
 
+        // create histogram
         for (int i = 0; i < 256; i++)
         {
             for (int j = 0; j < 256; j++)
@@ -99,23 +104,25 @@ void HistogramTool::buttonPressed(GUIElement* button, int status)
         }
 
         applicationMenu->histTexture->loadFromImage(*histImage);
-
     }
 
     if (button == eqButton)
     {
-        float * cdf = normalCDF(normalPDF(arrays));
+        float *cdf = normalCDF(normalPDF(arrays));
 
         int a,b;
         for (a = 0; a < layer->getImage()->getSize().x; a++)
         {
             for (b = 0; b < layer->getImage()->getSize().y; b++)
             {
+                // get pixel
                 sf::Color color = layer->getImage()->getPixel(a, b);
                 float *hsl = rgb2hsl(color);
 
-                float l = cdf[(int) (hsl[2] * 255.0f)];
+                // look through cdf array for "optimized" luminance
+                float l = cdf[(int) (hsl[2]* 255.0f)];
 
+                // change luminance of pixel
                 layer->getImage()->setPixel(a, b, hsl2rgb(hsl[0], hsl[1], l));
             }
         }
@@ -129,7 +136,7 @@ void HistogramTool::convertBW(sf::Image image)
 
 }
 
-float *HistogramTool::normalCDF(float *value)
+float* HistogramTool::normalCDF(float* value)
 {
     float sum = 0;
 
@@ -139,19 +146,15 @@ float *HistogramTool::normalCDF(float *value)
         value[i] = sum;
     }
 
-    // normalizing
-    for (int i = 0; i < 256; i++)
-    {
-        value[i] = ((value[i] - value[0]) / (value[255] - value[0]));
-    }
-
     return value;
 }
 
-float* HistogramTool::normalPDF(float *value)
+// takes in an array full of "intensities" and returns a pointer to array containing probabilities of intensity occurring
+float* HistogramTool::normalPDF(float* value)
 {
     float *array = new float [256];
 
+    // array that shows probability of that pixels intensity
     for (int i = 0; i < 256; i++)
     {
         array[i] = (value[i] / (layer->getImage()->getSize().x * layer->getImage()->getSize().y));
