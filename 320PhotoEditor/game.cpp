@@ -108,12 +108,10 @@ void game::playerPixelColl()
 	// For each pixel that exists
 	for (size_t i = 0; i < this->Pixel.size(); i++)
 	{
-		////
-		// TO DO: Re-implement my broad phase sweeping, probably ought to check in the direction each object is moving
-		//		  so maybe offset AABBs positions with the velocity vector which should give an image of where the object
-		//		  will be in the next frame. This may lead to performance issues but I probably won't have tim to implement
-		//		  anything fancier like a quadtree.
-		////
+		// This basic broad phase sweep needs a sort component added to it.
+		// Right now it does not handle collisions according to precedent so
+		// under certain circumstnces clipping can still happen, although the
+		// player will no longer get stuck.
 
 		float playerSize = this->player.getCurrShape().getSize().x;
 		sf::Vector2f playerVel = this->player.velocity;
@@ -153,8 +151,8 @@ void game::playerPixelColl()
 				float pixelWidth = Pixel[i].getCurrShape().getSize().x;
 				float pixelHeight = Pixel[i].getCurrShape().getSize().y;
 
-				// If pixel and player ever intersect set new pixel position, and reverse pixel velocity.
-				// Should really only happen when pixels spawn in.
+				// If pixel and player ever intersect set new pixel position, and set pixel velocity
+				// away from player. Should really only happen when pixels spawn in.
 				if (playerPosx < (pixelPosx + (pixelWidth / 2)))
 				{
 					Pixel[i].getCurrShape().setPosition(sf::Vector2f((pixelPosx - playerPosx) + pixelPosx, pixelPosy));
@@ -197,17 +195,21 @@ void game::playerPixelColl()
 				{
 					// Side being considered is co-linear with relative velocity vector,
 					// this occurence should be extremely extremely rare so I am not dealing with 
-					// it right now.
+					// it right now. If they overlap it should be treated as a collision.
 					t1 = INFINITY;
 				}
 				else if (denominator1 == 0)
 				{
-					// Lines are parallel
+					// The cross product of parallel lines is zero so the relative velocity vector 
+					// and side being considered cannot intersect
 					t1 = INFINITY;
 				}
 				else
 				{
 					u1 = numerator1 / denominator1;
+					// This gives us the intersection point which when used as the vector end point from
+					// the origin is co-linear with the relative velocity vector and thus gives us the fraction
+					// of the velocity needed for the objects to just touch.
 					t1 = (minkowskiAABB.left * side1.y - minkowskiAABB.top * side1.x) / denominator1;
 				}
 
@@ -272,9 +274,6 @@ void game::playerPixelColl()
 
 				if (numerator3 == 0 && denominator3 == 0)
 				{
-					// Side being considered is co-linear with relative velocity vector,
-					// this occurence should be extremely extremely rare so I am not dealing with 
-					// it right now.
 					t3 = INFINITY;
 				}
 				else if (denominator3 == 0)
@@ -299,9 +298,6 @@ void game::playerPixelColl()
 					t3 = INFINITY;
 				}
 
-
-
-
 				sf::Vector2f side4 = sf::Vector2f(minkowskiAABB.left, minkowskiAABB.top) -
 					sf::Vector2f(minkowskiAABB.left + minkowskiAABB.width, minkowskiAABB.top);
 
@@ -314,9 +310,6 @@ void game::playerPixelColl()
 
 				if (numerator4 == 0 && denominator4 == 0)
 				{
-					// Side being considered is co-linear with relative velocity vector,
-					// this occurence should be extremely extremely rare so I am not dealing with 
-					// it right now.
 					t4 = INFINITY;
 				}
 				else if (denominator4 == 0)
@@ -360,11 +353,14 @@ void game::playerPixelColl()
 					sf::Vector2f playerOrigVel = this->player.velocity;
 					sf::Vector2f pixelOrigVel = Pixel[i].velocity;
 
-
+					// Multiply both velocities by fraction of velocity needed for them to just touch.
 					this->player.velocity = this->player.velocity * (t);
 					Pixel[i].velocity = Pixel[i].velocity * (t);
 
-					
+					/*
+					* Original collision response, this impulse function couldn't handle collisions coming
+					* from the top or left. I suspect it is because the axis need to be seperated.
+					* 
 					//Player will be the A
 					sf::Vector2f playerPos = this->player.getCurrShape().getPosition();
 
@@ -384,14 +380,13 @@ void game::playerPixelColl()
 					sf::Vector2f centersVector = interimCenter / sqrt(abs(interimCenter.x * interimCenter.x)
 						+ abs(interimCenter.y + interimCenter.y));
 
-
-					/*
 					//Impulse J = -(1 + e) * (VA · n - VB · n) / (1 / massA + 1 / massB)
 					sf::Vector2f impulse = -(1 + this->restitutionCo) * ((playerOrigVel * centersVector) - (pixelOrigVel
-						* centersVector)) / ((1 / this->player.getCurrShape().getSize().x) + (1 / this->Pixel[i].getCurrShape().getSize().x));
+						* centersVector)) / ((1 / playerSize) + (1 / pixelSize));
 					*/
 					
-
+					// Further simplified collision response. Collisions are now treated as totally inelastic and axis are
+					// dealt with independently.
 					float playerNewxVel = (playerOrigVel.x * (playerSize - pixelSize) + (2 * pixelSize * pixelOrigVel.x))
 						/ (playerSize + pixelSize);
 					float playerNewyVel = (playerOrigVel.y * (playerSize - pixelSize) + (2 * pixelSize * pixelOrigVel.y))
@@ -409,7 +404,7 @@ void game::playerPixelColl()
 					if (this->Pixel[i].getCurrShape().getSize().x < (this->player.getCurrShape().getSize().x))
 					{
 						// Spawns pixel off of pixel involved in collision
-						this->Pixel.push_back(Pixels(pixelActualCen, playerOrigVel));
+						this->Pixel.push_back(Pixels(pixelPos, playerOrigVel));
 						this->Pixel[i].loseMass();
 					}
 
@@ -417,22 +412,32 @@ void game::playerPixelColl()
 					if ((this->Pixel[i].getCurrShape().getSize().x < this->player.getCurrShape().getSize().x * 2.f) &&
 						(this->Pixel[i].getCurrShape().getSize().x >= this->player.getCurrShape().getSize().x))
 					{
-						this->Pixel.push_back(Pixels(pixelActualCen, playerOrigVel));
+						this->Pixel.push_back(Pixels(pixelPos, playerOrigVel));
 						this->Pixel[i].loseMass();
 						//Don't spawn pixel in player!
-						//this->Pixel.push_back(Pixels(playerActualCen, this->Pixel[i].velocity));
-						//this->player.loseMass();
+						this->Pixel.push_back(Pixels(sf::Vector2f(playerPos.x + playerNewxVel, playerPos.y + playerNewyVel), this->Pixel[i].velocity));
+						this->player.loseMass();
 					}
 
 					// If pixel is twice as large or larger than player loses mass
 					if (this->Pixel[i].getCurrShape().getSize().x > (this->player.getCurrShape().getSize().x * 2.f))
 					{
 						//Spawning a pixel inside the player is a bad idea
-						//this->Pixel.push_back(Pixels(playerActualCen, this->Pixel[i].velocity));
-						//this->player.loseMass();
+						this->Pixel.push_back(Pixels(sf::Vector2f(playerPos.x + playerNewxVel, playerPos.y + playerNewyVel), this->Pixel[i].velocity));
+						this->player.loseMass();
 					}
 
 					/*
+					if (this->player.getCurrShape().getSize().x <= 6)
+					{
+						endGame = true;
+					}
+
+					/*
+					* The following code was for use with the calculated impulse which I could not get working correctly.
+					* For the sake of time and my sanity I used similar but simpler equations to resolve collisions above.
+					* Collisions are now treated as totally inelastic.
+					* 
 					//If player hits a pixel block, pixel gets some fraction of players velocity
 					this->Pixel[i].bounceOffPLayer(
 						// VB' = VB + J / massB

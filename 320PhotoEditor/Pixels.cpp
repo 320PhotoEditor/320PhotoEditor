@@ -6,8 +6,8 @@ void Pixels::initVar()
 	// Want pixels to have a slower top speed than the player
 	this->moveSpeed = 9.f;
 
-	float xvel = static_cast <float> (rand() % 3 + (-2));
-	float yvel = static_cast <float> (rand() % 3 + (-2));
+	float xvel = static_cast <float> (rand() % 6 + (-5));
+	float yvel = static_cast <float> (rand() % 6 + (-5));
 	this->velocity = sf::Vector2f(xvel,yvel);
 	//this->velocity = sf::Vector2f(0, 0);
 

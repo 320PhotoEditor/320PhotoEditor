@@ -77,8 +77,8 @@ void Player::playerBounce(sf::Vector2f currentVel)
 	this->velocity.x = -currentVel.x;
 	this->velocity.y = -currentVel.y;
 	// Player loses mass for hitting edge of window
-	//this->getCurrShape().setSize(sf::Vector2f(this->getCurrShape().getSize().x - 4,
-	//	this->getCurrShape().getSize().y - 4));
+	this->getCurrShape().setSize(sf::Vector2f(this->getCurrShape().getSize().x - 2,
+		this->getCurrShape().getSize().y - 2));
 }
 
 void Player::bounceOffPixel(sf::Vector2f playerVel, sf::Vector2f impulse, sf::Vector2f playerSize)
