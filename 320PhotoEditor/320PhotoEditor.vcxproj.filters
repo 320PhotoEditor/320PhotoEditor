@@ -90,6 +90,12 @@
     <ClCompile Include="Pixels.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Tool\HistogramTool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\EditTool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -168,6 +174,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Pixels.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\HistogramTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\EditTool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
