@@ -11,6 +11,7 @@
 #include "Tool/MosaicTool.h"
 #include "Tool/ToolManager.h"
 #include "Tool/FilterTool.h"
+#include "Tool/WarpTool.h"
 #include "Tool/Zoom.h"
 #include "Layer/LayerManager.h"
 #include "ApplicationMenu.h"

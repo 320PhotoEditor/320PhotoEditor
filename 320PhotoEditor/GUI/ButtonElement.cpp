@@ -112,6 +112,10 @@ void ButtonElement::setPosition(sf::Vector2f pos)
 	this->pos = pos;
 }
 
+void ButtonElement::setColor(sf::Color color)
+{
+	sprite->setColor(color);
+}
 
 ButtonElement::~ButtonElement()
 {

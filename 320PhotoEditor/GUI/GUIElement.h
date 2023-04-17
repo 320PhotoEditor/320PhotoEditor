@@ -17,6 +17,8 @@ public:
 	virtual void mouseReleased(sf::Mouse::Button button) {};
 	virtual void mouseMoved(sf::Vector2i pos) {};
 
+	virtual void setColor(sf::Color color) {};
+
 	void setVisible(bool visible);
 
 	//sets size relative to parent gui

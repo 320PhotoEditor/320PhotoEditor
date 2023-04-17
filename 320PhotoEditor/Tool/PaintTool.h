@@ -20,12 +20,16 @@ public:
 	void mouseReleased(sf::Mouse::Button button);
 	void mouseMoved(sf::Vector2i pos);
 	void mouseScrolled(int delta);
+	void keyPressed(sf::Keyboard::Key key);
+	void keyReleased(sf::Keyboard::Key key);
 
 	void buttonPressed(GUIElement* button, int status);
 
 private:
 
 	void paint();
+
+	bool scrollZoom = false;
 
 	sf::Texture* up;
 
@@ -37,6 +41,9 @@ private:
 	sf::Color paintColor;
 
 	int paintSize;
+
+	//used to store the texture before painting so transparency doesnt overlap
+	sf::Texture referenceTexture;
 
 	sf::Vector2i cursorPos;
 	sf::Vector2i lastCursorPos;

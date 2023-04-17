@@ -2,6 +2,7 @@
 
 #include "Tool.h"
 #include "../GUI/ButtonElement.h"
+#include "../ComputeShader.h"
 
 class WarpTool : public Tool
 {
@@ -11,16 +12,44 @@ public:
 
 	void init();
 	void start(Layer* layer);
-	void stop() {};
+	void stop();
 	void run() {};
+	
+	void mousePressed(sf::Mouse::Button button);
+	void mouseReleased(sf::Mouse::Button button);
+	void mouseMoved(sf::Vector2i pos);
 
-	//returns the indexes for the control point over the cursor
-	//-1, -1 being no control point selected
-	sf::Vector2i selectControlPoint(sf::Vector2i cursorPos);
+	//returns the index for the control point over the cursor
+	//-1 being no control point selected
+	int selectControlPoint(sf::Vector2i cursorPos);
+
+	void calculateTransformMatrx(sf::Vector2i originalControlPoints[4], sf::Vector2i controlPoints[4], Matrix3x3& transform);
+
+	void initControlPoints();
+
+	void buttonPressed(GUIElement* button, int status);
 
 private:
 
-	std::vector<std::vector<sf::Vector2f>> controlPoints;
+	void compute();
+
+	bool down = false;
+	bool doWarp = false;
+	bool doFillTransparent = false;
+	sf::Vector2i cursorPos;
+	int selectedPoint;
+
+	sf::Vector2i originalControlPoints[4];
+	sf::Vector2i controlPoints[4];
 
 	Layer* layer;
+
+	//stores a copy of the layer to sample from
+	sf::Texture layerCopy;
+
+	ButtonElement* startWarp;
+	ButtonElement* fillTransparent;
+
+	ComputeShader* warpCompute;
+	unsigned int pointsBuf;
 };

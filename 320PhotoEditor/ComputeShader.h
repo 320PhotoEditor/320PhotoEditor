@@ -56,6 +56,10 @@ public:
 
 	static void bindTexture(unsigned int texture, unsigned int binding);
 
+	static int genBuffer();
+	static void bindBuffer(unsigned int buf, unsigned int index);
+	static void setBuffer(unsigned int buf, size_t size, void* data);
+
 	static void printComputeStats();
 
 	void setBool(const std::string& name, bool value) const;
@@ -64,6 +68,8 @@ public:
 	void setVec2(const std::string& name, const sf::Vector2f& value) const;
 	void setVec2(const std::string& name, float x, float y) const;
 	void setVec3(const std::string& name, float x, float y, float z) const;
+	void setVec4(const std::string& name, float x, float y, float z, float w) const;
+	void setMat3(const std::string& name, const Matrix3x3& mat) const;
 
 	unsigned int ID;
 

@@ -37,8 +37,23 @@ private:
 	GUIContainer* menuContainer;
 	GUIContainer* colorContainer;
 	ButtonElement* fileMenuButton;
+	ButtonElement* newBlankButton;
+	ButtonElement* newTransparentButton;
 	ButtonElement* incrLightness;
 	ButtonElement* decrLightness;
+	ButtonElement* incrTransparency;
+	ButtonElement* decrTransparency;
+	ButtonElement* foregroundColor;
+	ButtonElement* backgroundColor;
+
+	sf::Texture* foreColorTexture;
+	sf::Texture* backColorTexture;
+
+	sf::Color foreColor;
+	sf::Color backColor;
+
+	bool foreSelect = true;
+
 	ColorPickerElement* colorPicker;
 
 };

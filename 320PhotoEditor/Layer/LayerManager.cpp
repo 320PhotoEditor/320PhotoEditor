@@ -14,7 +14,7 @@ void LayerManager::createLayer(sf::Color color)
 {
 	Layer* layer = new Layer(defaultImageSize, color, renderWindow);
 	
-	ButtonElement* button = createLayerButton(layer->getImage());
+	ButtonElement* button = createLayerButton(const_cast<sf::Texture*>(layer->getSprite()->getTexture()));
 	ButtonElement* visButton = createVisButton();
 
 	sf::Sprite* sprite = layer->getSprite();
@@ -41,7 +41,7 @@ void LayerManager::createLayerFromFile(std::string filePath)
 		return;
 	}
 
-	ButtonElement* button = createLayerButton(layer->getImage());
+	ButtonElement* button = createLayerButton(const_cast<sf::Texture*>(layer->getSprite()->getTexture()));
 	ButtonElement* visButton = createVisButton();
 
 	sf::Sprite* sprite = layer->getSprite();
@@ -87,10 +87,8 @@ void LayerManager::update()
 	}
 }
 
-ButtonElement* LayerManager::createLayerButton(sf::Image* img)
+ButtonElement* LayerManager::createLayerButton(sf::Texture* tex)
 {
-	sf::Texture* tex = new sf::Texture();
-	tex->loadFromImage(*img);
 	ButtonElement* button = new ButtonElement(tex, tex, tex);
 	selectionContainer->addElement(button);
 	button->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
