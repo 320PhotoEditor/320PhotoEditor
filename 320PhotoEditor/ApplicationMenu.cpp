@@ -89,7 +89,13 @@ ApplicationMenu::ApplicationMenu(sf::RenderWindow* renderWindow, LayerManager* l
 	colorContainer->addElement(colorPicker);
 	colorPicker->setSize({ 1, 0.5 });
 	colorPicker->setPosition({ 0, 0 });
-	colorPicker->calcColor();
+  colorPicker->calcColor();
+  histTexture = new sf::Texture();
+  histTexture->create(256, 256);
+  histElement = new PanelElement(histTexture);
+  colorContainer->addElement(histElement);
+  histElement->setSize({1, 0.5});
+  histElement->setPosition({0, 0.625});
 }
 
 ApplicationMenu::~ApplicationMenu()

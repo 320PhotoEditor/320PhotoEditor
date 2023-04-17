@@ -48,14 +48,16 @@ void Zoom::buttonPressed(GUIElement* button, int status) {
     {
         zoomFactor++;
         std::cout << "zoom factor: " << zoomFactor << "\n";
-//        return;
     }
 
     if (button == subtractButton)
     {
         zoomFactor--;
+        if ( zoomFactor < 1)
+        {
+            zoomFactor = 1;
+        }
         std::cout << "zoom factor: " << zoomFactor << "\n";
-//        return;
     }
 }
 
@@ -102,5 +104,17 @@ void Zoom::zoom()
     zoomSprite->setScale(zoomFactor, zoomFactor);
 }
 
+sf::RenderWindow * Zoom::getRenderWindow()
+{
+    return renderWindow;
+}
 
+int Zoom::getZoomFactor()
+{
+    return zoomFactor;
+}
 
+sf::Vector2i Zoom::getCursorPos()
+{
+    return cursorPos;
+}

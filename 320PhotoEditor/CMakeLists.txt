@@ -11,12 +11,16 @@ include_directories(GUI)
 include_directories(Layer)
 include_directories(Tool)
 
+
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "/Users/davidoakes/CS320/320PhotoEditor/bin")
+
 
 add_executable(320PhotoEditor
         GUI/ButtonElement.cpp
         GUI/ButtonElement.h
+        GUI/ColorPickerElement.cpp
+        GUI/ColorPickerElement.h
         GUI/GUIContainer.cpp
         GUI/GUIContainer.h
         GUI/GUIElement.cpp
@@ -27,18 +31,39 @@ add_executable(320PhotoEditor
         Layer/Layer.h
         Layer/LayerManager.cpp
         Layer/LayerManager.h
+        Tool/FilterTool.cpp
+        Tool/FilterTool.h
+        Tool/HistogramTool.cpp
+        Tool/HistogramTool.h
+        Tool/MosaicTool.cpp
+        Tool/MosaicTool.h
+        Tool/PaintTool.cpp
+        Tool/PaintTool.h
+        Tool/SelectTool.cpp
+        Tool/SelectTool.h
         Tool/TestTool.cpp
         Tool/TestTool.h
         Tool/Tool.cpp
         Tool/Tool.h
         Tool/ToolManager.cpp
         Tool/ToolManager.h
+        Tool/Zoom.cpp
+        Tool/Zoom.h
         Application.cpp
         Application.h
+        ApplicationMenu.cpp
+        ApplicationMenu.h
+        AssetManager.cpp
+        AssetManager.h
         Common.cpp
         Common.h
+        ComputeShader.cpp
+        ComputeShader.h
         InputListener.cpp
         InputListener.h
-        Main.cpp Tool/PaintTool.cpp GUI/ColorPickerElement.cpp Tool/FilterTool.cpp Tool/FilterTool.h Tool/Zoom.cpp Tool/Zoom.h)
+        WindowListener.cpp
+        WindowListener.h
+        Main.cpp Tool/PaintTool.cpp GUI/ColorPickerElement.cpp Tool/FilterTool.cpp Tool/FilterTool.h Tool/Zoom.cpp Tool/Zoom.h Tool/EditTool.cpp Tool/EditTool.h)
 
 target_link_libraries(320PhotoEditor sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+

@@ -13,6 +13,8 @@
 #include "Tool/FilterTool.h"
 #include "Tool/WarpTool.h"
 #include "Tool/Zoom.h"
+#include "Tool/HistogramTool.h"
+#include "Tool/EditTool.h"
 #include "Layer/LayerManager.h"
 #include "ApplicationMenu.h"
 #include "AssetManager.h"
