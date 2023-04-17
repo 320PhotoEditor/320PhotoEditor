@@ -30,7 +30,6 @@ public:
 	~ButtonElement();
 
 private:
-
 	sf::Vector2i cursorPos;
 
 	sf::Texture* up;
