@@ -1,7 +1,5 @@
 #include "ButtonElement.h"
 
-//TODO: fix issues where texture not updating
-
 ButtonElement::ButtonElement(sf::Texture* up, sf::Texture* down, sf::Texture* over, bool toggle) :  up(up), down(down), over(over)
 {
 	sprite = new sf::Sprite(*up);
@@ -112,6 +110,11 @@ void ButtonElement::setPosition(sf::Vector2f pos)
 
 	sprite->setPosition(position * windowSize);
 	this->pos = pos;
+}
+
+void ButtonElement::setColor(sf::Color color)
+{
+	sprite->setColor(color);
 }
 
 ButtonElement::~ButtonElement()

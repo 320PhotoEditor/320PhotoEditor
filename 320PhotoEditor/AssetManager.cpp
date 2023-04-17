@@ -15,3 +15,18 @@ sf::Texture* AssetManager::getTexture(std::string name)
 		return texture;
 	}
 }
+
+ComputeShader* AssetManager::getComputeShader(std::string name)
+{
+	auto search = computeShaders.find(name);
+	if (search != computeShaders.end())
+	{
+		return search->second;
+	}
+	else
+	{
+		ComputeShader* computeShader = new ComputeShader(name.c_str());
+		computeShaders.insert(std::make_pair(name, computeShader));
+		return computeShader;
+	}
+}

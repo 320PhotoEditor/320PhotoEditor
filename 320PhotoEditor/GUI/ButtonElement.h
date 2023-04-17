@@ -25,10 +25,11 @@ public:
 	void setSize(sf::Vector2f size);
 	void setPosition(sf::Vector2f pos);
 
+	void setColor(sf::Color color);
+
 	~ButtonElement();
 
 private:
-
 	sf::Vector2i cursorPos;
 
 	sf::Texture* up;

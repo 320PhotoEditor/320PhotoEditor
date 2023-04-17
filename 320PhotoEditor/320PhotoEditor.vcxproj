@@ -143,31 +143,34 @@
     <ClCompile Include="ApplicationMenu.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="GUI\ColorPickerElement.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="GUI\ButtonElement.cpp" />
     <ClCompile Include="GUI\GUIContainer.cpp" />
     <ClCompile Include="GUI\GUIElement.cpp" />
-    <ClCompile Include="InputListener.cpp" />
     <ClCompile Include="Layer\Layer.cpp" />
     <ClCompile Include="Layer\LayerManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="GUI\PanelElement.cpp" />
+    <ClCompile Include="Pixels.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Tool\FilterTool.cpp" />
-    <ClCompile Include="Tool\SelectTool.cpp" />
     <ClCompile Include="Tool\MosaicTool.cpp" />
+    <ClCompile Include="Tool\SelectTool.cpp" />
     <ClCompile Include="Tool\PaintTool.cpp" />
     <ClCompile Include="Tool\TestTool.cpp" />
     <ClCompile Include="Tool\ToolManager.cpp" />
     <ClCompile Include="Tool\Tool.cpp" />
     <ClCompile Include="Tool\Zoom.cpp" />
-    <ClCompile Include="WindowListener.cpp" />
+    <ClCompile Include="Tool\WarpTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationMenu.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="ComputeShader.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="GUI\ColorPickerElement.h" />
     <ClInclude Include="GUI\ButtonElement.h" />
     <ClInclude Include="Common.h" />
@@ -177,14 +180,17 @@
     <ClInclude Include="Layer\Layer.h" />
     <ClInclude Include="GUI\PanelElement.h" />
     <ClInclude Include="Layer\LayerManager.h" />
+    <ClInclude Include="Pixels.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Tool\FilterTool.h" />
-    <ClInclude Include="Tool\SelectTool.h" />
     <ClInclude Include="Tool\MosaicTool.h" />
+    <ClInclude Include="Tool\SelectTool.h" />
     <ClInclude Include="Tool\PaintTool.h" />
     <ClInclude Include="Tool\TestTool.h" />
     <ClInclude Include="Tool\ToolManager.h" />
     <ClInclude Include="Tool\Tool.h" />
     <ClInclude Include="Tool\Zoom.h" />
+    <ClInclude Include="Tool\WarpTool.h" />
     <ClInclude Include="WindowListener.h" />
   </ItemGroup>
   <ItemGroup>

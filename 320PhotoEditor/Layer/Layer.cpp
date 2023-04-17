@@ -22,11 +22,16 @@ void Layer::createLayer(sf::Image* image, sf::RenderWindow* renderWindow)
 
 	mask = new sf::Image();
 	mask->create(image->getSize().x, image->getSize().y, sf::Color::White);
+	maskTexture.loadFromImage(*mask);
 
 	texture = sf::Texture();
 	texture.loadFromImage(*image);
 
 	sprite = new sf::Sprite(texture);
+
+	//scale it so its always the same size on screen regardless of resolution
+	float scale = 0.7 * renderWindow->getSize().x / sprite->getTexture()->getSize().x;
+	sprite->setScale(scale, scale);
 
 	visible = true;
 
@@ -43,6 +48,11 @@ sf::Image* Layer::getMask()
 	return mask;
 }
 
+sf::Texture* Layer::getMaskTexture()
+{
+	return &maskTexture;
+}
+
 sf::Sprite* Layer::getSprite()
 {
 	return sprite;
@@ -50,8 +60,15 @@ sf::Sprite* Layer::getSprite()
 
 sf::Vector2i Layer::cursorToPixel(sf::Vector2i cursorPos)
 {
-	//TODO: make adjust for image scale and position
-	return sf::Vector2i(cursorPos.x - sprite->getPosition().x + sprite->getOrigin().x, cursorPos.y - sprite->getPosition().y + sprite->getOrigin().y);
+	sf::Vector2f pos = sprite->getPosition();
+	sf::Vector2f origin = sprite->getOrigin();
+	sf::Vector2f scale = sprite->getScale();
+	sf::Vector2u size = sprite->getTexture()->getSize();
+
+	sf::Vector2f dx = cursorPos - pos;
+
+	sf::Vector2i pixel =  sf::Vector2i(dx.x / scale.x + origin.x, dx.y / scale.y + origin.y);
+	return pixel;
 }
 
 bool Layer::isCursorOver(sf::Vector2i cursorPos)
@@ -62,8 +79,7 @@ bool Layer::isCursorOver(sf::Vector2i cursorPos)
 	float left = spritePos.x - sprite->getOrigin().x;
 	float right = spritePos.x + sprite->getTexture()->getSize().x - sprite->getOrigin().x;
 	float top = spritePos.y - sprite->getOrigin().y;
-	//TODO: last pixel on y axis doesnt want to be written to for some reason
-	float bottom = spritePos.y + sprite->getTexture()->getSize().y - sprite->getOrigin().y - 1;
+	float bottom = spritePos.y + sprite->getTexture()->getSize().y - sprite->getOrigin().y;
 
 	return cursorPos.x >= left && cursorPos.x <= right && cursorPos.y >= top && cursorPos.y <= bottom;
 }
@@ -71,6 +87,23 @@ bool Layer::isCursorOver(sf::Vector2i cursorPos)
 void Layer::reload()
 {
 	texture.loadFromImage(*image);
+}
+
+void Layer::reloadMask()
+{
+	maskTexture.loadFromImage(*mask);
+}
+
+void Layer::loadImageFromTexture()
+{
+	sf::Image img = texture.copyToImage();
+	image->copy(img, 0, 0);
+}
+
+void Layer::loadMaskFromTexture()
+{
+	sf::Image img = maskTexture.copyToImage();
+	mask->copy(img, 0, 0);
 }
 
 Layer::~Layer()

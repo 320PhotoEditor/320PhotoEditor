@@ -14,7 +14,7 @@ public:
 	void init();
 	void start(Layer* layer);
 	void stop() {};
-	void run() {};
+	void run();
 
 	//void keyPressed(sf::Keyboard::Key key);
 

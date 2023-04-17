@@ -21,7 +21,7 @@ void ComputeShader::compute(unsigned int sizeX, unsigned int sizeY, unsigned int
 	glDispatchCompute(sizeX, sizeY, sizeZ);
 
 	//wait til the shader is finished writing
-	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+	glMemoryBarrier(GL_ALL_BARRIER_BITS);
 }
 
 void ComputeShader::use(unsigned int ID)
@@ -29,9 +29,29 @@ void ComputeShader::use(unsigned int ID)
 	glUseProgram(ID);
 }
 
-void ComputeShader::bindTexture(unsigned int texture)
+void ComputeShader::bindTexture(unsigned int texture, unsigned int binding)
 {
-	glBindImageTexture(0, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA8);
+	glBindImageTexture(binding, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA8);
+}
+
+int ComputeShader::genBuffer()
+{
+	unsigned int buf;
+	glGenBuffers(1, &buf);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, buf);
+	return buf;
+}
+
+void ComputeShader::bindBuffer(unsigned int buf, unsigned int index)
+{
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, index, buf);
+}
+
+void ComputeShader::setBuffer(unsigned int buf, size_t size, void* data)
+{
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, buf);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, size, data, GL_DYNAMIC_READ);
 }
 
 void ComputeShader::printComputeStats()
@@ -82,6 +102,20 @@ void ComputeShader::setVec2(const std::string& name, float x, float y) const
 	glUniform2f(glGetUniformLocation(ID, name.c_str()), x, y);
 }
 
+void ComputeShader::setVec3(const std::string& name, float x, float y, float z) const
+{
+	glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
+}
+
+void ComputeShader::setVec4(const std::string& name, float x, float y, float z, float w) const
+{
+	glUniform4f(glGetUniformLocation(ID, name.c_str()), x, y, z, w);
+}
+
+void ComputeShader::setMat3(const std::string& name, const Matrix3x3& m) const
+{
+	glUniformMatrix3fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &m[0][0]);
+}
 
 void ComputeShader::compile(const char* path)
 {

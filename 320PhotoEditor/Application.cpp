@@ -12,14 +12,13 @@ Application::~Application()
 
 bool Application::init(std::string windowName)
 {
-    window = new sf::RenderWindow(sf::VideoMode(1280, 720), windowName);
+    window = new sf::RenderWindow(sf::VideoMode(1920, 1060), windowName);
 
     if (!window->isOpen())
     {
         return false;
     }
 
-    //TODO: clean this up, maybe have some sort of asset manager
     window->setKeyRepeatEnabled(false);
 
     sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
@@ -30,13 +29,17 @@ bool Application::init(std::string windowName)
     sf::Texture* paintdownTexture = AssetManager::getInstance().getTexture("../assets/paint_button_down.png");
     sf::Texture* paintoverTexture = AssetManager::getInstance().getTexture("../assets/paint_button_over.png");
 
+    sf::Texture* warpupTexture = AssetManager::getInstance().getTexture("../assets/warp_button_up.png");
+    sf::Texture* warpdownTexture = AssetManager::getInstance().getTexture("../assets/warp_button_down.png");
+    sf::Texture* warpoverTexture = AssetManager::getInstance().getTexture("../assets/warp_button_over.png");
+
     sf::Texture* mosUpTexture = AssetManager::getInstance().getTexture("../assets/mos_button_up.png");
     sf::Texture* mosDownTexture = AssetManager::getInstance().getTexture("../assets/mos_button_down.png");
     sf::Texture* mosOverTexture = AssetManager::getInstance().getTexture("../assets/mos_button_over.png");
 
     toolManager = new ToolManager(window);
     
-    layerManager = new LayerManager(window, toolManager, { 800, 600 });
+    layerManager = new LayerManager(window, toolManager, { 1920, 1080 });
     layerManager->createLayer(sf::Color::White);
     
     toolManager->setSelectedLayer(layerManager->getSelectedLayer());
@@ -47,6 +50,7 @@ bool Application::init(std::string windowName)
 
     toolManager->addTool(new TestTool(upTexture, downTexture, overTexture));
     toolManager->addTool(new PaintTool(paintupTexture, paintdownTexture, paintoverTexture));
+    toolManager->addTool(new WarpTool(warpupTexture, warpdownTexture, warpoverTexture));
     toolManager->addTool(new SelectTool(upTexture, downTexture, overTexture));
     toolManager->addTool(new MosaicTool(mosUpTexture, mosDownTexture, mosOverTexture));
     toolManager->addTool(new FilterTool(upTexture, downTexture, overTexture));
@@ -86,7 +90,7 @@ void Application::run()
             updateWindowListeners(event);
             updateInputListeners(event);
         }
-        window->clear();
+        window->clear(sf::Color(50, 50, 50, 255));
 
         applicationMenu->update();
         layerManager->update();
@@ -147,7 +151,7 @@ void Application::updateInputListeners(sf::Event event)
     case sf::Event::MouseWheelScrolled:
         for (const auto& listener : inputListeners)
         {
-            listener->mouseScrolled(event.mouseWheel.delta);
+            listener->mouseScrolled(event.mouseWheel.x > 0 ? 1 : -1);
         }
         break;
     case sf::Event::MouseMoved:

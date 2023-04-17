@@ -21,13 +21,18 @@ public:
 	void setLightness(float lightness);
 	float getLightness();
 
-private:
+	void setTransparency(float transparency);
+	float getTransparency();
 
 	void calcColor();
 
+private:
+
 	sf::Vector2i cursorPos;
+	sf::Vector2f savedPos;
 
 	float lightness;
+	float transparency;
 
 	bool dragging = false;
 

@@ -21,9 +21,6 @@
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InputListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GUI\GUIElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,22 +63,31 @@
     <ClCompile Include="ApplicationMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tool\MosaicTool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Tool\Zoom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Tool\FilterTool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WindowListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ComputeShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\WarpTool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\MosaicTool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pixels.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,9 +140,6 @@
     <ClInclude Include="ApplicationMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tool\MosaicTool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Tool\Zoom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -150,6 +153,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AssetManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\WarpTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\MosaicTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pixels.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

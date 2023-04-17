@@ -78,6 +78,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\</OutDir>
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -163,6 +166,7 @@
     <ClCompile Include="..\320PhotoEditor\Tool\TestTool.cpp" />
     <ClCompile Include="..\320PhotoEditor\Tool\Tool.cpp" />
     <ClCompile Include="..\320PhotoEditor\Tool\ToolManager.cpp" />
+    <ClCompile Include="..\320PhotoEditor\Tool\WarpTool.cpp" />
     <ClCompile Include="..\320PhotoEditor\Tool\Zoom.cpp" />
     <ClCompile Include="..\320PhotoEditor\WindowListener.cpp" />
     <ClCompile Include="Tests.cpp" />

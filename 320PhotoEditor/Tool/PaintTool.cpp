@@ -3,53 +3,70 @@
 PaintTool::PaintTool(sf::Texture* up, sf::Texture* down, sf::Texture* over) : Tool(up, down, over)
 {
 	this->up = up;
-	test = new ComputeShader("../assets/testcompute.comp");
-	test->use();
-	test->setFloat("t", 1);
+	paintCompute = new ComputeShader("../assets/paint_compute.comp");
 	
 	paintColor = sf::Color::Black;
 	lastCursorPos = { 0, 0 };
-	paintSize = 1;
+	paintSize = 5;
 }
 
 void PaintTool::init()
 {
-	sf::Texture* upTexture = AssetManager::getInstance().getTexture("../assets/button_up.png");
-	sf::Texture* downTexture = AssetManager::getInstance().getTexture("../assets/button_down.png");
-	sf::Texture* overTexture = AssetManager::getInstance().getTexture("../assets/button_over.png");
-
-	incrSizeButton = new ButtonElement(upTexture, downTexture, overTexture);
+	sf::Texture* incrupTexture = AssetManager::getInstance().getTexture("../assets/incr_button_up.png");
+	sf::Texture* incrdownTexture = AssetManager::getInstance().getTexture("../assets/incr_button_down.png");
+	sf::Texture* incroverTexture = AssetManager::getInstance().getTexture("../assets/incr_button_over.png");
+	sf::Texture* decrupTexture = AssetManager::getInstance().getTexture("../assets/decr_button_up.png");
+	sf::Texture* decrdownTexture = AssetManager::getInstance().getTexture("../assets/decr_button_down.png");
+	sf::Texture* decroverTexture = AssetManager::getInstance().getTexture("../assets/decr_button_over.png");
+	
+	incrSizeButton = new ButtonElement(incrupTexture, incrdownTexture, incroverTexture);
 	incrSizeButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
 	container->addElement(incrSizeButton);
 	incrSizeButton->setSize({ .25, .25 });
-	incrSizeButton->setPosition({ 0, 0 });
+	incrSizeButton->setPosition({ 0.25, 0 });
 
-	decrSizeButton = new ButtonElement(upTexture, downTexture, overTexture);
+	decrSizeButton = new ButtonElement(decrupTexture, decrdownTexture, decroverTexture);
 	decrSizeButton->setUpdateFunction([this](GUIElement* element, int status) { this->buttonPressed(element, status); });
 	container->addElement(decrSizeButton);
 	decrSizeButton->setSize({ .25, .25 });
-	decrSizeButton->setPosition({ 0.25, 0 });
+	decrSizeButton->setPosition({ 0, 0 });
 }
 
 void PaintTool::start(Layer* layer)
 {
 	this->layer = layer;
+	referenceTexture.create(layer->getImage()->getSize().x, layer->getImage()->getSize().y);
+}
+
+void PaintTool::stop()
+{
+	layer->loadImageFromTexture();
 }
 
 void PaintTool::mousePressed(sf::Mouse::Button button)
 {
 	if (button == sf::Mouse::Button::Left)
 	{
+		ComputeShader::bindTexture(layer->getSprite()->getTexture()->getNativeHandle(), 0);
+		ComputeShader::bindTexture(layer->getMaskTexture()->getNativeHandle(), 1);
+		ComputeShader::bindTexture(referenceTexture.getNativeHandle(), 2);
+		sf::Vector2u layerSize = layer->getImage()->getSize();
+		paintCompute->setBool("copyIR", true);
+		paintCompute->compute(layerSize.x / 10.0f, layerSize.y / 10.0f, 1);
+
 		isPainting = true;
 		lastCursorPos = cursorPos;
 		paint();
 	}
 }
-
+	
 void PaintTool::mouseReleased(sf::Mouse::Button button)
 {
 	if (button == sf::Mouse::Button::Left)
-		isPainting = false;
+		if (isPainting)
+		{
+			isPainting = false;
+		}
 }
 
 void PaintTool::mouseMoved(sf::Vector2i pos)
@@ -57,6 +74,25 @@ void PaintTool::mouseMoved(sf::Vector2i pos)
 	cursorPos = pos;
 	paint();
 	lastCursorPos = pos;
+}
+
+void PaintTool::mouseScrolled(int delta)
+{
+	if (scrollZoom)
+	{
+		paintSize = std::max(paintSize + delta, 1);
+		std::cout << paintSize << std::endl;
+	}
+}
+
+void PaintTool::keyPressed(sf::Keyboard::Key key)
+{
+	if (key == sf::Keyboard::LAlt) scrollZoom = true;
+}
+
+void PaintTool::keyReleased(sf::Keyboard::Key key)
+{
+	if (key == sf::Keyboard::LAlt) scrollZoom = false;
 }
 
 void PaintTool::buttonPressed(GUIElement* button, int status)
@@ -68,7 +104,7 @@ void PaintTool::buttonPressed(GUIElement* button, int status)
 
 	if (button == incrSizeButton)
 	{
-		paintSize = std::min(++paintSize, 25);
+		++paintSize;
 		std::cout << paintSize << std::endl;
 	}
 	else if (button == decrSizeButton)
@@ -80,34 +116,24 @@ void PaintTool::buttonPressed(GUIElement* button, int status)
 
 void PaintTool::paint()
 {
-	if (isPainting && layer->isCursorOver(cursorPos))
+	if (isPainting)
 	{
 		paintColor = applicationMenu->getForegroundColor();
 
+		ComputeShader::bindTexture(layer->getSprite()->getTexture()->getNativeHandle(), 0);
+		ComputeShader::bindTexture(layer->getMaskTexture()->getNativeHandle(), 1);
+		ComputeShader::bindTexture(referenceTexture.getNativeHandle(), 2);
+		paintCompute->use();
 		sf::Vector2i paintPos = layer->cursorToPixel(cursorPos);
-		sf::Vector2i lastPaintPos = layer->isCursorOver(lastCursorPos) ? layer->cursorToPixel(lastCursorPos) : paintPos;
+		sf::Vector2i lastpaintPos = layer->cursorToPixel(lastCursorPos);
+		paintCompute->setVec2("firstPos", (float)paintPos.x, (float)paintPos.y);
+		paintCompute->setVec2("secondPos", (float)lastpaintPos.x, (float)lastpaintPos.y);
+		paintCompute->setFloat("paintSize", paintSize);
+		paintCompute->setBool("copyIR", false);
+		paintCompute->setVec4("color", paintColor.r / 255.0f, paintColor.g / 255.0f, paintColor.b / 255.0f, paintColor.a / 255.0f);
 
-		for (float f = 0; f < 1; f += 0.1)
-		{
-			sf::Vector2i pos = lastPaintPos + (paintPos - lastPaintPos) * f;
-			if (layer->getMask()->getPixel(pos.x, pos.y) == sf::Color::White)
-			{
-				//TODO: this slows down alot when painting with the radius being large, maybe time to implement compute shaders or use some other method of finding what pixel is in the circle
-				//or multhithread might work
-				
-				//loop through the bounding box of the circle and find the pixels that are withing the circle by distance
-				for (int x = pos.x - paintSize; x != pos.x + paintSize; x++)
-				{
-					for (int y = pos.y - paintSize; y != pos.y + paintSize; y++)
-					{
-						int distance = sqrt(pow(pos.x - x, 2) + pow(pos.y - y, 2));
-						if (distance <= paintSize)
-							layer->getImage()->setPixel(x, y, paintColor);
-					}
-				}
-			}
-		}
+		sf::Vector2u layerSize = layer->getImage()->getSize();
 
-		layer->reload();
+		paintCompute->compute(layerSize.x / 10.0f, layerSize.y / 10.0f, 1);
 	}
 }

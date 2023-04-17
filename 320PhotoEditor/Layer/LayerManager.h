@@ -30,7 +30,7 @@ public:
 
 private:
 
-	ButtonElement* createLayerButton(sf::Image* img);
+	ButtonElement* createLayerButton(sf::Texture* tex);
 	ButtonElement* createVisButton();
 
 	void buttonPressed(GUIElement* button, int status);

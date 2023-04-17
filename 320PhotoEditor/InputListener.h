@@ -10,10 +10,4 @@ public:
 	virtual void mouseReleased(sf::Mouse::Button button) {};
 	virtual void mouseScrolled(int delta) {};
 	virtual void mouseMoved(sf::Vector2i pos) {};
-
-	//internal, do not use
-	void setWindow(sf::Window* window);
-	
-private:
-	sf::Window* window;
 };

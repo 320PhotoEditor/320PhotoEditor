@@ -2,6 +2,9 @@
 
 GUIContainer::GUIContainer(sf::Vector2f pos, sf::Vector2f size, sf::RenderWindow* renderWindow, bool rightAnchor)
 {
+    float scaleUI = 1280.0f / renderWindow->getSize().x;
+    size.x *= scaleUI;
+    size.y *= scaleUI;
     this->size = size;
     this->renderWindow = renderWindow;
     this->rightAnchor = rightAnchor;

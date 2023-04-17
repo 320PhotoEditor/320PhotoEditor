@@ -13,18 +13,23 @@ public:
 
 	void init();
 	void start(Layer* layer);
-	void stop() {};
-	void run() { ComputeShader::bindTexture(layer->getSprite()->getTexture()->getNativeHandle()); test->use(); test->setFloat("t", 100); test->compute(800 / 10, 600 / 10, 1); };
+	void stop();
+	void run() {};
 
 	void mousePressed(sf::Mouse::Button button);
 	void mouseReleased(sf::Mouse::Button button);
 	void mouseMoved(sf::Vector2i pos);
+	void mouseScrolled(int delta);
+	void keyPressed(sf::Keyboard::Key key);
+	void keyReleased(sf::Keyboard::Key key);
 
 	void buttonPressed(GUIElement* button, int status);
 
 private:
 
 	void paint();
+
+	bool scrollZoom = false;
 
 	sf::Texture* up;
 
@@ -37,11 +42,14 @@ private:
 
 	int paintSize;
 
+	//used to store the texture before painting so transparency doesnt overlap
+	sf::Texture referenceTexture;
+
 	sf::Vector2i cursorPos;
 	sf::Vector2i lastCursorPos;
 
 	Layer* layer;
 
-	ComputeShader* test;
+	ComputeShader* paintCompute;
 };
 

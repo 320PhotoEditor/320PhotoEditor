@@ -32,4 +32,8 @@ float* rgb2hsl(sf::Color color);
 //h s l range [0,1]
 sf::Color hsl2rgb(float h, float s, float l);
 
+float* rgb2hsl(sf::Color rgb);
+
 std::string openFileDialog(sf::RenderWindow* parentWindow, bool selectMultiple = false);
+
+typedef float Matrix3x3[3][3];
